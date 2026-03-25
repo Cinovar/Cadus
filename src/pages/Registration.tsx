@@ -17,7 +17,7 @@ import StepProfClinic from '@/components/registration/StepProfClinic';
 import StepProfAccess from '@/components/registration/StepProfAccess';
 import SuccessScreen from '@/components/registration/SuccessScreen';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, X } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 
 const patientSteps = 10;
 const profSteps = 4;
@@ -92,38 +92,56 @@ const Registration = () => {
   const progress = (currentStep / totalSteps) * 100;
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: 'radial-gradient(ellipse at 50% 0%, hsl(184 40% 96%) 0%, hsl(210 11% 97%) 70%)' }}>
-      {/* Minimal header */}
-      <div className="sticky top-0 z-50 bg-card/80 backdrop-blur-sm border-b border-border/50">
+    <div className="min-h-screen flex flex-col relative overflow-hidden">
+      {/* Rich background */}
+      <div className="fixed inset-0 -z-10">
+        <div className="absolute inset-0" style={{
+          background: 'radial-gradient(ellipse at 30% -10%, hsl(184 40% 94%) 0%, transparent 50%), radial-gradient(ellipse at 70% 100%, hsl(184 30% 95%) 0%, transparent 50%), hsl(210 11% 97%)'
+        }} />
+        <div className="absolute inset-0 opacity-[0.015]" style={{
+          backgroundImage: 'radial-gradient(circle at 1px 1px, hsl(184 78% 22%) 1px, transparent 0)',
+          backgroundSize: '32px 32px'
+        }} />
+      </div>
+
+      {/* Glass header */}
+      <div className="sticky top-0 z-50 border-b border-border/30" style={{
+        background: 'rgba(255,255,255,0.7)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)'
+      }}>
         <div className="container flex items-center justify-between h-14">
-          <button onClick={goBack} className="text-muted-foreground hover:text-foreground transition-colors p-2 -ml-2">
+          <button onClick={goBack} className="text-muted-foreground hover:text-foreground transition-colors p-2 -ml-2 rounded-xl hover:bg-muted/50">
             <ArrowLeft size={20} />
           </button>
-          <Link to="/" className="font-display font-800 text-primary text-lg tracking-tight">
+          <Link to="/" className="font-display font-800 text-primary text-xl tracking-tight">
             cadus<span className="text-highlight">.</span>
           </Link>
-          <span className="w-8" />
+          <span className="w-9" />
         </div>
-        {/* Thin progress bar */}
-        <div className="h-1 bg-border/50">
+        {/* Gradient progress bar */}
+        <div className="h-1 bg-border/30">
           <div
-            className="h-full bg-primary transition-all duration-500 ease-out rounded-r-full"
-            style={{ width: `${progress}%` }}
+            className="h-full transition-all duration-700 ease-out rounded-r-full"
+            style={{
+              width: `${progress}%`,
+              background: 'linear-gradient(90deg, hsl(184, 78%, 28%), hsl(184, 75%, 38%))'
+            }}
           />
         </div>
       </div>
 
       {/* Content */}
-      <div className="flex-1 flex items-start md:items-center justify-center py-8 px-4">
-        <div className="w-full max-w-[480px]">
+      <div className="flex-1 flex items-start md:items-center justify-center py-8 md:py-12 px-4">
+        <div className="w-full max-w-[520px]">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={`${role}-${currentStep}`}
               custom={direction}
-              initial={{ opacity: 0, x: direction * 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: direction * -30 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
+              initial={{ opacity: 0, y: direction * 16, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: direction * -12, scale: 0.98 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             >
               {renderStep()}
             </motion.div>
