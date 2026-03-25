@@ -369,53 +369,6 @@ const Index = () => {
           />
         </motion.svg>
 
-        {/* Blob orgânico 3 — teal pequeno */}
-        <motion.svg
-          className="absolute left-1/3 -top-10 w-[200px] h-[200px] z-0"
-          viewBox="0 0 500 500"
-          fill="none"
-          animate={{ scale: [0.9, 1.1, 0.9] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <circle cx="250" cy="250" r="200" fill="white" fillOpacity="0.05" />
-        </motion.svg>
-
-        {/* Floating cards */}
-        <motion.div
-          className="absolute left-[5%] top-[20%] md:left-[8%] md:top-[25%] z-10 hidden md:flex items-center gap-2 bg-white/10 backdrop-blur-md rounded-xl px-4 py-3 border border-white/20 shadow-lg"
-          animate={{ y: [0, -8, 0] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          initial={{ opacity: 0, scale: 0.8 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-        >
-          <Clock size={18} className="text-primary-foreground/90" />
-          <span className="text-primary-foreground font-display font-700 text-sm">5 min</span>
-        </motion.div>
-
-        <motion.div
-          className="absolute right-[5%] bottom-[22%] md:right-[10%] md:bottom-[28%] z-10 hidden md:flex items-center gap-2 bg-white/10 backdrop-blur-md rounded-xl px-4 py-3 border border-white/20 shadow-lg"
-          animate={{ y: [0, -10, 0] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-          initial={{ opacity: 0, scale: 0.8 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-        >
-          <Smartphone size={18} className="text-primary-foreground/90" />
-          <span className="text-primary-foreground font-display font-700 text-sm">100% digital</span>
-        </motion.div>
-
-        <motion.div
-          className="absolute left-[12%] bottom-[15%] md:left-[15%] md:bottom-[20%] z-10 hidden md:flex items-center gap-2 bg-white/10 backdrop-blur-md rounded-xl px-4 py-3 border border-white/20 shadow-lg"
-          animate={{ y: [0, -6, 0] }}
-          transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
-          initial={{ opacity: 0, scale: 0.8 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-        >
-          <CheckCircle size={18} className="text-primary-foreground/90" />
-          <span className="text-primary-foreground font-display font-700 text-sm">Dados prontos</span>
-        </motion.div>
 
         <div className="container text-center relative z-20">
           <motion.div
@@ -436,7 +389,7 @@ const Index = () => {
             variants={fadeUp}
             custom={1}
           >
-            <p className="text-primary-foreground/70 mt-4 text-lg font-body max-w-lg mx-auto">
+            <p className="text-primary-foreground/70 mt-4 text-lg font-body max-w-2xl mx-auto">
               Cadastre-se agora e chegue na clínica pronto para ser atendido.
             </p>
           </motion.div>
