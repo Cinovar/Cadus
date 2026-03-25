@@ -6,50 +6,55 @@
 
 @layer base {
   :root {
-    --background: 40 20% 97%;
-    --foreground: 234 33% 14%;
+    --background: 40 33% 97%;
+    --foreground: 215 28% 17%;
 
     --card: 0 0% 100%;
-    --card-foreground: 234 33% 14%;
+    --card-foreground: 215 28% 17%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 234 33% 14%;
+    --popover-foreground: 215 28% 17%;
 
-    --primary: 205 72% 38%;
+    --primary: 180 59% 30%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 155 58% 43%;
+    --secondary: 21 63% 57%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 9% 46%;
+    --muted: 40 15% 94%;
+    --muted-foreground: 215 12% 50%;
 
-    --accent: 205 72% 95%;
-    --accent-foreground: 205 72% 38%;
+    --accent: 40 40% 93%;
+    --accent-foreground: 180 59% 28%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --success: 155 58% 43%;
+    --success: 152 42% 45%;
     --success-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 205 72% 38%;
+    --border: 40 18% 88%;
+    --input: 40 18% 88%;
+    --ring: 180 59% 30%;
 
-    --radius: 0.75rem;
+    --radius: 0.875rem;
 
-    --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.08);
-    --shadow-card-hover: 0 4px 20px rgba(0, 0, 0, 0.12);
+    --shadow-card: 0 2px 16px rgba(31, 41, 55, 0.06);
+    --shadow-card-hover: 0 8px 30px rgba(31, 41, 55, 0.12);
+    --shadow-glow: 0 0 24px rgba(31, 122, 122, 0.12);
+
+    --gradient-primary: linear-gradient(135deg, hsl(180 59% 30%), hsl(170 45% 38%));
+    --gradient-warm: linear-gradient(135deg, hsl(21 63% 57%), hsl(35 70% 58%));
+    --gradient-hero: linear-gradient(160deg, hsl(40 33% 97%), hsl(40 25% 93%));
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 205 72% 38%;
+    --sidebar-primary: 180 59% 30%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 205 72% 95%;
-    --sidebar-accent-foreground: 205 72% 38%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 205 72% 38%;
+    --sidebar-accent: 180 59% 95%;
+    --sidebar-accent-foreground: 180 59% 30%;
+    --sidebar-border: 40 18% 88%;
+    --sidebar-ring: 180 59% 30%;
   }
 }
 
@@ -71,7 +76,7 @@
 
 @layer components {
   .card-cadus {
-    @apply bg-card rounded-2xl p-6;
+    @apply bg-card rounded-2xl p-6 md:p-8;
     box-shadow: var(--shadow-card);
   }
 
@@ -86,44 +91,90 @@
   }
 
   .input-cadus {
-    @apply w-full px-4 py-3 rounded-xl border border-input bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-200;
+    @apply w-full px-4 py-3.5 rounded-2xl border border-input bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-200 font-body;
     font-size: 16px;
-    min-height: 48px;
+    min-height: 52px;
+  }
+
+  .input-cadus:focus {
+    box-shadow: var(--shadow-glow);
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary text-primary-foreground font-display font-700 text-base transition-all duration-200 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
-    min-height: 48px;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl text-primary-foreground font-display font-700 text-base transition-all duration-200 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+    background: var(--gradient-primary);
+    min-height: 52px;
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    transform: translateY(-1px);
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-secondary text-secondary-foreground font-display font-700 text-base transition-all duration-200 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
-    min-height: 48px;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl text-secondary-foreground font-display font-700 text-base transition-all duration-200 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+    background: var(--gradient-warm);
+    min-height: 52px;
+  }
+
+  .btn-secondary:hover:not(:disabled) {
+    transform: translateY(-1px);
   }
 
   .btn-outline {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border-2 border-border bg-transparent text-foreground font-display font-600 text-base transition-all duration-200 hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
-    min-height: 48px;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl border-2 border-border bg-transparent text-foreground font-display font-600 text-base transition-all duration-200 hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+    min-height: 52px;
   }
 
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-transparent text-foreground font-display font-600 text-base transition-all duration-200 hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2;
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-2xl bg-transparent text-foreground font-display font-600 text-base transition-all duration-200 hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2;
     min-height: 48px;
   }
 
   .label-cadus {
-    @apply block text-sm font-body font-600 text-foreground mb-1.5;
+    @apply block text-sm font-body font-600 text-foreground mb-2;
   }
 
   .error-text {
-    @apply text-sm text-destructive mt-1 font-body;
+    @apply text-sm text-destructive mt-1.5 font-body;
   }
 
   .section-title {
-    @apply text-2xl md:text-3xl font-display font-800 text-foreground;
+    @apply text-2xl md:text-4xl font-display font-800 text-foreground;
   }
 
   .section-subtitle {
-    @apply text-base md:text-lg font-body text-muted-foreground mt-2;
+    @apply text-base md:text-lg font-body text-muted-foreground mt-3;
+  }
+
+  /* Decorative blob shapes */
+  .blob-shape {
+    position: absolute;
+    border-radius: 50% 40% 60% 50% / 50% 60% 40% 50%;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  /* Step emoji container */
+  .step-emoji {
+    @apply text-4xl mb-4 block;
+  }
+
+  /* Selection card for forms */
+  .selection-card {
+    @apply relative rounded-2xl border-2 p-5 text-left transition-all duration-200 cursor-pointer;
+  }
+
+  .selection-card:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-card);
+  }
+
+  .selection-card-active {
+    box-shadow: var(--shadow-glow);
+  }
+
+  /* Progress dots */
+  .progress-dot {
+    @apply w-2 h-2 rounded-full transition-all duration-300;
   }
 }
