@@ -146,7 +146,7 @@ const ProfessionalDashboard = () => {
                 <DRow label="Nome" value={selectedPatient.nome} />
                 <DRow label="CPF" value={selectedPatient.cpf} />
                 <DRow label="Nascimento" value={selectedPatient.dataNascimento} />
-                <DRow label="Sexo" value={selectedPatient.sexo} />
+                <DRow label="Gênero" value={selectedPatient.sexo} />
                 <DRow label="Telefone" value={selectedPatient.telefone} />
                 <DRow label="E-mail" value={selectedPatient.email || 'Não informado'} />
               </Section>

@@ -1,4 +1,4 @@
-import { User, Briefcase, Check } from 'lucide-react';
+import { User, Briefcase, Check, Users } from 'lucide-react';
 import { useRegistrationStore } from '@/store/registrationStore';
 
 interface Props {
@@ -22,7 +22,10 @@ const StepProfile = ({ onNext }: Props) => {
   return (
     <div className="card-cadus">
       <div className="text-center mb-8">
-        <h2 className="text-xl md:text-2xl font-display font-800 text-foreground tracking-tight">
+        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-accent to-accent/60 flex items-center justify-center mx-auto mb-5">
+          <Users size={32} className="text-primary" />
+        </div>
+        <h2 className="text-2xl md:text-3xl font-display font-800 text-foreground tracking-tight">
           Como você vai usar o Cadus?
         </h2>
         <p className="text-muted-foreground mt-2 font-body">Escolha uma opção para começar.</p>
