@@ -43,19 +43,17 @@ const HeroIllustration = () => (
     </svg>
 
     {/* Blob 3 — teal vibrante, top-left */}
-    <motion.svg
+    <svg
       className="absolute -left-6 -top-2 w-[260px] h-[260px] z-0"
       viewBox="0 0 500 500"
       fill="none"
-      animate={{ scale: [0.92, 1.08, 0.92] }}
-      transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
     >
       <path
         d="M380,260Q340,420,200,380Q60,340,100,200Q140,60,300,100Q460,140,380,260Z"
         fill="hsl(184, 60%, 35%)"
         fillOpacity="0.18"
       />
-    </motion.svg>
+    </svg>
 
     {/* Blob 4 — small teal dot, accent */}
     <motion.svg
