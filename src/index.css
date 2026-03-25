@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Nunito+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,50 +6,64 @@
 
 @layer base {
   :root {
-    --background: 40 20% 97%;
-    --foreground: 234 33% 14%;
+    /* Verde-mata: #2B6E5A → hsl(155, 43%, 30%) */
+    --primary: 155 43% 30%;
+    --primary-foreground: 40 20% 97%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 234 33% 14%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 234 33% 14%;
-
-    --primary: 205 72% 38%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 155 58% 43%;
+    /* Terracota suave: #D4875E → hsl(21, 58%, 60%) */
+    --secondary: 21 58% 60%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 9% 46%;
+    /* Fundo algodão cru: #FAF8F5 → hsl(36, 33%, 97%) */
+    --background: 36 33% 97%;
+    /* Texto café escuro: #2C2825 → hsl(20, 8%, 16%) */
+    --foreground: 20 8% 16%;
 
-    --accent: 205 72% 95%;
-    --accent-foreground: 205 72% 38%;
+    /* Cards brancos quentes */
+    --card: 40 33% 99%;
+    --card-foreground: 20 8% 16%;
 
-    --destructive: 0 84% 60%;
+    --popover: 40 33% 99%;
+    --popover-foreground: 20 8% 16%;
+
+    /* Texto secundário areia escura: #7A7267 → hsl(30, 7%, 44%) */
+    --muted: 30 12% 93%;
+    --muted-foreground: 30 7% 44%;
+
+    /* Acento verde claro suave */
+    --accent: 155 30% 93%;
+    --accent-foreground: 155 43% 30%;
+
+    /* Erro tijolo: #C0513F → hsl(8, 52%, 50%) */
+    --destructive: 8 52% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --success: 155 58% 43%;
+    /* Sucesso = primária */
+    --success: 155 43% 30%;
     --success-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 205 72% 38%;
+    /* Bordas linho: #EDE9E3 → hsl(30, 18%, 91%) */
+    --border: 30 18% 91%;
+    --input: 30 18% 91%;
+    --ring: 155 43% 30%;
 
     --radius: 0.75rem;
 
-    --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.08);
-    --shadow-card-hover: 0 4px 20px rgba(0, 0, 0, 0.12);
+    /* Sombras quentes */
+    --shadow-card: 0 2px 12px rgba(43, 40, 35, 0.06);
+    --shadow-card-hover: 0 4px 20px rgba(43, 40, 35, 0.10);
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 205 72% 38%;
+    /* Mostarda: #E8B84B → hsl(42, 78%, 60%) */
+    --highlight: 42 78% 60%;
+
+    --sidebar-background: 36 33% 97%;
+    --sidebar-foreground: 30 7% 44%;
+    --sidebar-primary: 155 43% 30%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 205 72% 95%;
-    --sidebar-accent-foreground: 205 72% 38%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 205 72% 38%;
+    --sidebar-accent: 155 30% 93%;
+    --sidebar-accent-foreground: 155 43% 30%;
+    --sidebar-border: 30 18% 91%;
+    --sidebar-ring: 155 43% 30%;
   }
 }
 

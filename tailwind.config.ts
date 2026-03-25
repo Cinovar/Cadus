@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Nunito", "sans-serif"],
-        body: ["Nunito Sans", "sans-serif"],
+        display: ["Sora", "sans-serif"],
+        body: ["Inter", "sans-serif"],
       },
       fontWeight: {
         "400": "400",
@@ -46,6 +46,7 @@ export default {
           DEFAULT: "hsl(var(--success))",
           foreground: "hsl(var(--success-foreground))",
         },
+        highlight: "hsl(var(--highlight))",
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
