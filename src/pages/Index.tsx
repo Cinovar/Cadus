@@ -328,34 +328,30 @@ const Index = () => {
       {/* CTA Final */}
       <section className="cta-gradient py-24 md:py-32 relative overflow-hidden">
         {/* Blob orgânico 1 — teal grande */}
-        <motion.svg
+        <svg
           className="absolute -left-20 -bottom-20 w-[450px] h-[450px] z-0"
           viewBox="0 0 500 500"
           fill="none"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
         >
           <path
             d="M400,280Q370,460,200,400Q30,340,80,200Q130,60,300,80Q470,100,400,280Z"
             fill="white"
             fillOpacity="0.07"
           />
-        </motion.svg>
+        </svg>
 
         {/* Blob orgânico 2 — amber direita */}
-        <motion.svg
+        <svg
           className="absolute -right-16 -top-16 w-[380px] h-[380px] z-0"
           viewBox="0 0 500 500"
           fill="none"
-          animate={{ rotate: -360 }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
         >
           <path
             d="M420,300Q380,480,200,420Q20,360,60,200Q100,40,280,60Q460,80,420,300Z"
             fill="hsl(25, 76%, 63%)"
             fillOpacity="0.12"
           />
-        </motion.svg>
+        </svg>
 
 
         <div className="container text-center relative z-20">
