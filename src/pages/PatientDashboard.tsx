@@ -1,7 +1,6 @@
 import { useRegistrationStore } from '@/store/registrationStore';
 import { useNavigate } from 'react-router-dom';
 import { User, FileText, Phone, CalendarDays, LogOut, MessageSquare } from 'lucide-react';
-import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 const PatientDashboard = () => {
@@ -21,7 +20,7 @@ const PatientDashboard = () => {
       {/* Nav */}
       <nav className="sticky top-0 z-50 bg-card/90 backdrop-blur-sm border-b border-border">
         <div className="container flex items-center justify-between h-14">
-          <span className="font-display font-800 text-primary text-lg">cadus</span>
+          <span className="font-display font-800 text-primary text-lg tracking-tight">cadus<span className="text-highlight">.</span></span>
           <div className="flex items-center gap-3">
             <span className="text-sm text-foreground font-body hidden sm:block">{nome}</span>
             <button onClick={handleLogout} className="btn-ghost text-sm py-1 px-2 text-muted-foreground">
@@ -35,7 +34,7 @@ const PatientDashboard = () => {
         <div className="container max-w-2xl space-y-6">
           {/* Welcome */}
           <div className="card-cadus">
-            <h1 className="text-2xl font-display font-800 text-foreground">
+            <h1 className="text-2xl font-display font-800 text-foreground tracking-tight">
               Olá, {firstName}! 👋
             </h1>
             <p className="text-muted-foreground mt-1">Seu cadastro está completo.</p>

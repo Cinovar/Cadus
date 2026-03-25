@@ -8,8 +8,8 @@ const Navbar = () => {
   return (
     <nav className="sticky top-0 z-50 bg-card/90 backdrop-blur-sm border-b border-border transition-shadow">
       <div className="container flex items-center justify-between h-16">
-        <Link to="/" className="font-display font-800 text-xl text-primary">
-          cadus
+        <Link to="/" className="font-display font-800 text-xl text-primary tracking-tight">
+          cadus<span className="text-highlight">.</span>
         </Link>
 
         {/* Desktop */}

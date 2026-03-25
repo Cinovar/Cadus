@@ -3,7 +3,7 @@ const Footer = () => (
     <div className="container">
       <div className="flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex flex-col items-center md:items-start gap-1">
-          <span className="font-display font-800 text-primary text-lg">cadus</span>
+          <span className="font-display font-800 text-primary text-lg tracking-tight">cadus<span className="text-highlight">.</span></span>
           <span className="text-sm text-muted-foreground">Seu cadastro. Sua saúde. Simples assim.</span>
         </div>
         <div className="flex gap-6 text-sm text-muted-foreground">

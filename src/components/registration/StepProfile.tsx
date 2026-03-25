@@ -22,7 +22,7 @@ const StepProfile = ({ onNext }: Props) => {
   return (
     <div className="card-cadus">
       <div className="text-center mb-8">
-        <h2 className="text-xl md:text-2xl font-display font-800 text-foreground">
+        <h2 className="text-xl md:text-2xl font-display font-800 text-foreground tracking-tight">
           Você é paciente ou profissional?
         </h2>
         <p className="text-muted-foreground mt-2">Escolha uma opção para começar.</p>
@@ -42,7 +42,7 @@ const StepProfile = ({ onNext }: Props) => {
               <Check size={14} className="text-primary-foreground" />
             </div>
           )}
-          <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center mb-4">
+          <div className="w-12 h-12 rounded-full bg-accent flex items-center justify-center mb-4">
             <User size={24} className="text-primary" />
           </div>
           <h3 className="font-display font-700 text-foreground">Sou Paciente</h3>
@@ -64,7 +64,7 @@ const StepProfile = ({ onNext }: Props) => {
               <Check size={14} className="text-secondary-foreground" />
             </div>
           )}
-          <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: 'hsl(155 58% 43% / 0.1)' }}>
+          <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mb-4">
             <Stethoscope size={24} className="text-secondary" />
           </div>
           <h3 className="font-display font-700 text-foreground">Sou Profissional de Saúde</h3>

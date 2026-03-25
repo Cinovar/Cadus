@@ -30,8 +30,8 @@ const Index = () => {
               variants={fadeUp}
               custom={0}
             >
-              <h1 className="text-3xl md:text-5xl font-display font-800 text-foreground leading-tight">
-                Faça seu cadastro antes de chegar na clínica.
+              <h1 className="text-3xl md:text-5xl font-display font-800 text-foreground leading-tight tracking-tight">
+                Faça seu cadastro antes de chegar na clínica<span className="text-highlight">.</span>
               </h1>
               <p className="section-subtitle mt-4 max-w-lg mx-auto md:mx-0">
                 Com o Cadus, você preenche seus dados pelo celular, no seu tempo.
@@ -85,31 +85,35 @@ const Index = () => {
           <div className="grid md:grid-cols-3 gap-6 mt-10">
             {[
               {
-                icon: <UserCheck size={32} className="text-primary" />,
+                icon: <UserCheck size={28} className="text-primary" />,
                 title: 'Escolha seu perfil',
                 desc: 'Diga se você é paciente ou profissional de saúde.',
+                borderColor: 'border-l-primary',
               },
               {
-                icon: <ClipboardList size={32} className="text-primary" />,
+                icon: <ClipboardList size={28} className="text-secondary" />,
                 title: 'Preencha seus dados',
                 desc: 'Responda as perguntas no seu celular, no seu ritmo. Salva automaticamente.',
+                borderColor: 'border-l-secondary',
               },
               {
-                icon: <CheckCircle size={32} className="text-success" />,
+                icon: <CheckCircle size={28} className="text-primary" />,
                 title: 'Pronto! Acesse sua área',
                 desc: 'Seus dados ficam salvos. O profissional já pode te atender melhor.',
+                borderColor: 'border-l-primary',
               },
             ].map((step, i) => (
               <motion.div
                 key={i}
-                className="card-cadus text-center flex flex-col items-center gap-3"
+                className={`bg-background rounded-2xl p-6 border-l-4 ${step.borderColor} flex flex-col gap-3`}
+                style={{ boxShadow: 'var(--shadow-card)' }}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
                 variants={fadeUp}
                 custom={i}
               >
-                <div className="w-14 h-14 rounded-2xl bg-accent flex items-center justify-center">
+                <div className="w-12 h-12 rounded-full bg-accent flex items-center justify-center">
                   {step.icon}
                 </div>
                 <h3 className="font-display font-700 text-lg text-foreground">{step.title}</h3>
@@ -151,15 +155,14 @@ const Index = () => {
                   'Tudo pelo celular, sem papel',
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-2 text-foreground">
-                    <CheckCircle size={20} className="text-success mt-0.5 shrink-0" />
+                    <CheckCircle size={20} className="text-primary mt-0.5 shrink-0" />
                     <span>{item}</span>
                   </li>
                 ))}
               </ul>
             </motion.div>
             <motion.div
-              className="rounded-2xl p-6 md:p-8"
-              style={{ backgroundColor: 'hsl(155 58% 43% / 0.08)' }}
+              className="rounded-2xl p-6 md:p-8 bg-secondary/10"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
@@ -175,7 +178,7 @@ const Index = () => {
                   'Sem papel, sem retrabalho',
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-2 text-foreground">
-                    <CheckCircle size={20} className="text-primary mt-0.5 shrink-0" />
+                    <CheckCircle size={20} className="text-secondary mt-0.5 shrink-0" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -195,7 +198,7 @@ const Index = () => {
             variants={fadeUp}
             custom={0}
           >
-            <h2 className="text-2xl md:text-3xl font-display font-800 text-primary-foreground">
+            <h2 className="text-2xl md:text-3xl font-display font-800 text-primary-foreground tracking-tight">
               Pronto para começar?
             </h2>
             <p className="text-primary-foreground/80 mt-2 text-lg">Leva menos de 5 minutos.</p>

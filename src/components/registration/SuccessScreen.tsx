@@ -20,12 +20,12 @@ const SuccessScreen = () => {
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-          className="mx-auto w-20 h-20 rounded-full bg-success/10 flex items-center justify-center mb-6"
+          className="mx-auto w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-6"
         >
-          <CheckCircle size={48} className="text-success" />
+          <CheckCircle size={48} className="text-primary" />
         </motion.div>
 
-        <h1 className="text-2xl font-display font-800 text-foreground">
+        <h1 className="text-2xl font-display font-800 text-foreground tracking-tight">
           {isPatient ? 'Cadastro feito com sucesso!' : 'Cadastro enviado!'}
         </h1>
         <p className="text-muted-foreground mt-3">
