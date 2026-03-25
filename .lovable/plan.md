@@ -1,52 +1,93 @@
 
 
-## Redesign do Fluxo de Cadastro do Paciente
+## Redesign Completo do Cadastro — Estilo Ticko Premium
 
-### Problema atual
-- **StepPatientAddress tem 10+ campos** numa tela só — assusta o paciente
-- O fluxo atual tem 5 etapas mas mal distribuídas (6 campos, 10+ campos, 1 campo, 3 campos)
-- Não guia o paciente de forma conversacional e intuitiva
-- Parece um formulário burocrático, não uma experiência amigável
+### Problemas atuais
+- Header do cadastro é o mesmo da landing page (Voltar/cadus./contador) — parece continuação, não uma experiência dedicada
+- Footer da landing aparece no cadastro — desnecessário
+- Nome e CPF juntos na mesma tela — devem ser separados
+- Cards sem ícone centralizado no topo — visual genérico
+- Textos e campos alinhados à esquerda sem centralização — não tem a elegância do Ticko
+- Sistema não trata o paciente pelo nome após digitar
 
-### Nova abordagem: micro-steps conversacionais
+### Nova experiência de cadastro
 
-Dividir o cadastro do paciente em **8 etapas curtas** (1-3 campos cada), com títulos que parecem uma conversa guiando o paciente. Cada tela tem no máximo 3 campos, tornando tudo menos intimidador e mais rápido visualmente.
+**1. Layout da página de cadastro (Registration.tsx)**
+- Remover Footer da landing page
+- Header minimalista: apenas "Voltar" à esquerda, logo "cadus." centralizado, "X/Y" à direita
+- Fundo com gradiente sutil teal (como Ticko) em vez de `bg-background` plano
+- Progress bar mais fina e elegante, sem labels (apenas barrinhas)
 
-**Fluxo proposto:**
+**2. Novo step: StepPatientName (só o nome)**
+- Ícone `UserRound` centralizado no topo em círculo teal suave (como Ticko)
+- Título: "Como você se chama?"
+- Subtítulo: "Queremos saber como te chamar."
+- Um único campo: nome completo, centralizado, input grande e clean
+- Botão "Continuar" full-width estilo Ticko (gradiente teal, arredondado)
 
-| Etapa | Título | Campos |
-|-------|--------|--------|
-| 1 | Escolha seu perfil | Paciente / Profissional |
-| 2 | Como você se chama? | Nome completo, CPF |
-| 3 | Um pouco mais sobre você | Data nascimento, Sexo |
-| 4 | Como falar com você? | Telefone, E-mail (opcional) |
-| 5 | Onde você mora? | CEP (auto-preenche rua/bairro/cidade/estado), Número, Complemento |
-| 6 | Informações do SUS | Cartão SUS, Como chegou, Responsável legal |
-| 7 | Por que você busca atendimento? | Queixa principal |
-| 8 | Crie seu acesso | Senha, Confirmar senha, Termos |
+**3. Função de formatação do nome**
+- `formatName("joao neto frederico")` → `"Joao Neto Frederico"` (capitalize first letter of each word)
+- Aplicar ao salvar e ao exibir
+- Extrair primeiro nome: `nome.split(' ')[0]`
 
-### Mudanças de design em cada step
+**4. Novo step: StepPatientCPF (só CPF)**
+- Ícone `ShieldCheck` centralizado no topo
+- Título: "Olá, {primeiroNome}!" (usando o nome formatado)
+- Subtítulo: "Agora precisamos do seu CPF para sua segurança."
+- Um único campo: CPF com máscara, centralizado
+- Mensagem de confiança: "Seus dados estão protegidos" com ícone shield pequeno
+- Botão "Continuar" full-width
 
-- **Títulos conversacionais** — cada etapa parece uma pergunta amigável, não um formulário
-- **Subtítulo de incentivo** — frase curta tipo "Quase lá!" ou "Falta pouco" nas etapas finais
-- **Máximo 3 campos por tela** — reduz carga cognitiva drasticamente
-- **Campos de endereço simplificados** — CEP auto-preenche tudo, paciente só confirma e adiciona número/complemento. Rua, bairro, cidade e estado ficam readonly quando preenchidos pelo CEP
+**5. Redesign visual de TODOS os steps do paciente**
+Cada step seguirá o padrão Ticko:
+- Ícone grande centralizado no topo (em círculo com fundo accent)
+- Título centralizado, bold, `text-2xl`
+- Subtítulo centralizado, `text-muted-foreground`
+- Campos com estilo mais limpo (bordas sutis, sem label pesado, placeholders claros)
+- Botão "Continuar →" full-width no final
+- Botão "Voltar" mais discreto (apenas texto com seta, sem borda)
 
-### Mudanças no fluxo profissional
-- Manter compacto como está (3 steps + perfil), apenas ajustar os títulos para serem mais diretos
+**6. Novo fluxo de steps (paciente): 9 etapas**
 
-### Arquivos a criar/editar
-- **Criar** `src/components/registration/StepPatientIdentity.tsx` — nome + CPF
-- **Criar** `src/components/registration/StepPatientAbout.tsx` — nascimento + sexo
-- **Criar** `src/components/registration/StepPatientContact.tsx` — telefone + email
-- **Criar** `src/components/registration/StepPatientSus.tsx` — cartão SUS, como chegou, responsável
-- **Editar** `src/components/registration/StepPatientAddress.tsx` — simplificar para CEP + número + complemento (campos auto-preenchidos readonly)
-- **Remover campos** de `StepPatientPersonal.tsx` (será substituído pelos 3 novos steps)
-- **Editar** `src/pages/Registration.tsx` — atualizar steps de 5→8, ajustar labels da barra de progresso
-- **Editar** `src/store/registrationStore.ts` — sem mudanças nos dados, apenas o fluxo muda
+| # | Componente | Ícone | Título |
+|---|---|---|---|
+| 1 | StepProfile | — | Como você vai usar o Cadus? |
+| 2 | StepPatientName | UserRound | Como você se chama? |
+| 3 | StepPatientCPF | ShieldCheck | Olá, {nome}! |
+| 4 | StepPatientAbout | Heart | Um pouco mais sobre você |
+| 5 | StepPatientContact | Phone | Como falar com você? |
+| 6 | StepPatientAddress | MapPin | Onde você mora? |
+| 7 | StepPatientSus | FileHeart | Informações do SUS |
+| 8 | StepPatientComplaint | MessageCircle | Por que você busca atendimento? |
+| 9 | StepPatientAccess | Lock | Crie seu acesso |
 
-### Labels da barra de progresso (paciente)
-`['Perfil', 'Identidade', 'Sobre você', 'Contato', 'Endereço', 'SUS', 'Queixa', 'Acesso']`
+**7. Card styling (todas as telas)**
+- Card centralizado com `text-center` para ícone, título e subtítulo
+- Campos alinhados à esquerda dentro do card (natural para inputs)
+- Card com `rounded-3xl` e sombra premium
+- Padding mais generoso (`p-8 md:p-10`)
 
-No mobile, os labels ficam ocultos (já acontece com `hidden sm:block`), mostrando apenas as barrinhas de progresso.
+### Arquivos a editar/criar
+- **Criar** `src/components/registration/StepPatientName.tsx` — apenas nome
+- **Criar** `src/components/registration/StepPatientCPF.tsx` — apenas CPF, com saudação pelo nome
+- **Remover** `StepPatientIdentity.tsx` (substituído pelos dois novos)
+- **Editar** `src/pages/Registration.tsx` — novo layout, fundo gradiente, remover Footer, atualizar steps 2→9
+- **Editar** todos os steps existentes — adicionar ícone centralizado no topo, centralizar título/subtítulo, botão Voltar discreto
+- **Adicionar** `formatName()` em `src/lib/masks.ts`
+- **Editar** `src/index.css` — adicionar fundo gradiente sutil para a página de cadastro
+
+### Detalhes técnicos
+
+Função `formatName`:
+```ts
+export const formatName = (name: string): string =>
+  name.replace(/\b\w/g, c => c.toUpperCase()).replace(/\B\w/g, c => c.toLowerCase());
+```
+
+Extração do primeiro nome nos steps:
+```ts
+const firstName = (patientData.nome || '').split(' ')[0];
+```
+
+Background do cadastro: gradiente radial sutil tipo Ticko (branco no centro, teal/cinza muito claro nas bordas).
 
