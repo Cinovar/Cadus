@@ -245,84 +245,94 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Para quem — visual chips layout */}
+      {/* Para quem — cards premium simétricos */}
       <section className="py-20 md:py-28 bg-muted/40 relative overflow-hidden">
-        {/* Decorative background shape */}
-        <svg className="absolute -right-40 -top-40 w-[600px] h-[600px] opacity-[0.03]" viewBox="0 0 600 600" fill="none">
-          <circle cx="300" cy="300" r="280" stroke="currentColor" strokeWidth="40" className="text-primary" />
-          <circle cx="300" cy="300" r="180" stroke="currentColor" strokeWidth="20" className="text-primary" />
-        </svg>
+        {/* Blob decorativo orgânico */}
+        <motion.svg
+          className="absolute -right-32 -top-32 w-[500px] h-[500px] opacity-[0.04]"
+          viewBox="0 0 500 500"
+          fill="none"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+        >
+          <path
+            d="M400,280Q370,460,200,400Q30,340,80,200Q130,60,300,80Q470,100,400,280Z"
+            fill="hsl(var(--primary))"
+          />
+        </motion.svg>
+        <motion.svg
+          className="absolute -left-24 -bottom-24 w-[350px] h-[350px] opacity-[0.03]"
+          viewBox="0 0 500 500"
+          fill="none"
+          animate={{ rotate: -360 }}
+          transition={{ duration: 35, repeat: Infinity, ease: "linear" }}
+        >
+          <path
+            d="M420,300Q380,480,200,420Q20,360,60,200Q100,40,280,60Q460,80,420,300Z"
+            fill="hsl(var(--secondary))"
+          />
+        </motion.svg>
 
         <div className="container relative z-10">
-          <motion.h2
-            className="section-title text-center mb-16"
+          <motion.div
+            className="text-center mb-16"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeUp}
             custom={0}
           >
-            Para quem é o <span className="font-display font-800 text-primary">cadus<span className="text-highlight">.</span></span>
-          </motion.h2>
+            <h2 className="section-title">
+              Para quem é o <span className="font-display font-800 text-primary">cadus<span className="text-highlight">.</span></span>
+            </h2>
+            <p className="section-subtitle max-w-md mx-auto">Cada perfil tem seu caminho. Escolha o seu.</p>
+          </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
-            {/* Paciente card */}
-            <motion.div
-              className="card-cadus relative overflow-hidden"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeUp}
-              custom={0}
-            >
-              <div className="absolute top-0 left-0 w-1.5 h-full bg-primary rounded-l-2xl" />
-              <div className="pl-4">
-                <div className="w-14 h-14 rounded-2xl bg-accent flex items-center justify-center mb-5">
-                  <User size={26} className="text-primary" />
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {[
+              {
+                icon: <User size={28} className="text-primary-foreground" />,
+                iconBg: 'bg-gradient-to-br from-primary to-[#14919B]',
+                title: 'Para você, paciente',
+                desc: 'Preencha sua ficha pelo celular, antes de chegar na clínica. Sem papel, sem fila.',
+                benefits: ['Cadastro pelo celular', 'Dados sempre salvos', 'Atualiza quando quiser'],
+                accentColor: 'border-primary/20 hover:border-primary/40',
+                checkColor: 'text-primary',
+              },
+              {
+                icon: <Briefcase size={28} className="text-primary-foreground" />,
+                iconBg: 'bg-gradient-to-br from-secondary to-[#D4845A]',
+                title: 'Para profissionais e equipes',
+                desc: 'Profissionais, gestores e alunos, acesse os dados antes do atendimento.',
+                benefits: ['Dados antes da consulta', 'Acesso em qualquer lugar', 'Sem retrabalho'],
+                accentColor: 'border-secondary/20 hover:border-secondary/40',
+                checkColor: 'text-secondary',
+              },
+            ].map((card, i) => (
+              <motion.div
+                key={i}
+                className={`bg-card rounded-2xl p-8 md:p-10 shadow-sm border-2 ${card.accentColor} transition-all duration-300 hover:-translate-y-1 hover:shadow-lg text-center`}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeUp}
+                custom={i}
+              >
+                <div className={`w-16 h-16 rounded-2xl ${card.iconBg} flex items-center justify-center mx-auto mb-6 shadow-lg`}>
+                  {card.icon}
                 </div>
-                <h3 className="font-display font-700 text-xl text-foreground mb-2">Para você, paciente</h3>
-                <p className="text-muted-foreground text-sm mb-5 leading-relaxed">
-                  Preencha sua ficha pelo celular, antes de chegar na clínica. Sem papel, sem fila.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {['Cadastro pelo celular', 'Dados sempre salvos', 'Atualiza quando quiser'].map((tag) => (
-                    <span key={tag} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-accent text-accent-foreground text-xs font-display font-600">
-                      <CheckCircle size={12} />
-                      {tag}
-                    </span>
+                <h3 className="font-display font-700 text-xl text-foreground mb-2">{card.title}</h3>
+                <p className="text-muted-foreground text-sm mb-6 leading-relaxed max-w-xs mx-auto">{card.desc}</p>
+                <div className="space-y-3 text-left max-w-[240px] mx-auto">
+                  {card.benefits.map((benefit) => (
+                    <div key={benefit} className="flex items-center gap-3">
+                      <CheckCircle size={16} className={`${card.checkColor} shrink-0`} />
+                      <span className="text-sm text-foreground font-body">{benefit}</span>
+                    </div>
                   ))}
                 </div>
-              </div>
-            </motion.div>
-
-            {/* Profissional card */}
-            <motion.div
-              className="card-cadus relative overflow-hidden"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeUp}
-              custom={1}
-            >
-              <div className="absolute top-0 left-0 w-1.5 h-full bg-secondary rounded-l-2xl" />
-              <div className="pl-4">
-                <div className="w-14 h-14 rounded-2xl bg-secondary/10 flex items-center justify-center mb-5">
-                  <Briefcase size={26} className="text-secondary" />
-                </div>
-                <h3 className="font-display font-700 text-xl text-foreground mb-2">Para profissionais e equipes</h3>
-                <p className="text-muted-foreground text-sm mb-5 leading-relaxed">
-                  Profissionais de saúde, gestores e alunos, acesse os dados antes do atendimento.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {['Dados antes da consulta', 'Acesso em qualquer lugar', 'Sem retrabalho'].map((tag) => (
-                    <span key={tag} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary/10 text-secondary text-xs font-display font-600">
-                      <CheckCircle size={12} />
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
