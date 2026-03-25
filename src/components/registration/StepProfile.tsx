@@ -1,4 +1,4 @@
-import { User, Briefcase, Check, ChevronRight } from 'lucide-react';
+import { Heart, Stethoscope, Check } from 'lucide-react';
 import { useRegistrationStore } from '@/store/registrationStore';
 
 interface Props {
@@ -17,7 +17,7 @@ const StepProfile = ({ onNext }: Props) => {
   };
 
   return (
-    <div className="card-cadus">
+    <div className="w-full max-w-md mx-auto">
       <div className="text-center mb-8">
         <h2 className="text-2xl md:text-3xl font-display font-800 text-foreground tracking-tight">
           Como você vai usar o <span className="text-primary">Cadus</span>?
@@ -25,87 +25,71 @@ const StepProfile = ({ onNext }: Props) => {
         <p className="text-muted-foreground/70 mt-2 font-body text-[15px]">Escolha uma opção para começar.</p>
       </div>
 
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-4">
         {/* Paciente */}
         <button
           onClick={() => handleSelect('paciente')}
-          className={`group relative flex items-center gap-4 rounded-2xl border-2 p-4 md:p-5 text-left transition-all duration-300 focus:outline-none ${
+          className={`group relative flex flex-col items-center text-center rounded-2xl border-2 p-6 pb-7 transition-all duration-300 focus:outline-none cursor-pointer ${
             role === 'paciente'
-              ? 'border-primary bg-accent shadow-md'
-              : 'border-border/50 hover:border-primary/40 hover:shadow-md bg-card'
+              ? 'border-primary bg-primary/[0.06] shadow-lg shadow-primary/10'
+              : 'border-primary/15 bg-gradient-to-b from-primary/[0.03] to-transparent hover:border-primary/40 hover:shadow-lg hover:shadow-primary/8 hover:scale-[1.02]'
           }`}
         >
-          {/* Accent bar */}
-          <div className={`absolute left-0 top-3 bottom-3 w-[3px] rounded-full transition-all duration-300 ${
-            role === 'paciente' ? 'bg-primary opacity-100' : 'bg-primary/0 group-hover:bg-primary/30 opacity-0 group-hover:opacity-100'
-          }`} />
+          {role === 'paciente' && (
+            <div className="absolute top-3 right-3 w-7 h-7 rounded-full bg-primary flex items-center justify-center animate-check-bounce">
+              <Check size={14} className="text-primary-foreground" />
+            </div>
+          )}
 
-          <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{
-            background: 'linear-gradient(145deg, hsl(184, 45%, 90%), hsl(184, 40%, 82%))',
-            boxShadow: '0 4px 12px rgba(13, 92, 99, 0.12)'
-          }}>
-            <User size={22} className="text-primary" />
+          <div
+            className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110"
+            style={{
+              background: 'linear-gradient(145deg, hsl(184 45% 42%), hsl(184 55% 32%))',
+              boxShadow: '0 8px 24px hsla(184, 45%, 35%, 0.3)',
+            }}
+          >
+            <Heart size={28} className="text-white" />
           </div>
 
-          <div className="flex-1 min-w-0">
-            <h3 className="font-display font-700 text-foreground text-base flex items-center gap-2">
-              Sou Paciente <span className="text-lg">❤️</span>
-            </h3>
-            <p className="text-sm text-muted-foreground mt-0.5 leading-relaxed">
-              Quero fazer meu cadastro para ser atendido.
-            </p>
-          </div>
-
-          <div className="shrink-0 flex items-center">
-            {role === 'paciente' ? (
-              <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center animate-check-bounce">
-                <Check size={14} className="text-primary-foreground" />
-              </div>
-            ) : (
-              <ChevronRight size={18} className="text-muted-foreground/40 group-hover:text-primary group-hover:translate-x-1 transition-all duration-300" />
-            )}
-          </div>
+          <h3 className="font-display font-700 text-foreground text-lg">
+            Sou Paciente
+          </h3>
+          <p className="text-sm text-muted-foreground mt-1 leading-relaxed max-w-[260px]">
+            Quero fazer meu cadastro para ser atendido.
+          </p>
         </button>
 
         {/* Profissional */}
         <button
           onClick={() => handleSelect('profissional')}
-          className={`group relative flex items-center gap-4 rounded-2xl border-2 p-4 md:p-5 text-left transition-all duration-300 focus:outline-none ${
+          className={`group relative flex flex-col items-center text-center rounded-2xl border-2 p-6 pb-7 transition-all duration-300 focus:outline-none cursor-pointer ${
             role === 'profissional'
-              ? 'border-secondary bg-secondary/10 shadow-md'
-              : 'border-border/50 hover:border-secondary/40 hover:shadow-md bg-card'
+              ? 'border-secondary bg-secondary/[0.06] shadow-lg shadow-secondary/10'
+              : 'border-secondary/15 bg-gradient-to-b from-secondary/[0.03] to-transparent hover:border-secondary/40 hover:shadow-lg hover:shadow-secondary/8 hover:scale-[1.02]'
           }`}
         >
-          {/* Accent bar */}
-          <div className={`absolute left-0 top-3 bottom-3 w-[3px] rounded-full transition-all duration-300 ${
-            role === 'profissional' ? 'bg-secondary opacity-100' : 'bg-secondary/0 group-hover:bg-secondary/30 opacity-0 group-hover:opacity-100'
-          }`} />
+          {role === 'profissional' && (
+            <div className="absolute top-3 right-3 w-7 h-7 rounded-full bg-secondary flex items-center justify-center animate-check-bounce">
+              <Check size={14} className="text-secondary-foreground" />
+            </div>
+          )}
 
-          <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{
-            background: 'linear-gradient(145deg, hsl(35, 65%, 93%), hsl(35, 55%, 85%))',
-            boxShadow: '0 4px 12px rgba(217, 119, 6, 0.1)'
-          }}>
-            <Briefcase size={22} className="text-secondary" />
+          <div
+            className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110"
+            style={{
+              background: 'linear-gradient(145deg, hsl(30 70% 55%), hsl(30 65% 42%))',
+              boxShadow: '0 8px 24px hsla(30, 65%, 45%, 0.3)',
+            }}
+          >
+            <Stethoscope size={28} className="text-white" />
           </div>
 
-          <div className="flex-1 min-w-0">
-            <h3 className="font-display font-700 text-foreground text-base flex items-center gap-2">
-              Sou Profissional <span className="text-lg">🩺</span>
-            </h3>
-            <p className="text-sm text-muted-foreground mt-0.5 leading-relaxed">
-              Profissional de saúde, gestor ou aluno.
-            </p>
-          </div>
-
-          <div className="shrink-0 flex items-center">
-            {role === 'profissional' ? (
-              <div className="w-7 h-7 rounded-full bg-secondary flex items-center justify-center animate-check-bounce">
-                <Check size={14} className="text-secondary-foreground" />
-              </div>
-            ) : (
-              <ChevronRight size={18} className="text-muted-foreground/40 group-hover:text-secondary group-hover:translate-x-1 transition-all duration-300" />
-            )}
-          </div>
+          <h3 className="font-display font-700 text-foreground text-lg">
+            Sou Profissional
+          </h3>
+          <p className="text-sm text-muted-foreground mt-1 leading-relaxed max-w-[260px]">
+            Profissional de saúde, gestor ou aluno.
+          </p>
         </button>
       </div>
     </div>
