@@ -15,57 +15,68 @@ const fadeUp = {
 
 /* Hero illustration with organic blob shapes */
 const HeroIllustration = () => (
-  <div className="relative w-full max-w-[520px] flex items-center justify-center">
-    {/* Blob 1 — large teal, bottom-left */}
+  <div className="relative w-full max-w-[520px] flex items-center justify-center py-8">
+    {/* Blob 1 — large teal, centered behind cards */}
     <motion.svg
-      className="absolute -left-8 -bottom-6 w-[380px] h-[380px] z-0"
+      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] z-0"
       viewBox="0 0 500 500"
       fill="none"
       animate={{ rotate: 360 }}
-      transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+      transition={{ duration: 35, repeat: Infinity, ease: "linear" }}
     >
       <path
         d="M400,280Q370,460,200,400Q30,340,80,200Q130,60,300,80Q470,100,400,280Z"
         fill="hsl(184, 78%, 22%)"
-        fillOpacity="0.12"
-      />
-    </motion.svg>
-
-    {/* Blob 2 — amber accent, top-right */}
-    <motion.svg
-      className="absolute -right-6 -top-8 w-[280px] h-[280px] z-0"
-      viewBox="0 0 500 500"
-      fill="none"
-      animate={{ rotate: -360 }}
-      transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-    >
-      <path
-        d="M420,300Q380,480,200,420Q20,360,60,200Q100,40,280,60Q460,80,420,300Z"
-        fill="hsl(25, 76%, 63%)"
         fillOpacity="0.10"
       />
     </motion.svg>
 
-    {/* Blob 3 — teal vibrant, overlapping center */}
+    {/* Blob 2 — amber accent, bottom-right */}
     <motion.svg
-      className="absolute left-12 top-4 w-[240px] h-[240px] z-0"
+      className="absolute -right-10 -bottom-4 w-[300px] h-[300px] z-0"
       viewBox="0 0 500 500"
       fill="none"
-      animate={{ scale: [0.95, 1.05, 0.95] }}
-      transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      animate={{ rotate: -360 }}
+      transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
+    >
+      <path
+        d="M420,300Q380,480,200,420Q20,360,60,200Q100,40,280,60Q460,80,420,300Z"
+        fill="hsl(25, 76%, 63%)"
+        fillOpacity="0.12"
+      />
+    </motion.svg>
+
+    {/* Blob 3 — teal vibrante, top-left */}
+    <motion.svg
+      className="absolute -left-6 -top-2 w-[260px] h-[260px] z-0"
+      viewBox="0 0 500 500"
+      fill="none"
+      animate={{ scale: [0.92, 1.08, 0.92] }}
+      transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
     >
       <path
         d="M380,260Q340,420,200,380Q60,340,100,200Q140,60,300,100Q460,140,380,260Z"
         fill="hsl(184, 60%, 35%)"
-        fillOpacity="0.08"
+        fillOpacity="0.09"
       />
     </motion.svg>
 
-    {/* Actual illustration */}
+    {/* Blob 4 — small teal dot, accent */}
+    <motion.svg
+      className="absolute right-4 top-2 w-[140px] h-[140px] z-0"
+      viewBox="0 0 500 500"
+      fill="none"
+      animate={{ scale: [1, 1.15, 1], rotate: 180 }}
+      transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+    >
+      <circle cx="250" cy="250" r="200" fill="hsl(184, 78%, 22%)" fillOpacity="0.06" />
+    </motion.svg>
+
+    {/* Illustration */}
     <img
       src={heroIllustration}
       alt="Pessoas diversas conectadas digitalmente ao sistema Cadus"
-      className="relative z-10 w-full max-w-[480px] h-auto drop-shadow-lg"
+      className="relative z-10 w-full max-w-[480px] h-auto drop-shadow-xl"
     />
   </div>
 );
