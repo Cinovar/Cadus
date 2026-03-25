@@ -11,10 +11,8 @@ const Footer = () => (
             <span className="font-display font-800 text-primary text-xl tracking-tight">
               cadus<span className="text-secondary">.</span>
             </span>
-            <span className="text-sm text-muted-foreground leading-relaxed">
-              Seu cadastro. Sua saúde.
-              <br />
-              Simples assim.
+            <span className="text-sm text-muted-foreground whitespace-nowrap">
+              Seu cadastro. Sua saúde. Simples assim.
             </span>
             <span className="text-xs text-muted-foreground/70 mt-3">
               Desenvolvido pelo CIn — UFPE
