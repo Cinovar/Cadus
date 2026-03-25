@@ -196,7 +196,7 @@ const Index = () => {
                   num: '02',
                   icon: <ClipboardList size={24} className="text-primary-foreground" />,
                   title: 'Preencha seus dados',
-                  desc: 'Responda no seu ritmo, pelo celular. Se parar no meio, seus dados ficam salvos.',
+                  desc: 'Responda no seu ritmo. Se parar no meio, seus dados ficam salvos.',
                 },
                 {
                   num: '03',
