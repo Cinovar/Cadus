@@ -1,26 +1,16 @@
 
 
-## Reorganizar Footer
+## Trocar "Criar Cadastro" por link de contatos das clínicas
 
-### Mudanças em `src/components/Footer.tsx`
+### Mudança em `src/components/Footer.tsx`
 
-**1. Remover "Fale Conosco" e "Ajuda e Suporte"**
+Na Coluna 3 (Navegação), linha 45-47:
+- Remover o link "Criar Cadastro" (`/cadastro`)
+- Substituir por um link "Contatos das Clínicas" apontando para futura página (`/clinicas` ou `#` por enquanto)
+- Esse link ficará junto com "Clínicas Parceiras" na mesma coluna, que faz sentido contextual
 
-**2. Reorganizar colunas — nova divisão:**
-
-- **Coluna 1 — Marca** (igual, sem mudanças)
-- **Coluna 2 — Informações** (antigo "Links Úteis" + "Institucional" unificados)
-  - Política de Privacidade
-  - Termos de Uso
-  - Clínicas Parceiras (link para futura página com info de contato das clínicas)
-- **Coluna 3 — Para Clínicas**
-  - Link destacado "Adicionar nova Clínica" com cor `text-primary` (teal verde principal) em vez de `text-secondary` (amber)
-  - Ícone `Plus` (mais adequado que `Building2` para ação de adicionar)
-
-**3. Títulos das colunas:**
-- "Informações" em vez de "Links Úteis"
-- "Para Clínicas" em vez de "Institucional"
+Opcionalmente, renomear a coluna de "Navegação" para algo como "Clínicas" já que ambos os links são sobre clínicas, mantendo a simetria com as outras colunas.
 
 ### Arquivo a editar
-- `src/components/Footer.tsx`
+- `src/components/Footer.tsx` — linhas 38-48
 
