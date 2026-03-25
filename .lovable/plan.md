@@ -1,22 +1,49 @@
 
 
-## Blobs mais visíveis + correção de texto
+## Redesign da Seção "Como funciona?"
 
 ### Mudanças
 
-**1. Blobs orgânicos com mais contraste (`src/pages/Index.tsx`, linhas 17-81)**
+**1. Título → "Como funciona?" (com interrogação)**
 
-Os blobs atuais têm opacidade muito baixa (6-12%) e ficam quase invisíveis. Vou:
-- Aumentar opacidade de todos os blobs: 0.10→0.22, 0.12→0.25, 0.09→0.18, 0.06→0.14
-- Aumentar tamanho dos blobs para envolver melhor a imagem: blob principal de 420px→520px, amber de 300px→380px
-- Manter as animações e posicionamentos atuais — só contraste e escala
+**2. Layout horizontal tipo timeline/trajeto**
 
-**2. Texto do CTA (linha 313)**
+Em vez do layout vertical simples com linha fina, criar uma **timeline horizontal** no desktop (vertical no mobile) com uma linha curva/pontilhada conectando os 3 passos — como uma trajetória real:
 
-Trocar:
-- `Cadastre-se agora e chegue na clínica já conhecido.`
-- → `Cadastre-se agora e chegue na clínica pronto para ser atendido.`
+```text
+Desktop:
+  ┌──────┐       ┌──────┐       ┌──────┐
+  │  01  │ ───── │  02  │ ───── │  03  │
+  │ icon │  dot  │ icon │  dot  │ icon │
+  └──────┘  line └──────┘  line └──────┘
+   título         título         título
+   descrição      descrição      descrição
+```
+
+- 3 colunas no desktop (`grid md:grid-cols-3`), stack vertical no mobile
+- Cada step: círculo grande com ícone (gradiente teal sutil) + número sobreposto translúcido no fundo
+- **Linha conectora**: SVG horizontal com tracejado animado entre os steps (dash-offset animation) — a linha "desenha" conforme o scroll entra na viewport
+- No mobile: linha vertical pontilhada entre os cards
+
+**3. Cards elevados para cada step**
+
+Em vez de texto solto, cada step vive dentro de um card com:
+- Fundo branco, `rounded-2xl`, sombra suave
+- Círculo do ícone com gradiente `from-primary to-[#14919B]` e glow sutil
+- Número grande (`text-6xl`) em opacidade baixa (5%) atrás do card como watermark
+- Hover: card sobe levemente (`hover:-translate-y-1`) com sombra mais forte
+
+**4. Animações**
+
+- Cada card entra com `fadeUp` staggered (já existe)
+- A linha conectora SVG anima com `pathLength` do framer-motion (desenha de 0→1 ao entrar na viewport)
+- Ícones dos steps pulsam sutilmente no hover
+
+### Textos (mantidos)
+- Passo 01: "Escolha seu perfil" — mesma descrição
+- Passo 02: "Preencha seus dados" — mesma descrição  
+- Passo 03: "Tudo pronto" — mesma descrição
 
 ### Arquivo a editar
-- `src/pages/Index.tsx`
+- `src/pages/Index.tsx` — reescrever seção "Como funciona" (linhas 145-207)
 
