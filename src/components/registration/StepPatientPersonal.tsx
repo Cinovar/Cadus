@@ -73,10 +73,10 @@ const StepPatientPersonal = ({ onNext, onBack }: Props) => {
                 key={opt}
                 type="button"
                 onClick={() => updatePatientData({ sexo: opt })}
-                className={`px-4 py-3 rounded-xl border-2 text-sm font-body font-500 transition-all ${
+                className={`px-4 py-3 rounded-xl border-2 text-sm font-body font-500 transition-all duration-200 ${
                   patientData.sexo === opt
-                    ? 'border-primary bg-accent text-foreground'
-                    : 'border-border text-muted-foreground hover:border-primary/30'
+                    ? 'border-primary bg-accent text-foreground shadow-sm'
+                    : 'border-border text-muted-foreground hover:border-primary/30 hover:bg-accent/50'
                 }`}
               >
                 {opt}

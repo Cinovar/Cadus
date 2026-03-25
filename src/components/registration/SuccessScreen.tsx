@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useRegistrationStore } from '@/store/registrationStore';
 
@@ -28,7 +28,7 @@ const SuccessScreen = () => {
         <h1 className="text-2xl font-display font-800 text-foreground tracking-tight">
           {isPatient ? 'Cadastro feito com sucesso!' : 'Cadastro enviado!'}
         </h1>
-        <p className="text-muted-foreground mt-3">
+        <p className="text-muted-foreground mt-3 font-body leading-relaxed">
           {isPatient
             ? 'Seus dados foram salvos. Agora você pode acessar sua área.'
             : `Seus dados foram recebidos. A coordenação da sua clínica irá validar seu acesso em breve. Você receberá uma confirmação por e-mail em ${professionalData.email || 'seu e-mail'}.`}
@@ -39,7 +39,7 @@ const SuccessScreen = () => {
             onClick={() => navigate('/paciente/inicio')}
             className="btn-primary w-full mt-8"
           >
-            Acessar minha área
+            Acessar minha área <ArrowRight size={18} />
           </button>
         ) : (
           <button

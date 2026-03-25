@@ -6,7 +6,7 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 bg-card/90 backdrop-blur-sm border-b border-border transition-shadow">
+    <nav className="sticky top-0 z-50 bg-card/95 backdrop-blur-md border-b border-border transition-shadow">
       <div className="container flex items-center justify-between h-16">
         <Link to="/" className="font-display font-800 text-xl text-primary tracking-tight">
           cadus<span className="text-highlight">.</span>
@@ -14,10 +14,10 @@ const Navbar = () => {
 
         {/* Desktop */}
         <div className="hidden md:flex items-center gap-3">
-          <Link to="/cadastro" className="btn-outline text-sm py-2 px-4">
+          <Link to="/cadastro" className="btn-ghost text-sm py-2 px-4">
             Entrar
           </Link>
-          <Link to="/cadastro" className="btn-primary text-sm py-2 px-4">
+          <Link to="/cadastro" className="btn-primary text-sm py-2 px-5">
             Cadastrar
           </Link>
         </div>

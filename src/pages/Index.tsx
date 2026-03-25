@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { User, Stethoscope, ClipboardList, UserCheck, CheckCircle, ArrowRight } from 'lucide-react';
+import { User, Stethoscope, UserCheck, ClipboardList, CheckCircle, ArrowRight, Shield, Clock, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -20,8 +20,8 @@ const Index = () => {
       <Navbar />
 
       {/* Hero */}
-      <section className="py-12 md:py-20">
-        <div className="container">
+      <section className="hero-gradient py-16 md:py-24">
+        <div className="container relative z-10">
           <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
             <motion.div
               className="flex-1 text-center md:text-left"
@@ -30,26 +30,34 @@ const Index = () => {
               variants={fadeUp}
               custom={0}
             >
-              <h1 className="text-3xl md:text-5xl font-display font-800 text-foreground leading-tight tracking-tight">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary-foreground/20 bg-primary-foreground/10 text-primary-foreground text-sm font-body mb-6">
+                <Shield size={14} />
+                Clínicas-escola UFPE/NUTES
+              </div>
+
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-display font-800 text-primary-foreground leading-tight tracking-tight">
                 Faça seu cadastro antes de chegar na clínica<span className="text-highlight">.</span>
               </h1>
-              <p className="section-subtitle mt-4 max-w-lg mx-auto md:mx-0">
+              <p className="text-primary-foreground/80 mt-4 text-lg max-w-lg mx-auto md:mx-0 font-body">
                 Com o Cadus, você preenche seus dados pelo celular, no seu tempo.
                 Quando chegar na consulta, o profissional já sabe quem você é.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 mt-8 justify-center md:justify-start">
-                <Link to="/cadastro?role=paciente" className="btn-primary text-base px-8">
+                <Link to="/cadastro?role=paciente" className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full bg-card text-primary font-display font-700 text-base transition-all duration-200 hover:shadow-lg">
                   <User size={20} />
                   Sou Paciente
                 </Link>
-                <Link to="/cadastro?role=profissional" className="btn-secondary text-base px-8">
+                <Link to="/cadastro?role=profissional" className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full border-2 border-primary-foreground/30 text-primary-foreground font-display font-700 text-base transition-all duration-200 hover:bg-primary-foreground/10">
                   <Stethoscope size={20} />
                   Sou Profissional
                 </Link>
               </div>
-              <p className="text-sm text-muted-foreground mt-4">
-                Rápido, gratuito e seguro.
-              </p>
+
+              <div className="flex items-center justify-center md:justify-start gap-6 mt-8 text-primary-foreground/70 text-sm font-body">
+                <span className="flex items-center gap-1.5"><Sparkles size={14} /> 100% gratuito</span>
+                <span className="flex items-center gap-1.5"><Clock size={14} /> Cadastro em 5 min</span>
+                <span className="flex items-center gap-1.5"><Shield size={14} /> Dados seguros</span>
+              </div>
             </motion.div>
             <motion.div
               className="flex-1 flex justify-center"
@@ -62,7 +70,7 @@ const Index = () => {
                 alt="Pessoas usando o Cadus no celular"
                 width={400}
                 height={400}
-                className="max-w-[320px] md:max-w-[400px] w-full h-auto"
+                className="max-w-[320px] md:max-w-[420px] w-full h-auto drop-shadow-2xl"
               />
             </motion.div>
           </div>
@@ -70,54 +78,55 @@ const Index = () => {
       </section>
 
       {/* Como funciona */}
-      <section className="py-16 bg-card">
+      <section className="py-20">
         <div className="container">
-          <motion.h2
-            className="section-title text-center"
+          <motion.div
+            className="text-center"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeUp}
             custom={0}
           >
-            É muito simples. Veja como:
-          </motion.h2>
-          <div className="grid md:grid-cols-3 gap-6 mt-10">
+            <h2 className="section-title">É muito simples. Veja como:</h2>
+            <p className="section-subtitle max-w-xl mx-auto">Três passos para deixar tudo pronto antes da consulta.</p>
+          </motion.div>
+          <div className="grid md:grid-cols-3 gap-8 mt-14">
             {[
               {
-                icon: <UserCheck size={28} className="text-primary" />,
+                num: '01',
+                icon: <UserCheck size={24} className="text-primary" />,
                 title: 'Escolha seu perfil',
                 desc: 'Diga se você é paciente ou profissional de saúde.',
-                borderColor: 'border-l-primary',
               },
               {
-                icon: <ClipboardList size={28} className="text-secondary" />,
+                num: '02',
+                icon: <ClipboardList size={24} className="text-primary" />,
                 title: 'Preencha seus dados',
                 desc: 'Responda as perguntas no seu celular, no seu ritmo. Salva automaticamente.',
-                borderColor: 'border-l-secondary',
               },
               {
-                icon: <CheckCircle size={28} className="text-primary" />,
+                num: '03',
+                icon: <CheckCircle size={24} className="text-primary" />,
                 title: 'Pronto! Acesse sua área',
                 desc: 'Seus dados ficam salvos. O profissional já pode te atender melhor.',
-                borderColor: 'border-l-primary',
               },
             ].map((step, i) => (
               <motion.div
                 key={i}
-                className={`bg-background rounded-2xl p-6 border-l-4 ${step.borderColor} flex flex-col gap-3`}
-                style={{ boxShadow: 'var(--shadow-card)' }}
+                className="card-cadus relative overflow-hidden"
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
                 variants={fadeUp}
                 custom={i}
               >
-                <div className="w-12 h-12 rounded-full bg-accent flex items-center justify-center">
+                <span className="absolute top-4 right-4 text-5xl font-display font-800 text-primary/8 select-none">{step.num}</span>
+                <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center mb-4">
                   {step.icon}
                 </div>
                 <h3 className="font-display font-700 text-lg text-foreground">{step.title}</h3>
-                <p className="text-muted-foreground text-sm">{step.desc}</p>
+                <p className="text-muted-foreground text-sm mt-2">{step.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -125,7 +134,7 @@ const Index = () => {
       </section>
 
       {/* Para quem */}
-      <section className="py-16">
+      <section className="py-20 bg-muted/50">
         <div className="container">
           <motion.h2
             className="section-title text-center"
@@ -137,15 +146,18 @@ const Index = () => {
           >
             Para quem é o Cadus
           </motion.h2>
-          <div className="grid md:grid-cols-2 gap-6 mt-10">
+          <div className="grid md:grid-cols-2 gap-8 mt-14">
             <motion.div
-              className="rounded-2xl p-6 md:p-8 bg-accent"
+              className="card-cadus border-l-4 border-l-primary"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
               variants={fadeUp}
               custom={0}
             >
+              <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center mb-4">
+                <User size={24} className="text-primary" />
+              </div>
               <h3 className="font-display font-700 text-xl text-foreground mb-4">Para você, paciente</h3>
               <ul className="space-y-3">
                 {[
@@ -154,21 +166,24 @@ const Index = () => {
                   'Atualize quando precisar',
                   'Tudo pelo celular, sem papel',
                 ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-foreground">
-                    <CheckCircle size={20} className="text-primary mt-0.5 shrink-0" />
+                  <li key={i} className="flex items-start gap-2.5 text-foreground text-sm">
+                    <CheckCircle size={18} className="text-primary mt-0.5 shrink-0" />
                     <span>{item}</span>
                   </li>
                 ))}
               </ul>
             </motion.div>
             <motion.div
-              className="rounded-2xl p-6 md:p-8 bg-secondary/10"
+              className="card-cadus border-l-4 border-l-secondary"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
               variants={fadeUp}
               custom={1}
             >
+              <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center mb-4">
+                <Stethoscope size={24} className="text-secondary" />
+              </div>
               <h3 className="font-display font-700 text-xl text-foreground mb-4">Para profissionais de saúde</h3>
               <ul className="space-y-3">
                 {[
@@ -177,8 +192,8 @@ const Index = () => {
                   'Acesse de qualquer dispositivo',
                   'Sem papel, sem retrabalho',
                 ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-foreground">
-                    <CheckCircle size={20} className="text-secondary mt-0.5 shrink-0" />
+                  <li key={i} className="flex items-start gap-2.5 text-foreground text-sm">
+                    <CheckCircle size={18} className="text-secondary mt-0.5 shrink-0" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -189,8 +204,8 @@ const Index = () => {
       </section>
 
       {/* CTA Final */}
-      <section className="py-16 bg-primary">
-        <div className="container text-center">
+      <section className="cta-gradient py-20">
+        <div className="container text-center relative z-10">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -198,13 +213,13 @@ const Index = () => {
             variants={fadeUp}
             custom={0}
           >
-            <h2 className="text-2xl md:text-3xl font-display font-800 text-primary-foreground tracking-tight">
+            <h2 className="text-2xl md:text-4xl font-display font-800 text-primary-foreground tracking-tight">
               Pronto para começar?
             </h2>
-            <p className="text-primary-foreground/80 mt-2 text-lg">Leva menos de 5 minutos.</p>
+            <p className="text-primary-foreground/70 mt-3 text-lg font-body">Leva menos de 5 minutos.</p>
             <Link
               to="/cadastro"
-              className="inline-flex items-center gap-2 mt-6 px-8 py-3.5 rounded-xl bg-card text-primary font-display font-700 text-base transition-all duration-200 hover:opacity-90"
+              className="inline-flex items-center gap-2 mt-8 px-10 py-4 rounded-full bg-card text-primary font-display font-700 text-base transition-all duration-200 hover:shadow-xl"
             >
               Fazer meu cadastro agora
               <ArrowRight size={20} />

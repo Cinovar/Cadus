@@ -93,7 +93,7 @@ const StepPatientAddress = ({ onNext, onBack }: Props) => {
           <div className="flex flex-col gap-2">
             {['Encaminhado pelo SUS', 'Vim por conta própria'].map((opt) => (
               <button key={opt} type="button" onClick={() => updatePatientData({ comoChegou: opt })}
-                className={`px-4 py-3 rounded-xl border-2 text-sm text-left font-body transition-all ${patientData.comoChegou === opt ? 'border-primary bg-accent' : 'border-border hover:border-primary/30'}`}>
+                className={`px-4 py-3 rounded-xl border-2 text-sm text-left font-body transition-all duration-200 ${patientData.comoChegou === opt ? 'border-primary bg-accent shadow-sm' : 'border-border hover:border-primary/30 hover:bg-accent/50'}`}>
                 {opt}
               </button>
             ))}
@@ -104,9 +104,9 @@ const StepPatientAddress = ({ onNext, onBack }: Props) => {
           <label className="label-cadus">Você tem responsável legal?</label>
           <div className="flex gap-3">
             <button type="button" onClick={() => updatePatientData({ temResponsavel: true })}
-              className={`px-6 py-3 rounded-xl border-2 text-sm font-body transition-all ${patientData.temResponsavel === true ? 'border-primary bg-accent' : 'border-border'}`}>Sim</button>
+              className={`px-6 py-3 rounded-xl border-2 text-sm font-body transition-all duration-200 ${patientData.temResponsavel === true ? 'border-primary bg-accent shadow-sm' : 'border-border hover:border-primary/30'}`}>Sim</button>
             <button type="button" onClick={() => updatePatientData({ temResponsavel: false, nomeResponsavel: '' })}
-              className={`px-6 py-3 rounded-xl border-2 text-sm font-body transition-all ${patientData.temResponsavel === false ? 'border-primary bg-accent' : 'border-border'}`}>Não</button>
+              className={`px-6 py-3 rounded-xl border-2 text-sm font-body transition-all duration-200 ${patientData.temResponsavel === false ? 'border-primary bg-accent shadow-sm' : 'border-border hover:border-primary/30'}`}>Não</button>
           </div>
           {patientData.temResponsavel && (
             <div className="mt-3">
