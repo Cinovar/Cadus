@@ -1,4 +1,4 @@
-import { Building2 } from 'lucide-react';
+import { Plus } from 'lucide-react';
 
 const Footer = () => (
   <footer className="bg-card border-t border-border py-12 mt-auto">
@@ -17,9 +17,9 @@ const Footer = () => (
           </span>
         </div>
 
-        {/* Coluna 2 — Links Úteis */}
+        {/* Coluna 2 — Informações */}
         <div className="flex flex-col items-center md:items-start gap-2">
-          <span className="font-display font-700 text-sm text-foreground mb-1">Links Úteis</span>
+          <span className="font-display font-700 text-sm text-foreground mb-1">Informações</span>
           <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             Política de Privacidade
           </a>
@@ -27,21 +27,18 @@ const Footer = () => (
             Termos de Uso
           </a>
           <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-            Ajuda e Suporte
+            Clínicas Parceiras
           </a>
         </div>
 
-        {/* Coluna 3 — Institucional */}
+        {/* Coluna 3 — Para Clínicas */}
         <div className="flex flex-col items-center md:items-start gap-2">
-          <span className="font-display font-700 text-sm text-foreground mb-1">Institucional</span>
-          <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-            Fale Conosco
-          </a>
+          <span className="font-display font-700 text-sm text-foreground mb-1">Para Clínicas</span>
           <a
             href="#"
-            className="inline-flex items-center gap-1.5 text-sm text-secondary font-600 hover:text-secondary/80 transition-colors mt-1"
+            className="inline-flex items-center gap-1.5 text-sm text-primary font-600 hover:text-primary/80 transition-colors mt-1"
           >
-            <Building2 size={15} />
+            <Plus size={15} />
             Adicionar nova Clínica
           </a>
         </div>
