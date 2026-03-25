@@ -66,15 +66,15 @@ const StepPatientPersonal = ({ onNext, onBack }: Props) => {
         </div>
 
         <div>
-          <label className="label-cadus">Sexo *</label>
+          <label className="label-cadus">Como você se identifica? *</label>
           <div className="grid grid-cols-2 gap-2">
             {sexOptions.map((opt) => (
               <button
                 key={opt}
                 type="button"
-                onClick={() => updatePatientData({ sexo: opt })}
+                onClick={() => updatePatientData({ genero: opt })}
                 className={`px-4 py-3 rounded-xl border-2 text-sm font-body font-500 transition-all duration-200 ${
-                  patientData.sexo === opt
+                  patientData.genero === opt
                     ? 'border-primary bg-accent text-foreground shadow-sm'
                     : 'border-border text-muted-foreground hover:border-primary/30 hover:bg-accent/50'
                 }`}
@@ -83,7 +83,7 @@ const StepPatientPersonal = ({ onNext, onBack }: Props) => {
               </button>
             ))}
           </div>
-          {errors.sexo && <p className="error-text">{errors.sexo}</p>}
+          {errors.genero && <p className="error-text">{errors.genero}</p>}
         </div>
 
         <div>

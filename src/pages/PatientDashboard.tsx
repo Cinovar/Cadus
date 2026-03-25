@@ -52,7 +52,7 @@ const PatientDashboard = () => {
               <DataRow label="Nome" value={patientData.nome} />
               <DataRow label="CPF" value={patientData.cpf} />
               <DataRow label="Data de nascimento" value={patientData.dataNascimento} />
-              <DataRow label="Sexo" value={patientData.sexo} />
+              <DataRow label="Gênero" value={patientData.genero} />
               <DataRow label="Telefone" value={patientData.telefone} />
               <DataRow label="E-mail" value={patientData.email || 'Não informado'} />
               <DataRow label="Endereço" value={[patientData.rua, patientData.numero, patientData.bairro, patientData.cidade, patientData.estado].filter(Boolean).join(', ') || 'Não informado'} />
