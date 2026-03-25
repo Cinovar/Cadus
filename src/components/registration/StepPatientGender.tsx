@@ -80,7 +80,7 @@ const StepPatientGender = ({ onNext, onBack }: Props) => {
               </button>
             ))}
           </div>
-          <div className="grid grid-cols-2 gap-3 mt-4">
+          <div className="grid grid-cols-2 gap-3 mt-8">
             {genderOptions.slice(2).map((opt) => (
               <button
                 key={opt}
