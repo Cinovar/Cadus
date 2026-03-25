@@ -142,9 +142,9 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Como funciona — vertical staggered layout */}
+      {/* Como funciona? — timeline premium */}
       <section className="py-20 md:py-28">
-        <div className="container max-w-3xl">
+        <div className="container max-w-5xl">
           <motion.div
             className="text-center mb-16"
             initial="hidden"
@@ -153,55 +153,94 @@ const Index = () => {
             variants={fadeUp}
             custom={0}
           >
-            <h2 className="section-title">Como funciona</h2>
+            <h2 className="section-title">Como funciona?</h2>
             <p className="section-subtitle max-w-md mx-auto">Três passos simples. Sem complicação.</p>
           </motion.div>
 
           <div className="relative">
-            {/* Vertical connector line */}
-            <div className="absolute left-6 md:left-8 top-0 bottom-0 w-px bg-border hidden sm:block" />
+            {/* Linha conectora horizontal — desktop */}
+            <motion.svg
+              className="absolute top-[52px] left-[16.66%] right-[16.66%] h-[4px] hidden md:block z-0"
+              viewBox="0 0 800 4"
+              fill="none"
+              preserveAspectRatio="none"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
+              <motion.line
+                x1="0" y1="2" x2="800" y2="2"
+                stroke="hsl(var(--primary))"
+                strokeWidth="2"
+                strokeDasharray="8 6"
+                strokeOpacity="0.25"
+                variants={{
+                  hidden: { pathLength: 0 },
+                  visible: { pathLength: 1, transition: { duration: 1.2, delay: 0.3, ease: "easeInOut" } },
+                }}
+              />
+            </motion.svg>
 
-            {[
-              {
-                num: '01',
-                icon: <UserCheck size={22} className="text-primary-foreground" />,
-                title: 'Escolha seu perfil',
-                desc: 'Paciente, profissional de saúde, gestor ou aluno — cada um tem seu caminho.',
-              },
-              {
-                num: '02',
-                icon: <ClipboardList size={22} className="text-primary-foreground" />,
-                title: 'Preencha seus dados',
-                desc: 'Responda no seu ritmo, pelo celular. Se parar no meio, seus dados ficam salvos.',
-              },
-              {
-                num: '03',
-                icon: <CheckCircle size={22} className="text-primary-foreground" />,
-                title: 'Tudo pronto',
-                desc: 'Seus dados já estão no sistema. É só chegar na clínica e ser atendido.',
-              },
-            ].map((step, i) => (
-              <motion.div
-                key={i}
-                className="relative flex items-start gap-5 md:gap-6 mb-12 last:mb-0 group"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeUp}
-                custom={i}
-              >
-                {/* Step number circle */}
-                <div className="relative z-10 w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-primary flex items-center justify-center shrink-0 shadow-md transition-transform duration-200 group-hover:scale-105">
-                  {step.icon}
-                </div>
+            {/* Linha conectora vertical — mobile */}
+            <div className="absolute left-[28px] top-[60px] bottom-[60px] w-px border-l-2 border-dashed border-primary/20 md:hidden z-0" />
 
-                <div className="pt-1 md:pt-3">
-                  <span className="text-xs font-display font-700 text-muted-foreground tracking-widest uppercase">Passo {step.num}</span>
-                  <h3 className="font-display font-700 text-lg md:text-xl text-foreground mt-1">{step.title}</h3>
-                  <p className="text-muted-foreground text-sm md:text-base mt-1.5 leading-relaxed max-w-md">{step.desc}</p>
-                </div>
-              </motion.div>
-            ))}
+            <div className="grid md:grid-cols-3 gap-8 md:gap-6 relative z-10">
+              {[
+                {
+                  num: '01',
+                  icon: <UserCheck size={24} className="text-primary-foreground" />,
+                  title: 'Escolha seu perfil',
+                  desc: 'Paciente, profissional de saúde, gestor ou aluno — cada um tem seu caminho.',
+                },
+                {
+                  num: '02',
+                  icon: <ClipboardList size={24} className="text-primary-foreground" />,
+                  title: 'Preencha seus dados',
+                  desc: 'Responda no seu ritmo, pelo celular. Se parar no meio, seus dados ficam salvos.',
+                },
+                {
+                  num: '03',
+                  icon: <CheckCircle size={24} className="text-primary-foreground" />,
+                  title: 'Tudo pronto',
+                  desc: 'Seus dados já estão no sistema. É só chegar na clínica e ser atendido.',
+                },
+              ].map((step, i) => (
+                <motion.div
+                  key={i}
+                  className="relative group flex md:flex-col items-start md:items-center gap-5 md:gap-0 md:text-center"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  variants={fadeUp}
+                  custom={i}
+                >
+                  {/* Ícone com gradiente */}
+                  <div className="relative shrink-0 mb-0 md:mb-5">
+                    <div className="w-14 h-14 md:w-[104px] md:h-[104px] rounded-2xl md:rounded-3xl bg-gradient-to-br from-primary to-[#14919B] flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all duration-300">
+                      <div className="scale-100 md:scale-[1.6]">{step.icon}</div>
+                    </div>
+                  </div>
+
+                  {/* Card de conteúdo */}
+                  <div className="relative bg-card rounded-2xl p-5 md:p-6 shadow-sm border border-border/50 group-hover:-translate-y-1 group-hover:shadow-md transition-all duration-300 flex-1 md:flex-none md:w-full overflow-hidden">
+                    {/* Número watermark */}
+                    <span className="absolute -top-2 -right-1 text-[4rem] md:text-[5rem] font-display font-800 text-primary/[0.04] leading-none select-none pointer-events-none">
+                      {step.num}
+                    </span>
+
+                    <span className="text-xs font-display font-700 text-muted-foreground tracking-widest uppercase">
+                      Passo {step.num}
+                    </span>
+                    <h3 className="font-display font-700 text-lg md:text-xl text-foreground mt-1.5">
+                      {step.title}
+                    </h3>
+                    <p className="text-muted-foreground text-sm mt-1.5 leading-relaxed">
+                      {step.desc}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
