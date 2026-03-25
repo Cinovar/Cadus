@@ -190,7 +190,7 @@ const Index = () => {
                   num: '01',
                   icon: <UserCheck size={24} className="text-primary-foreground" />,
                   title: 'Escolha seu perfil',
-                  desc: 'Paciente, profissional de saúde, gestor ou aluno — cada um tem seu caminho.',
+                  desc: 'Paciente, profissional de saúde, gestor ou aluno, cada um tem seu caminho.',
                 },
                 {
                   num: '02',
