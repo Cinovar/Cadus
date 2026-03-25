@@ -309,7 +309,7 @@ const Index = () => {
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-800 text-primary-foreground tracking-tight leading-tight">
               Seus dados, antes da consulta<span className="text-highlight">.</span>
             </h2>
-            <p className="text-primary-foreground/70 mt-3 text-lg font-body max-w-md mx-auto">
+            <p className="text-primary-foreground/70 mt-3 text-base font-body max-w-lg mx-auto">
               Cadastre-se agora e chegue na clínica pronto para ser atendido.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 mt-10 justify-center">
