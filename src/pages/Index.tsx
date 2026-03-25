@@ -13,54 +13,60 @@ const fadeUp = {
   }),
 };
 
-/* Abstract SVG element — unique identity, not a stock illustration */
-const HeroGraphic = () => (
-  <div className="relative w-full max-w-[460px] aspect-square">
-    <svg viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-      {/* Soft background glow */}
-      <circle cx="230" cy="230" r="210" fill="white" fillOpacity="0.04" />
-      <circle cx="230" cy="230" r="170" fill="white" fillOpacity="0.03" />
+/* Hero illustration with organic blob shapes */
+const HeroIllustration = () => (
+  <div className="relative w-full max-w-[520px] flex items-center justify-center">
+    {/* Blob 1 — large teal, bottom-left */}
+    <motion.svg
+      className="absolute -left-8 -bottom-6 w-[380px] h-[380px] z-0"
+      viewBox="0 0 500 500"
+      fill="none"
+      animate={{ rotate: 360 }}
+      transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+    >
+      <path
+        d="M400,280Q370,460,200,400Q30,340,80,200Q130,60,300,80Q470,100,400,280Z"
+        fill="hsl(184, 78%, 22%)"
+        fillOpacity="0.12"
+      />
+    </motion.svg>
 
-      {/* Abstract human figures — three people connected */}
-      {/* Person left (patient) */}
-      <circle cx="155" cy="185" r="22" fill="white" fillOpacity="0.85" />
-      <path d="M155 210 C155 210 130 230 130 260 Q130 285 155 285 Q180 285 180 260 C180 230 155 210 155 210Z" fill="white" fillOpacity="0.5" />
+    {/* Blob 2 — amber accent, top-right */}
+    <motion.svg
+      className="absolute -right-6 -top-8 w-[280px] h-[280px] z-0"
+      viewBox="0 0 500 500"
+      fill="none"
+      animate={{ rotate: -360 }}
+      transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+    >
+      <path
+        d="M420,300Q380,480,200,420Q20,360,60,200Q100,40,280,60Q460,80,420,300Z"
+        fill="hsl(25, 76%, 63%)"
+        fillOpacity="0.10"
+      />
+    </motion.svg>
 
-      {/* Person center (connection point — slightly larger) */}
-      <circle cx="230" cy="165" r="26" fill="white" fillOpacity="0.95" />
-      <path d="M230 195 C230 195 200 218 200 252 Q200 282 230 282 Q260 282 260 252 C260 218 230 195 230 195Z" fill="white" fillOpacity="0.6" />
+    {/* Blob 3 — teal vibrant, overlapping center */}
+    <motion.svg
+      className="absolute left-12 top-4 w-[240px] h-[240px] z-0"
+      viewBox="0 0 500 500"
+      fill="none"
+      animate={{ scale: [0.95, 1.05, 0.95] }}
+      transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+    >
+      <path
+        d="M380,260Q340,420,200,380Q60,340,100,200Q140,60,300,100Q460,140,380,260Z"
+        fill="hsl(184, 60%, 35%)"
+        fillOpacity="0.08"
+      />
+    </motion.svg>
 
-      {/* Person right (professional) */}
-      <circle cx="305" cy="185" r="22" fill="white" fillOpacity="0.85" />
-      <path d="M305 210 C305 210 280 230 280 260 Q280 285 305 285 Q330 285 330 260 C330 230 305 210 305 210Z" fill="white" fillOpacity="0.5" />
-
-      {/* Connection lines between people — representing care flow */}
-      <path d="M175 200 Q200 160 210 185" stroke="hsl(25, 76%, 63%)" strokeWidth="2" strokeOpacity="0.5" fill="none" strokeLinecap="round" />
-      <path d="M250 185 Q260 160 285 200" stroke="hsl(25, 76%, 63%)" strokeWidth="2" strokeOpacity="0.5" fill="none" strokeLinecap="round" />
-
-      {/* Subtle care symbol — heart-like organic shape in the center below */}
-      <path d="M215 310 Q230 290 245 310 Q260 330 230 350 Q200 330 215 310Z" fill="hsl(25, 76%, 63%)" fillOpacity="0.35" />
-
-      {/* Data/digital element — small floating rectangles (representing forms/data) */}
-      <rect x="120" cy="310" y="310" width="28" height="20" rx="4" fill="white" fillOpacity="0.2" />
-      <rect x="124" y="316" width="12" height="2" rx="1" fill="white" fillOpacity="0.5" />
-      <rect x="124" y="322" width="18" height="2" rx="1" fill="white" fillOpacity="0.35" />
-
-      <rect x="310" y="310" width="28" height="20" rx="4" fill="white" fillOpacity="0.2" />
-      <rect x="314" y="316" width="12" height="2" rx="1" fill="white" fillOpacity="0.5" />
-      <rect x="314" y="322" width="18" height="2" rx="1" fill="white" fillOpacity="0.35" />
-
-      {/* Decorative orbital arcs */}
-      <ellipse cx="230" cy="240" rx="150" ry="80" stroke="white" strokeWidth="1" strokeOpacity="0.1" fill="none" />
-      <ellipse cx="230" cy="240" rx="120" ry="60" stroke="white" strokeWidth="0.8" strokeOpacity="0.07" fill="none" />
-
-      {/* Accent dots — floating particles */}
-      <circle cx="100" cy="160" r="4" fill="hsl(25, 76%, 63%)" fillOpacity="0.4" />
-      <circle cx="360" cy="160" r="3" fill="white" fillOpacity="0.3" />
-      <circle cx="370" cy="340" r="4.5" fill="hsl(25, 76%, 63%)" fillOpacity="0.3" />
-      <circle cx="90" cy="330" r="3" fill="white" fillOpacity="0.25" />
-      <circle cx="230" cy="120" r="3.5" fill="hsl(25, 76%, 63%)" fillOpacity="0.35" />
-    </svg>
+    {/* Actual illustration */}
+    <img
+      src={heroIllustration}
+      alt="Pessoas diversas conectadas digitalmente ao sistema Cadus"
+      className="relative z-10 w-full max-w-[480px] h-auto drop-shadow-lg"
+    />
   </div>
 );
 
