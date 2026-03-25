@@ -27,7 +27,7 @@ const HeroIllustration = () => (
       <path
         d="M400,280Q370,460,200,400Q30,340,80,200Q130,60,300,80Q470,100,400,280Z"
         fill="hsl(184, 78%, 22%)"
-        fillOpacity="0.10"
+        fillOpacity="0.22"
       />
     </motion.svg>
 
