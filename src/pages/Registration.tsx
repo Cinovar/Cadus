@@ -100,9 +100,7 @@ const Registration = () => {
           <Link to="/" className="font-display font-800 text-primary text-lg tracking-tight">
             cadus<span className="text-highlight">.</span>
           </Link>
-          <span className="text-sm text-muted-foreground font-body tabular-nums">
-            {currentStep}/{totalSteps}
-          </span>
+          <span className="w-8" />
         </div>
         {/* Thin progress bar */}
         <div className="h-1 bg-border/50">

@@ -7,7 +7,9 @@ export interface PatientData {
   nome: string;
   cpf: string;
   dataNascimento: string;
-  sexo: string;
+  genero: string;
+  pronome: string;
+  nomeSocial: string;
   telefone: string;
   email: string;
   cep: string;

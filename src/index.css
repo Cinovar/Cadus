@@ -88,8 +88,8 @@
 
 @layer components {
   .card-cadus {
-    @apply bg-card rounded-2xl p-6;
-    box-shadow: var(--shadow-card);
+    @apply bg-card rounded-3xl p-8 md:p-10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.06);
   }
 
   .card-cadus-hover {
