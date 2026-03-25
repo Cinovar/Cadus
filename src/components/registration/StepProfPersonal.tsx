@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useRegistrationStore } from '@/store/registrationStore';
 import { formatCPF, formatPhone, validateCPF } from '@/lib/masks';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { Stethoscope, ArrowLeft, ArrowRight } from 'lucide-react';
 
 interface Props { onNext: () => void; onBack: () => void; }
 
@@ -25,13 +25,20 @@ const StepProfPersonal = ({ onNext, onBack }: Props) => {
 
   return (
     <div className="card-cadus">
-      <h2 className="text-xl font-display font-800 text-foreground">Seus dados profissionais.</h2>
-      <p className="text-muted-foreground text-sm mt-1 mb-6">Preencha seus dados para o cadastro profissional.</p>
+      <div className="text-center mb-8">
+        <div className="icon-hero icon-hero-teal">
+          <Stethoscope size={32} className="text-primary" />
+        </div>
+        <h2 className="text-2xl md:text-3xl font-display font-800 text-foreground tracking-tight">
+          Seus dados profissionais
+        </h2>
+        <p className="text-muted-foreground/70 mt-2 font-body">Preencha seus dados para o cadastro profissional.</p>
+      </div>
 
       <div className="space-y-4">
         <div>
           <label className="label-cadus">Nome completo *</label>
-          <input className="input-cadus" value={professionalData.nome || ''} onChange={(e) => updateProfessionalData({ nome: e.target.value })} />
+          <input className="input-cadus" value={professionalData.nome || ''} onChange={(e) => updateProfessionalData({ nome: e.target.value })} placeholder="Seu nome completo" />
           {errors.nome && <p className="error-text">{errors.nome}</p>}
         </div>
         <div>
@@ -49,7 +56,7 @@ const StepProfPersonal = ({ onNext, onBack }: Props) => {
         </div>
         <div>
           <label className="label-cadus">Número do {professionalData.conselho || 'registro'} *</label>
-          <input className="input-cadus" value={professionalData.numeroRegistro || ''} onChange={(e) => updateProfessionalData({ numeroRegistro: e.target.value })} />
+          <input className="input-cadus" value={professionalData.numeroRegistro || ''} onChange={(e) => updateProfessionalData({ numeroRegistro: e.target.value })} placeholder="Número do registro" />
           {errors.numeroRegistro && <p className="error-text">{errors.numeroRegistro}</p>}
         </div>
         <div>
@@ -63,15 +70,18 @@ const StepProfPersonal = ({ onNext, onBack }: Props) => {
         </div>
         <div>
           <label className="label-cadus">E-mail profissional *</label>
-          <input type="email" className="input-cadus" value={professionalData.email || ''} onChange={(e) => updateProfessionalData({ email: e.target.value })} />
+          <input type="email" className="input-cadus" value={professionalData.email || ''} onChange={(e) => updateProfessionalData({ email: e.target.value })} placeholder="seu@email.com" />
           {errors.email && <p className="error-text">{errors.email}</p>}
         </div>
       </div>
 
-      <div className="flex gap-3 mt-8">
-        <button onClick={onBack} className="btn-outline flex-1"><ArrowLeft size={18} /> Voltar</button>
-        <button onClick={() => { if (validate()) onNext(); }} className="btn-primary flex-1">Continuar <ArrowRight size={18} /></button>
-      </div>
+      <button onClick={() => { if (validate()) onNext(); }} className="btn-primary w-full mt-8 group">
+        Continuar <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+      </button>
+
+      <button onClick={onBack} className="btn-back">
+        <ArrowLeft size={16} /> Voltar
+      </button>
     </div>
   );
 };

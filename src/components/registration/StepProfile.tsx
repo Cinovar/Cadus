@@ -1,4 +1,4 @@
-import { User, Briefcase, Check, Users } from 'lucide-react';
+import { User, Briefcase, Check, ChevronRight } from 'lucide-react';
 import { useRegistrationStore } from '@/store/registrationStore';
 
 interface Props {
@@ -19,67 +19,65 @@ const StepProfile = ({ onNext }: Props) => {
   return (
     <div className="card-cadus">
       <div className="text-center mb-10">
-        <div className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6" style={{
-          background: 'linear-gradient(145deg, hsl(184, 40%, 92%), hsl(184, 40%, 88%))',
-          boxShadow: '0 8px 24px rgba(13, 92, 99, 0.12)'
-        }}>
-          <Users size={36} className="text-primary" />
-        </div>
         <h2 className="text-2xl md:text-3xl font-display font-800 text-foreground tracking-tight">
-          Como você vai usar o Cadus?
+          Como você vai usar o <span className="text-primary">Cadus</span>?
         </h2>
-        <p className="text-muted-foreground/80 mt-2.5 font-body">Escolha uma opção para começar.</p>
+        <p className="text-muted-foreground/70 mt-2.5 font-body text-[15px]">Escolha uma opção para começar seu cadastro.</p>
       </div>
 
-      <div className="grid sm:grid-cols-2 gap-5">
+      <div className="grid sm:grid-cols-2 gap-4">
+        {/* Paciente */}
         <button
           onClick={() => handleSelect('paciente')}
-          className={`group relative rounded-3xl border-2 p-7 text-center transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover:scale-[1.02] ${
+          className={`group relative rounded-3xl border-2 p-6 text-center transition-all duration-300 focus:outline-none hover:scale-[1.02] ${
             role === 'paciente'
               ? 'border-primary bg-accent shadow-lg'
-              : 'border-border/60 hover:border-primary/30 hover:shadow-lg bg-card'
+              : 'border-border/50 hover:border-primary/40 hover:shadow-lg bg-card'
           }`}
-          style={{ minHeight: '180px' }}
+          style={{ minHeight: '210px' }}
         >
           {role === 'paciente' && (
             <div className="absolute top-3.5 right-3.5 w-7 h-7 rounded-full bg-primary flex items-center justify-center animate-check-bounce">
               <Check size={15} className="text-primary-foreground" />
             </div>
           )}
-          <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{
-            background: 'linear-gradient(145deg, hsl(184, 40%, 93%), hsl(184, 40%, 88%))'
-          }}>
-            <User size={30} className="text-primary" />
+          <div className="icon-hero icon-hero-teal !mb-4 !mx-auto">
+            <User size={32} className="text-primary" />
           </div>
           <h3 className="font-display font-700 text-foreground text-lg">Sou Paciente</h3>
           <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
             Quero fazer meu cadastro para ser atendido.
           </p>
+          <div className="mt-4 flex items-center justify-center gap-1 text-xs font-display font-600 text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+            Começar <ChevronRight size={14} />
+          </div>
         </button>
 
+        {/* Profissional */}
         <button
           onClick={() => handleSelect('profissional')}
-          className={`group relative rounded-3xl border-2 p-7 text-center transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover:scale-[1.02] ${
+          className={`group relative rounded-3xl border-2 p-6 text-center transition-all duration-300 focus:outline-none hover:scale-[1.02] ${
             role === 'profissional'
-              ? 'border-secondary bg-secondary/10 shadow-lg'
-              : 'border-border/60 hover:border-secondary/30 hover:shadow-lg bg-card'
+              ? 'border-secondary bg-secondary/8 shadow-lg'
+              : 'border-border/50 hover:border-secondary/40 hover:shadow-lg bg-card'
           }`}
-          style={{ minHeight: '180px' }}
+          style={{ minHeight: '210px' }}
         >
           {role === 'profissional' && (
             <div className="absolute top-3.5 right-3.5 w-7 h-7 rounded-full bg-secondary flex items-center justify-center animate-check-bounce">
               <Check size={15} className="text-secondary-foreground" />
             </div>
           )}
-          <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{
-            background: 'linear-gradient(145deg, hsl(25, 76%, 96%), hsl(25, 76%, 90%))'
-          }}>
-            <Briefcase size={30} className="text-secondary" />
+          <div className="icon-hero icon-hero-amber !mb-4 !mx-auto">
+            <Briefcase size={32} className="text-secondary" />
           </div>
           <h3 className="font-display font-700 text-foreground text-lg">Sou Profissional</h3>
           <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
             Profissional de saúde, gestor ou aluno.
           </p>
+          <div className="mt-4 flex items-center justify-center gap-1 text-xs font-display font-600 text-secondary opacity-0 group-hover:opacity-100 transition-opacity">
+            Começar <ChevronRight size={14} />
+          </div>
         </button>
       </div>
     </div>

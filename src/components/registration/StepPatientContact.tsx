@@ -23,16 +23,13 @@ const StepPatientContact = ({ onNext, onBack }: Props) => {
   return (
     <div className="card-cadus">
       <div className="text-center mb-8">
-        <div className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6" style={{
-          background: 'linear-gradient(145deg, hsl(184, 40%, 92%), hsl(184, 40%, 86%))',
-          boxShadow: '0 8px 24px rgba(13, 92, 99, 0.1)'
-        }}>
-          <Phone size={36} className="text-primary" />
+        <div className="icon-hero icon-hero-emerald">
+          <Phone size={32} className="text-emerald-600" />
         </div>
         <h2 className="text-2xl md:text-3xl font-display font-800 text-foreground tracking-tight">
           {firstName ? `${firstName}, como falar com você?` : 'Como falar com você?'}
         </h2>
-        <p className="text-muted-foreground/80 mt-2 font-body">Para entrarmos em contato quando necessário.</p>
+        <p className="text-muted-foreground/70 mt-2 font-body">Para entrarmos em contato quando necessário.</p>
       </div>
 
       <div className="space-y-5">
@@ -56,7 +53,7 @@ const StepPatientContact = ({ onNext, onBack }: Props) => {
             onChange={(e) => updatePatientData({ email: e.target.value })}
             placeholder="seu@email.com"
           />
-          <p className="text-xs text-muted-foreground/70 mt-1.5">
+          <p className="text-xs text-muted-foreground/60 mt-1.5">
             Se não tiver e-mail, tudo bem. Você pode usar só o CPF para entrar.
           </p>
         </div>
@@ -67,7 +64,7 @@ const StepPatientContact = ({ onNext, onBack }: Props) => {
         Continuar <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
       </button>
 
-      <button onClick={onBack} className="w-full mt-5 text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center justify-center gap-1.5 font-body py-2">
+      <button onClick={onBack} className="btn-back">
         <ArrowLeft size={16} /> Voltar
       </button>
     </div>

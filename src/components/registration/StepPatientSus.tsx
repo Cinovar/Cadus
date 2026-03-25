@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useRegistrationStore } from '@/store/registrationStore';
-import { FileHeart, ArrowRight, ArrowLeft } from 'lucide-react';
+import { FileHeart, ArrowRight, ArrowLeft, Check } from 'lucide-react';
 
 interface Props { onNext: () => void; onBack: () => void; }
 
@@ -27,16 +27,13 @@ const StepPatientSus = ({ onNext, onBack }: Props) => {
   return (
     <div className="card-cadus">
       <div className="text-center mb-8">
-        <div className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6" style={{
-          background: 'linear-gradient(145deg, hsl(184, 40%, 92%), hsl(184, 40%, 86%))',
-          boxShadow: '0 8px 24px rgba(13, 92, 99, 0.1)'
-        }}>
-          <FileHeart size={36} className="text-primary" />
+        <div className="icon-hero icon-hero-blue">
+          <FileHeart size={32} className="text-blue-600" />
         </div>
         <h2 className="text-2xl md:text-3xl font-display font-800 text-foreground tracking-tight">
           Informações do SUS
         </h2>
-        <p className="text-muted-foreground/80 mt-2 font-body">Dados complementares do seu atendimento.</p>
+        <p className="text-muted-foreground/70 mt-2 font-body">Dados complementares do seu atendimento.</p>
       </div>
 
       <div className="space-y-5">
@@ -59,12 +56,15 @@ const StepPatientSus = ({ onNext, onBack }: Props) => {
                 key={opt}
                 type="button"
                 onClick={() => updatePatientData({ comoChegou: opt })}
-                className={`rounded-xl border-2 py-3 px-3 text-sm font-body font-500 transition-all duration-200 hover:scale-[1.02] ${
-                  patientData.comoChegou === opt
-                    ? 'border-primary bg-accent text-primary'
-                    : 'border-border/60 hover:border-primary/30 bg-card text-foreground'
+                className={`selection-card text-sm !py-3 ${
+                  patientData.comoChegou === opt ? 'selection-card-active' : ''
                 }`}
               >
+                {patientData.comoChegou === opt && (
+                  <div className="absolute top-2 right-2 w-4 h-4 rounded-full bg-primary flex items-center justify-center">
+                    <Check size={10} className="text-primary-foreground" />
+                  </div>
+                )}
                 {opt}
               </button>
             ))}
@@ -98,7 +98,7 @@ const StepPatientSus = ({ onNext, onBack }: Props) => {
         Continuar <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
       </button>
 
-      <button onClick={onBack} className="w-full mt-5 text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center justify-center gap-1.5 font-body py-2">
+      <button onClick={onBack} className="btn-back">
         <ArrowLeft size={16} /> Voltar
       </button>
     </div>

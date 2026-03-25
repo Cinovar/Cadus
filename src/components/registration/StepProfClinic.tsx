@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useRegistrationStore } from '@/store/registrationStore';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { Building2, ArrowLeft, ArrowRight, Info } from 'lucide-react';
 
 interface Props { onNext: () => void; onBack: () => void; }
 
@@ -27,8 +27,15 @@ const StepProfClinic = ({ onNext, onBack }: Props) => {
 
   return (
     <div className="card-cadus">
-      <h2 className="text-xl font-display font-800 text-foreground">Em qual clínica você atua?</h2>
-      <p className="text-muted-foreground text-sm mt-1 mb-6">Selecione a clínica onde você vai usar o Cadus.</p>
+      <div className="text-center mb-8">
+        <div className="icon-hero icon-hero-blue">
+          <Building2 size={32} className="text-blue-600" />
+        </div>
+        <h2 className="text-2xl md:text-3xl font-display font-800 text-foreground tracking-tight">
+          Sua clínica
+        </h2>
+        <p className="text-muted-foreground/70 mt-2 font-body">Selecione a clínica onde você vai usar o Cadus.</p>
+      </div>
 
       <div className="space-y-4">
         <div>
@@ -52,15 +59,19 @@ const StepProfClinic = ({ onNext, onBack }: Props) => {
           <input className="input-cadus" value={professionalData.matricula || ''} onChange={(e) => updateProfessionalData({ matricula: e.target.value })} placeholder="Opcional" />
         </div>
 
-        <div className="rounded-xl bg-accent p-4 text-sm text-foreground">
-          <strong>Nota:</strong> Seu acesso será ativado após validação pela coordenação da clínica.
+        <div className="info-note flex items-start gap-3">
+          <Info size={16} className="text-primary flex-shrink-0 mt-0.5" />
+          <span className="text-foreground"><strong>Nota:</strong> Seu acesso será ativado após validação pela coordenação da clínica.</span>
         </div>
       </div>
 
-      <div className="flex gap-3 mt-8">
-        <button onClick={onBack} className="btn-outline flex-1"><ArrowLeft size={18} /> Voltar</button>
-        <button onClick={() => { if (validate()) onNext(); }} className="btn-primary flex-1">Continuar <ArrowRight size={18} /></button>
-      </div>
+      <button onClick={() => { if (validate()) onNext(); }} className="btn-primary w-full mt-8 group">
+        Continuar <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+      </button>
+
+      <button onClick={onBack} className="btn-back">
+        <ArrowLeft size={16} /> Voltar
+      </button>
     </div>
   );
 };

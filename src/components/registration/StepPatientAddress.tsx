@@ -36,16 +36,13 @@ const StepPatientAddress = ({ onNext, onBack }: Props) => {
   return (
     <div className="card-cadus">
       <div className="text-center mb-8">
-        <div className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6" style={{
-          background: 'linear-gradient(145deg, hsl(184, 40%, 92%), hsl(184, 40%, 86%))',
-          boxShadow: '0 8px 24px rgba(13, 92, 99, 0.1)'
-        }}>
-          <MapPin size={36} className="text-primary" />
+        <div className="icon-hero icon-hero-amber">
+          <MapPin size={32} className="text-amber-600" />
         </div>
         <h2 className="text-2xl md:text-3xl font-display font-800 text-foreground tracking-tight">
           {firstName ? `${firstName}, onde você mora?` : 'Onde você mora?'}
         </h2>
-        <p className="text-muted-foreground/80 mt-2 font-body">Digite seu CEP e preenchemos o resto.</p>
+        <p className="text-muted-foreground/70 mt-2 font-body">Digite seu CEP e preenchemos o resto.</p>
       </div>
 
       <div className="space-y-4">
@@ -67,9 +64,9 @@ const StepPatientAddress = ({ onNext, onBack }: Props) => {
 
         {cepFilled && (
           <div className="animate-in fade-in slide-in-from-bottom-2 duration-300 space-y-4">
-            <div className="rounded-2xl border border-border/60 bg-muted/30 p-4 space-y-1">
-              <p className="text-sm font-body font-500 text-foreground">{patientData.rua}</p>
-              <p className="text-sm text-muted-foreground">{patientData.bairro} — {patientData.cidade}/{patientData.estado}</p>
+            <div className="info-note">
+              <p className="font-500 text-foreground">{patientData.rua}</p>
+              <p className="text-muted-foreground mt-0.5">{patientData.bairro} — {patientData.cidade}/{patientData.estado}</p>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
@@ -101,7 +98,7 @@ const StepPatientAddress = ({ onNext, onBack }: Props) => {
         Continuar <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
       </button>
 
-      <button onClick={onBack} className="w-full mt-5 text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center justify-center gap-1.5 font-body py-2">
+      <button onClick={onBack} className="btn-back">
         <ArrowLeft size={16} /> Voltar
       </button>
     </div>
