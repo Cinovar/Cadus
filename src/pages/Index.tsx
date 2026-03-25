@@ -33,7 +33,7 @@ const HeroIllustration = () => (
 
     {/* Blob 2 — amber accent, bottom-right */}
     <motion.svg
-      className="absolute -right-10 -bottom-4 w-[300px] h-[300px] z-0"
+      className="absolute -right-10 -bottom-4 w-[380px] h-[380px] z-0"
       viewBox="0 0 500 500"
       fill="none"
       animate={{ rotate: -360 }}
