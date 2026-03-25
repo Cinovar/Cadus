@@ -5,7 +5,8 @@ import { useRegistrationStore } from '@/store/registrationStore';
 import StepProfile from '@/components/registration/StepProfile';
 import StepPatientName from '@/components/registration/StepPatientName';
 import StepPatientCPF from '@/components/registration/StepPatientCPF';
-import StepPatientAbout from '@/components/registration/StepPatientAbout';
+import StepPatientBirthdate from '@/components/registration/StepPatientBirthdate';
+import StepPatientGender from '@/components/registration/StepPatientGender';
 import StepPatientContact from '@/components/registration/StepPatientContact';
 import StepPatientAddress from '@/components/registration/StepPatientAddress';
 import StepPatientSus from '@/components/registration/StepPatientSus';
@@ -18,7 +19,7 @@ import SuccessScreen from '@/components/registration/SuccessScreen';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, X } from 'lucide-react';
 
-const patientSteps = 9;
+const patientSteps = 10;
 const profSteps = 4;
 
 const Registration = () => {
@@ -69,12 +70,13 @@ const Registration = () => {
       switch (currentStep) {
         case 2: return <StepPatientName onNext={goNext} onBack={goBack} />;
         case 3: return <StepPatientCPF onNext={goNext} onBack={goBack} />;
-        case 4: return <StepPatientAbout onNext={goNext} onBack={goBack} />;
-        case 5: return <StepPatientContact onNext={goNext} onBack={goBack} />;
-        case 6: return <StepPatientAddress onNext={goNext} onBack={goBack} />;
-        case 7: return <StepPatientSus onNext={goNext} onBack={goBack} />;
-        case 8: return <StepPatientComplaint onNext={goNext} onBack={goBack} />;
-        case 9: return <StepPatientAccess onNext={goNext} onBack={goBack} />;
+        case 4: return <StepPatientBirthdate onNext={goNext} onBack={goBack} />;
+        case 5: return <StepPatientGender onNext={goNext} onBack={goBack} />;
+        case 6: return <StepPatientContact onNext={goNext} onBack={goBack} />;
+        case 7: return <StepPatientAddress onNext={goNext} onBack={goBack} />;
+        case 8: return <StepPatientSus onNext={goNext} onBack={goBack} />;
+        case 9: return <StepPatientComplaint onNext={goNext} onBack={goBack} />;
+        case 10: return <StepPatientAccess onNext={goNext} onBack={goBack} />;
       }
     }
     if (role === 'profissional') {
