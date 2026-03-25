@@ -43,7 +43,7 @@ const Footer = () => (
               Clínicas Parceiras
             </a>
             <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-              Contatos das Clínicas
+              Fale com as Clínicas
             </a>
           </div>
 
