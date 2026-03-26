@@ -1,69 +1,41 @@
 
-Objetivo
 
-Corrigir de forma definitiva a linha tracejada horizontal da seção “Como funciona?” para que ela termine exatamente no início do ícone do passo 03 no desktop, sem depender de tentativa e erro no `width`.
+## Problema
 
-Diagnóstico
+Na versao mobile a landing page tem 3 problemas principais:
 
-O problema vem da estratégia atual em `src/pages/Index.tsx`:
-- a linha usa `left: 16.66%` + `width: calc(66.66% + 8px)`;
-- isso assume 3 colunas perfeitas por porcentagem, mas ignora o `gap` fixo do grid (`md:gap-6`, 24px);
-- por causa desse gap, o centro real das colunas não fica exatamente em `16.66% / 50% / 83.33%`;
-- resultado: qualquer ajuste só no `width` fica instável e nunca encaixa direito em todas as larguras.
+1. **Hierarquia tipografica quebrada** — os subtitulos (`.section-subtitle`) usam `text-sm` (14px) enquanto os titulos (`.section-title`) usam `text-xl` (20px), mas visualmente a diferenca e pequena e os subtitulos parecem maiores que deveriam
+2. **Falta de simetria** — no mobile o conteudo fica centralizado em algumas partes e desalinhado em outras
+3. **Footer desproporcionalmente grande** — gaps enormes entre colunas, tudo centralizado no meio em vez de alinhado a esquerda, ocupando espaco demais
 
-Plano de implementação
+## Plano
 
-1. Parar de controlar a linha por `width`
-- Remover o ajuste manual baseado em `width: calc(...)`.
-- Passar a posicionar a linha com `left` e `right` ao mesmo tempo.
+### 1. Corrigir hierarquia tipografica no mobile (`src/index.css`)
 
-2. Usar geometria real do grid
-- Em `src/pages/Index.tsx`, no `motion.svg` da linha horizontal:
-  - manter `top-[52px]`, `hidden md:block`, `absolute`;
-  - trocar a largura por `right` calculado.
-- Base matemática:
-  - grid desktop = 3 colunas + 2 gaps de 24px;
-  - centro da 1ª coluna = `calc(16.666% - 8px)`;
-  - borda esquerda do ícone do passo 03 = `calc(83.333% - 44px)` considerando ícone de 104px;
-  - portanto a linha deve usar:
-    - `left: calc(16.666% - 8px)`
-    - `right: calc(16.666% + 44px)`
+- `.section-title`: aumentar mobile de `text-xl` para `text-2xl` (24px) para garantir que o titulo seja visivelmente maior
+- `.section-subtitle`: reduzir mobile de `text-sm` para `text-xs` (12px) para criar contraste claro com o titulo
 
-3. Preservar o visual atual
-- Manter:
-  - linha tracejada;
-  - animação do `pathLength`;
-  - mesma cor/opacidade;
-  - versão mobile vertical como está.
+### 2. Footer compacto e alinhado a esquerda no mobile (`src/components/Footer.tsx`)
 
-4. Ajuste fino mínimo, se necessário
-- Se após aplicar a fórmula a linha ainda precisar encostar 2–4px a mais por percepção visual, fazer microajuste no `right` em poucos pixels.
-- Esse ajuste será final e pequeno, não mais uma sequência de tentativas em `width`.
+- Mudar de `items-center text-center` para `items-start text-left` no mobile
+- Reduzir gap entre colunas de `gap-8` para `gap-5`
+- Reduzir padding vertical de `pt-8 pb-6` para `pt-5 pb-4`
+- Barra inferior: reduzir de `py-4` para `py-3`, alinhar a esquerda no mobile
+- Todos os titulos de coluna e links alinhados a esquerda no mobile
+- Manter desktop inalterado
 
-Resultado esperado
+### 3. Melhorar simetria da pagina no mobile (`src/pages/Index.tsx`)
 
-- A linha vai sair do centro do passo 01 e terminar exatamente na borda esquerda do ícone do passo 03.
-- O comportamento ficará consistente no desktop porque passa a considerar o `gap` real do grid, em vez de depender só de porcentagens.
+- Seção "Como funciona": reduzir padding mobile de `py-14` para `py-10`
+- Seção CTA: reduzir padding mobile de `py-16` para `py-12`
+- Garantir alinhamento consistente em todas as secoes
 
-Detalhes técnicos
+### Detalhes tecnicos
 
-Arquivo:
-- `src/pages/Index.tsx`
+**Arquivos editados:**
+- `src/index.css` — `.section-title` e `.section-subtitle`
+- `src/components/Footer.tsx` — layout mobile compacto e alinhado a esquerda
+- `src/pages/Index.tsx` — paddings mobile ajustados
 
-Trecho a refatorar:
-- bloco do `motion.svg` da linha horizontal na seção “Como funciona?”
+**Nenhuma mudanca no desktop** — todas as alteracoes sao condicionadas ao breakpoint mobile (< md).
 
-Estratégia final recomendada:
-```tsx
-className="absolute top-[52px] hidden md:block z-0 h-[4px]"
-style={{
-  left: 'calc(16.666% - 8px)',
-  right: 'calc(16.666% + 44px)',
-}}
-```
-
-Motivo de funcionar melhor:
-```text
-antes:  posição = left + width  -> frágil por ignorar gap
-agora: posição = left + right   -> ancora início e fim com base real
-```
