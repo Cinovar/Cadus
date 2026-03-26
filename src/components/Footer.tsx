@@ -56,9 +56,6 @@ const Footer = () => (
               <Plus size={15} className="shrink-0" />
               Adicionar nova Clínica
             </a>
-            <a href="#" className="text-[13px] md:text-sm text-muted-foreground hover:text-foreground transition-colors py-1.5 min-h-[44px] md:min-h-0 flex items-center">
-              Área da Clínica
-            </a>
           </div>
         </div>
       </div>
