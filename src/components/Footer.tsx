@@ -47,18 +47,17 @@ const Footer = () => (
             </a>
           </div>
 
-          {/* Contato — Dinova style with icons */}
+          {/* Para Clínicas */}
           <div className="flex flex-col items-center md:items-start gap-2.5">
             <span className="font-display font-700 text-[11px] md:text-xs text-foreground tracking-[0.15em] uppercase mb-0.5">
-              Contato
+              Para Clínicas
             </span>
-            <a href="#" className="inline-flex items-center gap-2 text-[13px] md:text-sm text-muted-foreground hover:text-foreground transition-colors py-1.5 min-h-[44px] md:min-h-0">
-              <Mail size={15} className="text-primary shrink-0" />
-              contato@cadus.com.br
+            <a href="#" className="inline-flex items-center gap-2 text-[13px] md:text-sm text-primary font-semibold hover:text-primary/80 transition-colors py-1.5 min-h-[44px] md:min-h-0">
+              <Plus size={15} className="shrink-0" />
+              Adicionar nova Clínica
             </a>
-            <a href="#" className="inline-flex items-center gap-2 text-[13px] md:text-sm text-muted-foreground hover:text-foreground transition-colors py-1.5 min-h-[44px] md:min-h-0">
-              <MapPin size={15} className="text-primary shrink-0" />
-              Recife, PE — Brasil
+            <a href="#" className="text-[13px] md:text-sm text-muted-foreground hover:text-foreground transition-colors py-1.5 min-h-[44px] md:min-h-0 flex items-center">
+              Área da Clínica
             </a>
           </div>
         </div>
