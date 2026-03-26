@@ -219,7 +219,7 @@ const Index = () => {
             <span className="section-label-pill" style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.8)', borderColor: 'rgba(255,255,255,0.15)' }}>
               Comece agora
             </span>
-            <h2 className="text-[1.65rem] leading-tight sm:text-3xl md:text-4xl lg:text-5xl font-display font-800 text-primary-foreground tracking-tight">
+            <h2 className="text-[1.35rem] leading-tight sm:text-3xl md:text-4xl lg:text-5xl font-display font-800 text-primary-foreground tracking-tight">
               Seus dados, antes da consulta<span className="text-highlight">.</span>
             </h2>
           </motion.div>
