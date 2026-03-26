@@ -37,7 +37,7 @@ const Footer = () => (
           {/* Clínicas */}
           <div className="flex flex-col items-center md:items-start gap-2.5">
             <span className="font-display font-700 text-[11px] md:text-xs text-foreground tracking-[0.15em] uppercase mb-0.5">
-              Clínicas
+              Sobre
             </span>
             <a href="#" className="text-[13px] md:text-sm text-muted-foreground hover:text-foreground transition-colors py-1.5 min-h-[44px] md:min-h-0 flex items-center">
               Clínicas Parceiras
@@ -55,9 +55,6 @@ const Footer = () => (
             <a href="#" className="inline-flex items-center gap-2 text-[13px] md:text-sm text-primary font-semibold hover:text-primary/80 transition-colors py-1.5 min-h-[44px] md:min-h-0">
               <Plus size={15} className="shrink-0" />
               Adicionar nova Clínica
-            </a>
-            <a href="#" className="text-[13px] md:text-sm text-muted-foreground hover:text-foreground transition-colors py-1.5 min-h-[44px] md:min-h-0 flex items-center">
-              Área da Clínica
             </a>
           </div>
         </div>
