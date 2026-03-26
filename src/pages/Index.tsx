@@ -118,8 +118,8 @@ const Index = () => {
           <div className="relative">
             {/* Linha conectora horizontal — desktop */}
             <motion.svg
-              className="absolute top-[52px] left-[16.66%] h-[4px] hidden md:block z-0"
-              style={{ width: 'calc(66.66% + 8px)' }}
+              className="absolute top-[52px] hidden md:block z-0 h-[4px]"
+              style={{ left: 'calc(16.666% - 8px)', right: 'calc(16.666% + 44px)' }}
               viewBox="0 0 800 4"
               fill="none"
               preserveAspectRatio="none"
