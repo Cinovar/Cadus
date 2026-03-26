@@ -2,40 +2,45 @@
 
 ## Problema
 
-Na versao mobile a landing page tem 3 problemas principais:
-
-1. **Hierarquia tipografica quebrada** — os subtitulos (`.section-subtitle`) usam `text-sm` (14px) enquanto os titulos (`.section-title`) usam `text-xl` (20px), mas visualmente a diferenca e pequena e os subtitulos parecem maiores que deveriam
-2. **Falta de simetria** — no mobile o conteudo fica centralizado em algumas partes e desalinhado em outras
-3. **Footer desproporcionalmente grande** — gaps enormes entre colunas, tudo centralizado no meio em vez de alinhado a esquerda, ocupando espaco demais
+No mobile (390px), os formularios de cadastro tem espacamento excessivo entre os elementos — icon hero, titulo, divider, campos, botao — criando muito "ar" e fazendo o formulario parecer vazio e desproporcional.
 
 ## Plano
 
-### 1. Corrigir hierarquia tipografica no mobile (`src/index.css`)
+### 1. Compactar classes globais no mobile (`src/index.css`)
 
-- `.section-title`: aumentar mobile de `text-xl` para `text-2xl` (24px) para garantir que o titulo seja visivelmente maior
-- `.section-subtitle`: reduzir mobile de `text-sm` para `text-xs` (12px) para criar contraste claro com o titulo
+- `.card-cadus`: reduzir padding mobile de `p-5` para `p-4`
+- `.icon-hero`: reduzir de `w-12 h-12 mb-4` para `w-10 h-10 mb-3`
+- `.step-header`: reduzir `mb-4` para `mb-3`
+- `.step-header h2`: manter `text-xl`
+- `.step-header p`: manter `text-[13px]`, reduzir `mt-1.5` para `mt-1`
+- `.step-divider`: reduzir `mb-4` para `mb-3`
+- `.btn-primary`: reduzir `py-3.5` para `py-3`, `min-height` de `50px` para `46px`
+- `.btn-back`: reduzir `mt-3` para `mt-2`, `py-2.5` para `py-2`, `min-height` de `44px` para `40px`
+- `.step-badge`: reduzir `mt-2.5` para `mt-2`
 
-### 2. Footer compacto e alinhado a esquerda no mobile (`src/components/Footer.tsx`)
+### 2. Reduzir margin do botao Continuar em todos os steps
 
-- Mudar de `items-center text-center` para `items-start text-left` no mobile
-- Reduzir gap entre colunas de `gap-8` para `gap-5`
-- Reduzir padding vertical de `pt-8 pb-6` para `pt-5 pb-4`
-- Barra inferior: reduzir de `py-4` para `py-3`, alinhar a esquerda no mobile
-- Todos os titulos de coluna e links alinhados a esquerda no mobile
-- Manter desktop inalterado
+Em todos os componentes de step, o botao Continuar usa `mt-6 md:mt-8`. Mudar para `mt-4 md:mt-8` nos seguintes arquivos:
+- `StepPatientName.tsx`
+- `StepPatientCPF.tsx`
+- `StepPatientBirthdate.tsx`
+- `StepPatientGender.tsx`
+- `StepPatientContact.tsx`
+- `StepPatientAddress.tsx`
+- `StepPatientSus.tsx`
+- `StepPatientComplaint.tsx`
+- `StepPatientAccess.tsx`
 
-### 3. Melhorar simetria da pagina no mobile (`src/pages/Index.tsx`)
+### 3. Ajustar container do Registration (`src/pages/Registration.tsx`)
 
-- Seção "Como funciona": reduzir padding mobile de `py-14` para `py-10`
-- Seção CTA: reduzir padding mobile de `py-16` para `py-12`
-- Garantir alinhamento consistente em todas as secoes
+- Reduzir padding do content area de `py-4 px-3` para `py-3 px-3`
 
-### Detalhes tecnicos
+### Resultado esperado
 
-**Arquivos editados:**
-- `src/index.css` — `.section-title` e `.section-subtitle`
-- `src/components/Footer.tsx` — layout mobile compacto e alinhado a esquerda
-- `src/pages/Index.tsx` — paddings mobile ajustados
+Todos os elementos ficam mais proximos e proporcionais no mobile, sem espaco desperdicado, mantendo o desktop inalterado.
 
-**Nenhuma mudanca no desktop** — todas as alteracoes sao condicionadas ao breakpoint mobile (< md).
+### Arquivos editados
+- `src/index.css`
+- `src/pages/Registration.tsx`
+- 9 componentes de step (botao mt-6 → mt-4)
 
