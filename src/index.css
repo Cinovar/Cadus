@@ -261,13 +261,13 @@
   }
 
   .section-title {
-    @apply text-xl font-display font-800 text-foreground leading-tight;
+    @apply text-2xl font-display font-800 text-foreground leading-tight;
     @apply sm:text-2xl md:text-3xl;
   }
 
   .section-subtitle {
-    @apply text-sm font-body text-muted-foreground mt-2;
-    @apply md:text-base md:text-lg;
+    @apply text-xs font-body text-muted-foreground mt-1.5;
+    @apply md:text-base md:text-lg md:mt-2;
   }
 
   /* Hero gradient pattern */
