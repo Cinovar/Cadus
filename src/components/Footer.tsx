@@ -37,7 +37,7 @@ const Footer = () => (
           {/* Clínicas */}
           <div className="flex flex-col items-center md:items-start gap-2.5">
             <span className="font-display font-700 text-[11px] md:text-xs text-foreground tracking-[0.15em] uppercase mb-0.5">
-              Sobre
+              Sobre Clínicas
             </span>
             <a href="#" className="text-[13px] md:text-sm text-muted-foreground hover:text-foreground transition-colors py-1.5 min-h-[44px] md:min-h-0 flex items-center">
               Clínicas Parceiras
