@@ -87,7 +87,7 @@ const Login = () => {
       </div>
 
       {/* Right side - Login form */}
-      <div className="flex-1 flex items-center justify-center px-4 py-8 lg:px-12">
+      <div className="flex-1 flex items-start justify-center pt-6 px-4 pb-8 lg:items-center lg:pt-0 lg:px-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -95,34 +95,34 @@ const Login = () => {
           className="w-full max-w-md"
         >
           {/* Mobile logo */}
-          <div className="lg:hidden text-center mb-8">
-            <Link to="/" className="font-display font-800 text-2xl text-primary tracking-tight">
+          <div className="lg:hidden text-center mb-5">
+            <Link to="/" className="font-display font-800 text-xl text-primary tracking-tight">
               cadus<span className="text-highlight">.</span>
             </Link>
           </div>
 
           {/* Card */}
-          <div className="bg-card rounded-2xl border border-border p-6 md:p-8 shadow-[var(--shadow-card)]">
+          <div className="card-cadus">
             {/* Toggle Entrar / Criar conta */}
-            <div className="flex bg-muted rounded-xl p-1 mb-8">
-              <button className="flex-1 py-2.5 text-sm font-semibold rounded-lg bg-primary text-primary-foreground transition-all">
+            <div className="flex bg-muted rounded-xl p-1 mb-5 md:mb-6">
+              <button className="flex-1 py-2 text-sm font-semibold rounded-lg bg-primary text-primary-foreground transition-all min-h-[40px]">
                 Entrar
               </button>
               <button
                 onClick={() => navigate('/cadastro')}
-                className="flex-1 py-2.5 text-sm font-semibold rounded-lg text-muted-foreground hover:text-foreground transition-all"
+                className="flex-1 py-2 text-sm font-semibold rounded-lg text-muted-foreground hover:text-foreground transition-all min-h-[40px]"
               >
                 Criar conta
               </button>
             </div>
 
-            <h2 className="font-display font-800 text-xl text-foreground mb-1">Entrar na conta</h2>
-            <p className="text-muted-foreground text-sm mb-6">Bem-vindo de volta! Insira seus dados para continuar.</p>
+            <h2 className="font-display font-800 text-lg md:text-xl text-foreground mb-0.5">Entrar na conta</h2>
+            <p className="text-muted-foreground text-sm mb-4 md:mb-6">Bem-vindo de volta! Insira seus dados.</p>
 
-            <form onSubmit={handleLogin} className="space-y-4">
+            <form onSubmit={handleLogin} className="space-y-3 md:space-y-4">
               {/* Email */}
               <div>
-                <label className="text-sm font-medium text-foreground mb-1.5 block">E-mail</label>
+                <label className="text-sm font-medium text-foreground mb-1 block">E-mail</label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <input
@@ -130,14 +130,14 @@ const Login = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="seu@email.com"
-                    className="w-full h-11 pl-10 pr-4 rounded-xl border border-input bg-background text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
+                    className="w-full h-11 pl-10 pr-4 rounded-xl border border-input bg-background text-foreground text-[16px] md:text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
                   />
                 </div>
               </div>
 
               {/* Senha */}
               <div>
-                <label className="text-sm font-medium text-foreground mb-1.5 block">Senha</label>
+                <label className="text-sm font-medium text-foreground mb-1 block">Senha</label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <input
@@ -145,12 +145,12 @@ const Login = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full h-11 pl-10 pr-11 rounded-xl border border-input bg-background text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
+                    className="w-full h-11 pl-10 pr-11 rounded-xl border border-input bg-background text-foreground text-[16px] md:text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center -mr-3"
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -160,14 +160,14 @@ const Login = () => {
               {/* Botão Entrar */}
               <button
                 type="submit"
-                className="btn-primary w-full py-3 text-sm font-semibold mt-2"
+                className="btn-primary w-full mt-1"
               >
                 Entrar
               </button>
             </form>
 
             {/* Divisor */}
-            <div className="flex items-center gap-3 my-6">
+            <div className="flex items-center gap-3 my-4 md:my-6">
               <div className="flex-1 h-px bg-border" />
               <span className="text-muted-foreground text-xs">ou continue com</span>
               <div className="flex-1 h-px bg-border" />
@@ -181,14 +181,14 @@ const Login = () => {
                   description: 'Login sem senha será ativado em breve.',
                 })
               }
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-border bg-background text-foreground text-sm font-medium hover:bg-muted transition-colors"
+              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-border bg-background text-foreground text-sm font-medium hover:bg-muted transition-colors min-h-[44px]"
             >
               <Sparkles className="w-4 h-4 text-primary" />
               Entrar sem senha
             </button>
 
             {/* Legal */}
-            <p className="text-center text-muted-foreground text-xs mt-6 leading-relaxed">
+            <p className="text-center text-muted-foreground text-xs mt-4 md:mt-6 leading-relaxed">
               Ao continuar, você concorda com os{' '}
               <span className="text-primary font-medium cursor-pointer hover:underline">Termos de Uso</span> e{' '}
               <span className="text-primary font-medium cursor-pointer hover:underline">Política de Privacidade</span>
