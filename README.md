@@ -1,30 +1,44 @@
-Cadus — Documentação do Projeto
-Arquitetura de microsserviços com monorepo gerenciado por pnpm workspaces.
+# Cadus — Documentação do Projeto
 
-Índice
-Stack Tecnológica
-Estrutura do Monorepo
-Pré-requisitos
-Instalação
-Executando o Projeto
-Testes
-Criando um Novo Serviço
-Princípios de Arquitetura
-Ferramentas de Apoio
-Stack Tecnológica
-Camada	Tecnologia
-Runtime	Node.js 20+
-Backend	Express
-Frontend	React via Vite
-Testes unitários	Vitest
-Testes E2E	Playwright
-Linter / Formatter	ESLint + Prettier
-Versionamento	Git + GitHub
-Gestão do projeto	Jira / GitHub Projects
-Diagramas	Mermaid / draw.io
-Prototipagem	Figma / Excalidraw
-Deploy	Vercel / Render
-Estrutura do Monorepo
+> Arquitetura de microsserviços com monorepo gerenciado por pnpm workspaces.
+
+---
+
+## Índice
+
+- [Stack Tecnológica](#stack-tecnológica)
+- [Estrutura do Monorepo](#estrutura-do-monorepo)
+- [Pré-requisitos](#pré-requisitos)
+- [Instalação](#instalação)
+- [Executando o Projeto](#executando-o-projeto)
+- [Testes](#testes)
+- [Criando um Novo Serviço](#criando-um-novo-serviço)
+- [Princípios de Arquitetura](#princípios-de-arquitetura)
+- [Ferramentas de Apoio](#ferramentas-de-apoio)
+
+---
+
+## Stack Tecnológica
+
+| Camada               | Tecnologia                  |
+|----------------------|-----------------------------|
+| Runtime              | Node.js 20+                 |
+| Backend              | Express                     |
+| Frontend             | React via Vite              |
+| Testes unitários     | Vitest                      |
+| Testes E2E           | Playwright                  |
+| Linter / Formatter   | ESLint + Prettier           |
+| Versionamento        | Git + GitHub                |
+| Gestão do projeto    | Jira / GitHub Projects      |
+| Diagramas            | Mermaid / draw.io           |
+| Prototipagem         | Figma / Excalidraw          |
+| Deploy               | Vercel / Render             |
+
+---
+
+## Estrutura do Monorepo
+
+```
 cadus/
 ├── apps/
 │   ├── frontend/           # React + Vite + TypeScript
@@ -35,24 +49,44 @@ cadus/
 ├── package.json            # Dependências e scripts da raiz
 ├── pnpm-workspace.yaml     # Declaração dos workspaces
 └── vitest.config.ts        # Configuração raiz do Vitest
-Pré-requisitos
-Node.js 20 ou superior
-pnpm 9 ou superior
+```
+
+---
+
+## Pré-requisitos
+
+- **Node.js** 20 ou superior
+- **pnpm** 9 ou superior
+
+```bash
 # Instalar o pnpm globalmente
 npm install -g pnpm
 
 # Verificar versões
 node --version
 pnpm --version
-Instalação
+```
+
+---
+
+## Instalação
+
+```bash
 # Clonar o repositório
 git clone https://github.com/seu-org/cadus.git
 cd cadus
 
 # Instalar todas as dependências do workspace
 pnpm install
-Executando o Projeto
-Frontend
+```
+
+---
+
+## Executando o Projeto
+
+### Frontend
+
+```bash
 # Modo desenvolvimento com HMR
 pnpm --filter @cadus/frontend dev
 
@@ -61,14 +95,29 @@ pnpm --filter @cadus/frontend build
 
 # Preview do build de produção
 pnpm --filter @cadus/frontend preview
-Todos os serviços em paralelo
-pnpm dev:all
-Um pacote específico
-pnpm --filter @cadus/ui dev
-Testes
-Testes Unitários (Vitest)
-Os testes unitários vivem dentro de cada serviço ou pacote, junto do código que testam.
+```
 
+### Todos os serviços em paralelo
+
+```bash
+pnpm dev:all
+```
+
+### Um pacote específico
+
+```bash
+pnpm --filter @cadus/ui dev
+```
+
+---
+
+## Testes
+
+### Testes Unitários (Vitest)
+
+Os testes unitários vivem **dentro de cada serviço ou pacote**, junto do código que testam.
+
+```bash
 # Rodar todos os testes unitários do monorepo
 pnpm test
 
@@ -81,9 +130,13 @@ pnpm test --coverage
 # Rodar testes de um pacote específico
 pnpm --filter @cadus/frontend test
 pnpm --filter @cadus/ui test
-Testes E2E (Playwright)
-Os testes E2E vivem em apps/e2e e testam o sistema como um todo, atravessando frontend e backend.
+```
 
+### Testes E2E (Playwright)
+
+Os testes E2E vivem em `apps/e2e` e testam o sistema como um todo, atravessando frontend e backend.
+
+```bash
 # Rodar todos os testes E2E
 pnpm --filter @cadus/e2e test
 
@@ -98,21 +151,39 @@ pnpm --filter @cadus/e2e test tests/login.spec.ts
 
 # Rodar testes que correspondem a um padrão
 pnpm --filter @cadus/e2e test --grep "deve fazer login"
-Rodar tudo
+```
+
+### Rodar tudo
+
+```bash
 # Unitários + E2E em sequência
 pnpm test:all
-Localização dos testes por responsabilidade
-Tipo de teste	Localização	Ferramenta
-Unitário/componente	apps/<serviço>/src/**/*.test.ts(x)	Vitest
-Unitário/pacote	packages/<pacote>/src/**/*.test.ts(x)	Vitest
-E2E / fluxo completo	apps/e2e/tests/**/*.spec.ts	Playwright
-Criando um Novo Serviço
+```
+
+### Localização dos testes por responsabilidade
+
+| Tipo de teste       | Localização                              | Ferramenta  |
+|---------------------|------------------------------------------|-------------|
+| Unitário/componente | `apps/<serviço>/src/**/*.test.ts(x)`     | Vitest      |
+| Unitário/pacote     | `packages/<pacote>/src/**/*.test.ts(x)`  | Vitest      |
+| E2E / fluxo completo| `apps/e2e/tests/**/*.spec.ts`            | Playwright  |
+
+---
+
+## Criando um Novo Serviço
+
 Siga este passo a passo para adicionar um novo microsserviço ao workspace respeitando todas as regras arquiteturais.
 
-1. Criar a estrutura de pastas
+### 1. Criar a estrutura de pastas
+
+```bash
 mkdir -p apps/meu-servico/src/{controllers,services,repositories,routes,middlewares}
 cd apps/meu-servico
-2. Criar o package.json
+```
+
+### 2. Criar o `package.json`
+
+```json
 {
   "name": "@cadus/meu-servico",
   "version": "1.0.0",
@@ -135,7 +206,11 @@ cd apps/meu-servico
     "vitest": "^3.2.4"
   }
 }
-3. Criar o tsconfig.json
+```
+
+### 3. Criar o `tsconfig.json`
+
+```json
 {
   "extends": "@cadus/config/tsconfig.base.json",
   "compilerOptions": {
@@ -147,7 +222,11 @@ cd apps/meu-servico
   },
   "include": ["src"]
 }
-4. Criar o vitest.config.ts
+```
+
+### 4. Criar o `vitest.config.ts`
+
+```ts
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
@@ -156,7 +235,11 @@ export default defineConfig({
     include: ["src/**/*.test.ts"],
   },
 });
-5. Criar o entry point
+```
+
+### 5. Criar o entry point
+
+```ts
 // src/index.ts
 import express from "express";
 
@@ -172,13 +255,21 @@ app.get("/health", (_req, res) => {
 app.listen(PORT, () => {
   console.log(`meu-servico rodando na porta ${PORT}`);
 });
-6. Registrar no tsconfig.json da raiz
+```
+
+### 6. Registrar no `tsconfig.json` da raiz
+
+```json
 {
   "references": [
     { "path": "apps/meu-servico" }
   ]
 }
-7. Registrar no vitest.config.ts da raiz
+```
+
+### 7. Registrar no `vitest.config.ts` da raiz
+
+```ts
 export default defineConfig({
   test: {
     projects: [
@@ -187,33 +278,56 @@ export default defineConfig({
     ],
   },
 });
-O glob apps/*/vitest.config.ts já cobre o novo serviço automaticamente — este passo só é necessário se você usar a abordagem de projetos explícitos.
+```
 
-8. Instalar as dependências
+O glob `apps/*/vitest.config.ts` já cobre o novo serviço automaticamente — este passo só é necessário se você usar a abordagem de projetos explícitos.
+
+### 8. Instalar as dependências
+
+```bash
 # na raiz do monorepo
 pnpm install
-Princípios de Arquitetura
+```
+
+---
+
+## Princípios de Arquitetura
+
 Cada serviço deve seguir rigorosamente estes princípios. Eles não são sugestões — são as regras que mantêm o sistema sustentável à medida que cresce.
 
-Responsabilidade Única
-Cada serviço resolve um único problema de negócio. Se um serviço começa a acumular responsabilidades não relacionadas, é sinal de que precisa ser dividido.
+### Responsabilidade Única
 
+Cada serviço resolve **um único problema de negócio**. Se um serviço começa a acumular responsabilidades não relacionadas, é sinal de que precisa ser dividido.
+
+```
 ✅ auth-service   → autenticação, geração e validação de tokens
 ✅ orders-service → criação, consulta e cancelamento de pedidos
 ❌ auth-service   → autenticação + envio de e-mails + gestão de perfil
-Isolamento de Dados
-Cada serviço é o único dono do seu banco de dados. Nenhum serviço acessa diretamente o banco de outro.
+```
 
+### Isolamento de Dados
+
+Cada serviço é o **único dono do seu banco de dados**. Nenhum serviço acessa diretamente o banco de outro.
+
+```
 ✅ orders-service consulta seu próprio banco de pedidos
 ✅ orders-service chama auth-service via HTTP para validar um token
 ❌ orders-service faz SELECT diretamente no banco do auth-service
-Comunicação via Interface
-Serviços se comunicam exclusivamente por APIs HTTP (ou eventos). Nunca por imports diretos de código de outro serviço.
+```
 
+### Comunicação via Interface
+
+Serviços se comunicam **exclusivamente por APIs HTTP** (ou eventos). Nunca por imports diretos de código de outro serviço.
+
+```
 ✅ import { formatDate } from "@cadus/shared"  — pacote utilitário, sem lógica de negócio
 ✅ fetch("http://auth-service/validate")       — chamada HTTP
 ❌ import { validateToken } from "@cadus/auth-service/src/services/token"
-Estrutura interna de cada serviço
+```
+
+### Estrutura interna de cada serviço
+
+```
 src/
 ├── index.ts            # entry point — só inicializa o servidor
 ├── routes/             # define as rotas e conecta controllers
@@ -221,29 +335,43 @@ src/
 ├── services/           # lógica de negócio pura — sem Express, sem banco
 ├── repositories/       # acesso ao banco de dados — sem lógica de negócio
 └── middlewares/        # autenticação, validação, tratamento de erros
+```
+
 A regra de dependência flui em uma única direção:
 
+```
 routes → controllers → services → repositories
-Nunca o inverso. Um repository jamais chama um service, e um service jamais conhece o Express.
+```
 
-Onde cada tipo de código deve viver
-Código	Onde colocar
-Tipos compartilhados entre serviços	packages/shared (a implementar)
-Componentes React reutilizáveis	packages/ui
-Configurações de TS/ESLint	packages/config
-Lógica de negócio	dentro do serviço dono
-Chamadas ao banco	repositories/
-Regras de negócio	services/
-Entrada/saída HTTP	controllers/
-Ferramentas de Apoio
-Diagramas
-Mermaid — diagramas versionados junto ao código em arquivos .md
-draw.io — diagramas de arquitetura mais elaborados
-Prototipagem
-Figma — design de interfaces e design system
-Excalidraw — esboços rápidos e wireframes
-Gestão
-Jira ou GitHub Projects — rastreamento de tarefas e sprints
-Deploy
-Vercel — frontend (apps/frontend)
-Render — serviços backend (apps/*-service, apps/api-gateway) (a implementar)
+Nunca o inverso. Um `repository` jamais chama um `service`, e um `service` jamais conhece o Express.
+
+### Onde cada tipo de código deve viver
+
+| Código                              | Onde colocar                          |
+|-------------------------------------|---------------------------------------|
+| Tipos compartilhados entre serviços | `packages/shared` _(a implementar)_   |
+| Componentes React reutilizáveis     | `packages/ui`                         |
+| Configurações de TS/ESLint          | `packages/config`                     |
+| Lógica de negócio                   | dentro do serviço dono                |
+| Chamadas ao banco                   | `repositories/`                       |
+| Regras de negócio                   | `services/`                           |
+| Entrada/saída HTTP                  | `controllers/`                        |
+
+---
+
+## Ferramentas de Apoio
+
+### Diagramas
+- **Mermaid** — diagramas versionados junto ao código em arquivos `.md`
+- **draw.io** — diagramas de arquitetura mais elaborados
+
+### Prototipagem
+- **Figma** — design de interfaces e design system
+- **Excalidraw** — esboços rápidos e wireframes
+
+### Gestão
+- **Jira** ou **GitHub Projects** — rastreamento de tarefas e sprints
+
+### Deploy
+- **Vercel** — frontend (`apps/frontend`)
+- **Render** — serviços backend (`apps/*-service`, `apps/api-gateway`) _(a implementar)_
