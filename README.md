@@ -375,3 +375,42 @@ Nunca o inverso. Um `repository` jamais chama um `service`, e um `service` jamai
 ### Deploy
 - **Vercel** — frontend (`apps/frontend`)
 - **Render** — serviços backend (`apps/*-service`, `apps/api-gateway`) _(a implementar)_
+
+---
+
+## 🙅🏽‍♂️ Colaboradores
+
+<table> 
+    <tr>
+        <td align="center">
+          <a href="https://github.com/bernardobelfort">
+            <img src="https://avatars.githubusercontent.com/u/153245112?v=4" width="100px;" alt="Imagem do Colaborador 1"/><br>
+            <sub><b>Bernardo Belfort Leao</b></sub>
+          </a>
+        </td>
+        <td align="center">
+          <a href="https://github.com/edisiouchoacn-spec">
+            <img src="https://avatars.githubusercontent.com/u/235191061?v=4" width="100px;" alt="Imagem do Colaborador 2"/><br>
+            <sub><b>Edísio Uchoa Cavalcanti Neto</b></sub>
+          </a>
+        </td>
+        <td align="center">
+          <a href="https://github.com/FranciscoFaustino17">
+            <img src="https://avatars.githubusercontent.com/u/209528271?v=4" width="100px;" alt="Imagem do Colaborador 3"/><br>
+            <sub><b>Francisco Faustino de Souza Neto</b></sub>
+          </a>
+        </td>
+        <td align="center">
+          <a href="https://github.com/GabrielCassio">
+            <img src="https://avatars.githubusercontent.com/u/91679814?v=4" width="100px;" alt="Imagem do Colaborador 4"/><br>
+            <sub><b>Gabriel Cássio Gomes Cileiro</b></sub>
+          </a>
+        </td>
+        <td align="center">
+          <a href="https://github.com/VictorLemosFr">
+            <img src="https://avatars.githubusercontent.com/u/107511134?v=4" width="100px;" alt="Imagem do Colaborador 5"/><br>
+            <sub><b>Victor Lemos de Freitas</b></sub>
+          </a>
+        </td>
+      </tr>
+</table>
