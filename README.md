@@ -383,6 +383,18 @@ Nunca o inverso. Um `repository` jamais chama um `service`, e um `service` jamai
 <table> 
     <tr>
         <td align="center">
+          <a href="https://github.com/Clarinhaaa">
+            <img src="https://avatars.githubusercontent.com/u/100969119?v=4" width="100px;" alt="Imagem do Colaborador 5"/><br>
+            <sub><b>Ana Clara Calvacante</b></sub>
+          </a>
+        </td>
+        <td align="center">
+          <a href="https://github.com/ama9-cin-ufpe">
+            <img src="https://avatars.githubusercontent.com/u/249635822?v=4" width="100px;" alt="Imagem do Colaborador 5"/><br>
+            <sub><b>Alex Mayrinck</b></sub>
+          </a>
+        </td>
+        <td align="center">
           <a href="https://github.com/bernardobelfort">
             <img src="https://avatars.githubusercontent.com/u/153245112?v=4" width="100px;" alt="Imagem do Colaborador 1"/><br>
             <sub><b>Bernardo Belfort Leao</b></sub>
@@ -404,6 +416,12 @@ Nunca o inverso. Um `repository` jamais chama um `service`, e um `service` jamai
           <a href="https://github.com/GabrielCassio">
             <img src="https://avatars.githubusercontent.com/u/91679814?v=4" width="100px;" alt="Imagem do Colaborador 4"/><br>
             <sub><b>Gabriel Cássio Gomes Cileiro</b></sub>
+          </a>
+        </td>
+        <td align="center">
+          <a href="https://github.com/orgs/Cinovar/people/rafaelsamico">
+            <img src="https://avatars.githubusercontent.com/u/207333347?v=4" width="100px;" alt="Imagem do Colaborador 5"/><br>
+            <sub><b>Rafael Samico</b></sub>
           </a>
         </td>
         <td align="center">
