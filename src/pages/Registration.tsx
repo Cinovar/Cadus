@@ -113,9 +113,6 @@ const Registration = () => {
         WebkitBackdropFilter: 'blur(20px)'
       }}>
         <div className="container flex items-center justify-between h-12 md:h-14">
-          <button onClick={goBack} className="text-muted-foreground hover:text-foreground transition-colors p-2 -ml-2 rounded-xl hover:bg-muted/50 min-w-[44px] min-h-[44px] flex items-center justify-center">
-            <ArrowLeft size={20} />
-          </button>
           <Link to="/" className="font-display font-800 text-primary text-lg md:text-xl tracking-tight">
             cadus<span className="text-highlight">.</span>
           </Link>
