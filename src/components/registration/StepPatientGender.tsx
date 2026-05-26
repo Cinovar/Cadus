@@ -60,7 +60,7 @@ const StepPatientGender = ({ onNext, onBack, stepNumber, totalSteps }: Props) =>
   const isActive = (opt: string) => selectedGenero === opt || (opt === 'Outro' && selectedGenero.startsWith('Outro'));
 
   return (
-    <div className="card-cadus">
+    <>
       <div className="step-header">
         <div className="icon-hero">
           <Heart size={22} className="md:hidden" />
@@ -160,7 +160,7 @@ const StepPatientGender = ({ onNext, onBack, stepNumber, totalSteps }: Props) =>
       <button onClick={onBack} className="btn-back">
         <ArrowLeft size={16} /> Voltar
       </button>
-    </div>
+    </>
   );
 };
 

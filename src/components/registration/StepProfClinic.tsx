@@ -26,7 +26,7 @@ const StepProfClinic = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
   };
 
   return (
-    <div className="card-cadus">
+    <>
       <div className="step-header">
         <div className="icon-hero">
           <Building2 size={22} className="md:hidden" />
@@ -76,7 +76,7 @@ const StepProfClinic = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
       <button onClick={onBack} className="btn-back">
         <ArrowLeft size={16} /> Voltar
       </button>
-    </div>
+    </>
   );
 };
 

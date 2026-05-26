@@ -41,7 +41,7 @@ const StepProfAccess = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
   const strengthColor = strength === 1 ? 'text-destructive' : strength === 2 ? 'text-amber-500' : strength === 3 ? 'text-emerald-600' : '';
 
   return (
-    <div className="card-cadus">
+    <>
       <div className="step-header">
         <div className="icon-hero">
           <Lock size={22} className="md:hidden" />
@@ -124,7 +124,7 @@ const StepProfAccess = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
       <button onClick={onBack} disabled={loading} className="btn-back">
         <ArrowLeft size={16} /> Voltar
       </button>
-    </div>
+    </>
   );
 };
 

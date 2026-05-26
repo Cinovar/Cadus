@@ -17,7 +17,7 @@ const StepProfile = ({ onNext }: Props) => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <>
       <div className="text-center mb-6 md:mb-8">
         <h2 className="text-xl sm:text-2xl md:text-3xl font-display font-800 text-foreground tracking-tight">
           Como você vai usar o <span className="text-primary">Cadus</span>?
@@ -94,7 +94,7 @@ const StepProfile = ({ onNext }: Props) => {
           </p>
         </button>
       </div>
-    </div>
+    </>
   );
 };
 
