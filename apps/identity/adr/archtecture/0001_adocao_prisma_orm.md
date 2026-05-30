@@ -1,6 +1,6 @@
-# ADR-0001 - Adoção do Prisma ORM no Microsserviço de Identidade
+# ADR-0001 — Adoção do Prisma ORM no Microsserviço de Identidade
 
-- **Status:** Revisão
+- **Status:** Aceito
 - **Data:** 2026-05-30
 - **Decisores:** Time de Arquitetura
 
@@ -12,7 +12,7 @@ O microsserviço de identidade gerencia usuários, credenciais, sessões e perfi
 
 - Tipagem forte end-to-end, desde o schema até as queries
 - Suporte a migrações versionadas e auditáveis
-- Modelagem de relacionamentos complexos: Usuário, Tenant (Clínica), Papel, Permissão, Sessão
+- Modelagem de relacionamentos complexos: Usuário, Clínica, Papel, Permissão, Sessão
 - Boa experiência de desenvolvimento (DX) com autocompletar e erros em tempo de compilação
 
 ---
@@ -35,16 +35,14 @@ O Prisma foi escolhido pela segurança de tipos end-to-end — o client gerado a
 
 ## Consequências
 
-### Good
-
+**Good**:
 - Tipagem automática derivada do schema elimina erros de tipo em runtime
 - Migrations declarativas e versionadas facilitam rollback e auditoria de mudanças
 - Prisma Studio acelera o debugging dos dados em desenvolvimento
 - `$transaction` garante atomicidade nas operações críticas de identidade
 - `schema.prisma` serve como documentação viva do modelo de dados
 
-### Bad
-
+**Bad**:
 - `prisma generate` precisa ser executado a cada mudança de schema — etapa adicional no CI/CD
 - Queries muito complexas (ex.: relatórios de auditoria) podem exigir `$queryRaw`, perdendo tipagem
 - Não suporta herança de tabelas nativamente — a hierarquia Usuário/Profissional exigirá composição explícita
