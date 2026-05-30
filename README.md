@@ -31,7 +31,7 @@
 | Versionamento        | Git + GitHub                |
 | Gestão do projeto    | Jira / GitHub Projects      |
 | Diagramas            | Mermaid / draw.io           |
-| Prototipagem         | Figma / Excalidraw          |
+| Prototipagem         | Figma                       |
 | Deploy               | Vercel / Render             |
 
 ---
@@ -45,7 +45,7 @@ cadus/
 │   ├── identity/           # Serviço de identidade dos pacientes
 │   └── e2e/                # Testes end-to-end com Playwright
 ├── package.json            # Dependências, scripts e declaração de workspaces
-├── tsconfig.json           # Configuração TypeScript da raiz com referências
+├── tsconfig.json           # Configuração TypeScript base (estendida por cada app)
 └── vitest.config.ts        # Configuração raiz do Vitest
 ```
 
@@ -115,7 +115,7 @@ bun --filter @cadus/identity dev
 
 Os testes unitários vivem **dentro de cada app**, junto do código que testam.
 
-> **Por que Vitest e não Bun Test?** O Vitest oferece integração nativa com Vite (usada no frontend), suporte a projetos múltiplos no monorepo e cobertura via V8/Istanbul.
+> **Por que Vitest e não Bun Test?** O Vitest oferece integração nativa com Vite (usada no frontend), suporte a múltiplos projetos no monorepo e cobertura via V8/Istanbul.
 
 ```bash
 # Rodar todos os testes unitários do monorepo
@@ -162,16 +162,16 @@ bun test:all
 
 ### Localização dos testes por responsabilidade
 
-| Tipo de teste        | Localização                          | Ferramenta  |
-|----------------------|--------------------------------------|-------------|
-| Unitário/componente  | `apps/<app>/src/**/*.test.ts(x)`     | Vitest      |
-| E2E / fluxo completo | `apps/e2e/tests/**/*.spec.ts`        | Playwright  |
+| Tipo de teste        | Localização                        | Ferramenta |
+|----------------------|------------------------------------|------------|
+| Unitário/componente  | `apps/<app>/src/**/*.test.ts(x)`   | Vitest     |
+| E2E / fluxo completo | `apps/e2e/tests/**/*.spec.ts`      | Playwright |
 
 ---
 
 ## Criando um Novo Serviço
 
-Siga este passo a passo para adicionar um novo microsserviço ao workspace respeitando todas as regras arquiteturais.
+Siga este passo a passo para adicionar um novo microsserviço ao workspace.
 
 ### 1. Criar a estrutura de pastas
 
@@ -271,7 +271,7 @@ app.listen(PORT, () => {
 bun install
 ```
 
-> O glob `apps/*` no `workspaces` do `package.json` raiz já cobre o novo serviço automaticamente — o `bun install` o detecta sem nenhuma outra configuração.
+> O glob `apps/*` no `workspaces` do `package.json` raiz já cobre o novo serviço automaticamente.
 
 ---
 
@@ -304,7 +304,7 @@ Cada serviço é o **único dono do seu banco de dados**. Nenhum serviço acessa
 Serviços se comunicam **exclusivamente por APIs HTTP** (ou eventos). Nunca por imports diretos de código de outro serviço.
 
 ```
-✅ fetch("http://auth-service/validate")                            — chamada HTTP
+✅ fetch("http://auth-service/validate")
 ❌ import { validateToken } from "@cadus/auth-service/src/services/token"
 ```
 
@@ -330,12 +330,12 @@ Nunca o inverso. Um `repository` jamais chama um `service`, e um `service` jamai
 
 ### Onde cada tipo de código deve viver
 
-| Código                | Onde colocar          |
-|-----------------------|-----------------------|
-| Lógica de negócio     | dentro do app dono    |
-| Chamadas ao banco      | `repositories/`       |
-| Regras de negócio     | `services/`           |
-| Entrada/saída HTTP    | `controllers/`        |
+| Código                | Onde colocar       |
+|-----------------------|--------------------|
+| Lógica de negócio     | dentro do app dono |
+| Chamadas ao banco     | `repositories/`    |
+| Regras de negócio     | `services/`        |
+| Entrada/saída HTTP    | `controllers/`     |
 
 ---
 
@@ -347,7 +347,7 @@ Nunca o inverso. Um `repository` jamais chama um `service`, e um `service` jamai
 
 ### Prototipagem
 - **Figma** — design de interfaces e design system
-- **Excalidraw** — esboços rápidos e wireframes
+- **Lovable** - criação de protótipos de alta fidelidade
 
 ### Gestão
 - **Jira** ou **GitHub Projects** — rastreamento de tarefas e sprints
