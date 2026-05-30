@@ -1,0 +1,66 @@
+import { useState } from 'react';
+import { useRegistrationStore } from '@/store/registrationStore';
+import { formatName } from '@/lib/masks';
+import { UserRound, ArrowRight, ArrowLeft } from 'lucide-react';
+
+interface Props { onNext: () => void; onBack: () => void; stepNumber?: number; totalSteps?: number; }
+
+const StepPatientName = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
+  const { patientData, updatePatientData } = useRegistrationStore();
+  const [error, setError] = useState('');
+
+  const handleChange = (value: string) => {
+    updatePatientData({ nome: formatName(value) });
+  };
+
+  const handleSubmit = () => {
+    if (!patientData.nome?.trim() || patientData.nome.trim().split(' ').length < 2) {
+      setError('Por favor, informe seu nome completo.');
+      return;
+    }
+    setError('');
+    onNext();
+  };
+
+  return (
+    <div className="card-cadus">
+      <div className="step-header">
+        <div className="icon-hero">
+          <UserRound size={22} className="md:hidden" />
+          <UserRound size={26} className="hidden md:block" />
+        </div>
+        <h2>Como você se chama?</h2>
+        <p>Nome e sobrenome como no documento</p>
+        {stepNumber && totalSteps && (
+          <div className="step-badge">Etapa {stepNumber} de {totalSteps}</div>
+        )}
+      </div>
+
+      <div className="step-divider" />
+
+      <div>
+        <div className="relative">
+          <UserRound size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/40" />
+          <input
+            className="input-cadus pl-12 text-center text-base md:text-lg"
+            value={patientData.nome || ''}
+            onChange={(e) => handleChange(e.target.value)}
+            placeholder="Seu nome completo"
+            autoFocus
+          />
+        </div>
+        {error && <p className="error-text text-center mt-2">{error}</p>}
+      </div>
+
+      <button onClick={handleSubmit} className="btn-primary w-full mt-4 md:mt-8 group">
+        Continuar <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+      </button>
+
+      <button onClick={onBack} className="btn-back">
+        <ArrowLeft size={16} /> Voltar
+      </button>
+    </div>
+  );
+};
+
+export default StepPatientName;
