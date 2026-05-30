@@ -1,0 +1,27 @@
+{
+  "name": "cadus",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:all":   "bun --filter '*' dev",
+    "test":      "vitest",
+    "test:all":  "vitest && bun --filter @cadus/e2e test",
+    "typecheck": "tsc --build",
+    "lint":      "eslint .",
+    "format":    "prettier --write ."
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "vitest":     "^3.2.4",
+    "typescript": "^5.0.0",
+    "eslint":     "^9.0.0",
+    "prettier":   "^3.0.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
