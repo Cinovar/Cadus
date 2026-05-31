@@ -113,30 +113,28 @@ const Registration = () => {
         WebkitBackdropFilter: 'blur(20px)'
       }}>
         <div className="container flex items-center justify-between h-12 md:h-14">
-          <button onClick={goBack} className="text-muted-foreground hover:text-foreground transition-colors p-2 -ml-2 rounded-xl hover:bg-muted/50 min-w-[44px] min-h-[44px] flex items-center justify-center">
-            <ArrowLeft size={20} />
-          </button>
           <Link to="/" className="font-display font-800 text-primary text-lg md:text-xl tracking-tight">
             cadus<span className="text-highlight">.</span>
           </Link>
           <span className="w-[44px]" />
-        </div>
-        {/* Gradient progress bar */}
-        <div className="h-1 bg-border/30">
-          <div
-            className="h-full transition-all duration-700 ease-out rounded-r-full"
-            style={{
-              width: `${progress}%`,
-              background: 'linear-gradient(90deg, hsl(184, 78%, 28%), hsl(184, 75%, 38%))'
-            }}
-          />
         </div>
       </div>
 
       {/* Content — mobile-first: top-aligned, compact padding */}
       <div className="flex-1 flex items-start justify-center py-3 px-3 md:items-center md:py-8 md:px-4 lg:py-12">
         <div className="w-full max-w-full md:max-w-[520px]">
-          <AnimatePresence mode="wait" custom={direction}>
+          <div className="card-cadus">
+            {/* Gradient progress bar */}
+            <div className="h-1 bg-border/30 mb-6">
+              <div
+                className="h-full transition-all duration-700 ease-out rounded-r-full"
+                style={{
+                  width: `${progress}%`,
+                  background: 'linear-gradient(90deg, hsl(184, 78%, 28%), hsl(184, 75%, 38%))'
+                }}
+              />
+            </div>
+            <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={`${role}-${currentStep}`}
               custom={direction}
@@ -148,6 +146,7 @@ const Registration = () => {
               {renderStep()}
             </motion.div>
           </AnimatePresence>
+          </div>
         </div>
       </div>
     </div>

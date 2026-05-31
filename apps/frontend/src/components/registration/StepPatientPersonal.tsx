@@ -26,7 +26,7 @@ const StepPatientPersonal = ({ onNext, onBack }: Props) => {
   const sexOptions = ['Masculino', 'Feminino', 'Outro', 'Prefiro não informar'];
 
   return (
-    <div className="card-cadus">
+    <>
       <h2 className="text-xl font-display font-800 text-foreground">Vamos começar com seus dados.</h2>
       <p className="text-muted-foreground text-sm mt-1 mb-6">Preencha com calma. Você pode corrigir depois.</p>
 
@@ -121,7 +121,7 @@ const StepPatientPersonal = ({ onNext, onBack }: Props) => {
           Continuar <ArrowRight size={18} />
         </button>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -14,7 +14,7 @@ const confettiColors = [
 
 const SuccessScreen = () => {
   const navigate = useNavigate();
-  const { registeredRole } = useRegistrationStore();
+  const { registeredRole, reset } = useRegistrationStore();
   const isPatient = registeredRole === 'paciente';
 
   return (
@@ -121,7 +121,10 @@ const SuccessScreen = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
-            onClick={() => navigate('/')}
+            onClick={() => {
+              reset();
+              navigate('/')
+            }}
             className="btn-outline w-full mt-6 md:mt-8"
           >
             Voltar para o início
