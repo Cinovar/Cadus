@@ -1,6 +1,5 @@
 {
   "name": "cadus",
-  "module": "index.ts",
   "type": "module",
   "private": true,
   "workspaces": [
@@ -15,7 +14,6 @@
     "format":    "prettier --write ."
   },
   "devDependencies": {
-    "@types/bun": "latest",
     "vitest":     "^3.2.4",
     "typescript": "^5.0.0",
     "eslint":     "^9.0.0",

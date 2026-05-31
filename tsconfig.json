@@ -1,11 +1,15 @@
 {
+  "references": [
+    { "path": "apps/frontend" },
+    { "path": "apps/identity" },
+  ],
+  "files": [],
   "compilerOptions": {
     // Environment setup & latest features
     "lib": ["ESNext"],
     "target": "ESNext",
     "module": "Preserve",
     "moduleDetection": "force",
-    "jsx": "react-jsx",
     "allowJs": true,
 
     // Bundler mode
