@@ -1,19 +1,15 @@
-import { Heart, Stethoscope, Check } from 'lucide-react';
-import { useRegistrationStore } from '@/store/registrationStore';
+import { Heart, Stethoscope, Check } from "lucide-react";
+import { useRegistrationStore } from "@/store/registrationStore";
 
-interface Props {
-  onNext: () => void;
-}
 
-const StepProfile = ({ onNext }: Props) => {
-  const { role, setRole, setCurrentStep } = useRegistrationStore();
+const StepProfile = () => {
+  const { role, setRole, setFirstStep, setPatientStep, setProfessionalStep } = useRegistrationStore();
 
-  const handleSelect = (selected: 'paciente' | 'profissional') => {
+  const handleSelect = (selected: "paciente" | "profissional") => {
     setRole(selected);
-    setTimeout(() => {
-      setCurrentStep(2);
-      onNext();
-    }, 350);
+    setFirstStep(false);
+    if (selected === "paciente") setPatientStep(2);
+    else setProfessionalStep(2);
   };
 
   return (
@@ -28,14 +24,14 @@ const StepProfile = ({ onNext }: Props) => {
       <div className="flex flex-col gap-3 md:gap-4">
         {/* Paciente */}
         <button
-          onClick={() => handleSelect('paciente')}
+          onClick={() => handleSelect("paciente")}
           className={`group relative flex flex-col items-center text-center rounded-2xl border-2 p-5 pb-6 md:p-6 md:pb-7 transition-all duration-300 focus:outline-none cursor-pointer ${
-            role === 'paciente'
-              ? 'border-primary bg-primary/[0.06] shadow-lg shadow-primary/10'
-              : 'border-primary/15 bg-gradient-to-b from-primary/[0.03] to-transparent hover:border-primary/40 hover:shadow-lg hover:shadow-primary/8 hover:scale-[1.02]'
+            role === "paciente"
+              ? "border-primary bg-primary/[0.06] shadow-lg shadow-primary/10"
+              : "border-primary/15 bg-gradient-to-b from-primary/[0.03] to-transparent hover:border-primary/40 hover:shadow-lg hover:shadow-primary/8 hover:scale-[1.02]"
           }`}
         >
-          {role === 'paciente' && (
+          {role === "paciente" && (
             <div className="absolute top-3 right-3 w-7 h-7 rounded-full bg-primary flex items-center justify-center animate-check-bounce">
               <Check size={14} className="text-primary-foreground" />
             </div>
@@ -62,14 +58,14 @@ const StepProfile = ({ onNext }: Props) => {
 
         {/* Profissional */}
         <button
-          onClick={() => handleSelect('profissional')}
+          onClick={() => handleSelect("profissional")}
           className={`group relative flex flex-col items-center text-center rounded-2xl border-2 p-5 pb-6 md:p-6 md:pb-7 transition-all duration-300 focus:outline-none cursor-pointer ${
-            role === 'profissional'
-              ? 'border-secondary bg-secondary/[0.06] shadow-lg shadow-secondary/10'
-              : 'border-secondary/15 bg-gradient-to-b from-secondary/[0.03] to-transparent hover:border-secondary/40 hover:shadow-lg hover:shadow-secondary/8 hover:scale-[1.02]'
+            role === "profissional"
+              ? "border-secondary bg-secondary/[0.06] shadow-lg shadow-secondary/10"
+              : "border-secondary/15 bg-gradient-to-b from-secondary/[0.03] to-transparent hover:border-secondary/40 hover:shadow-lg hover:shadow-secondary/8 hover:scale-[1.02]"
           }`}
         >
-          {role === 'profissional' && (
+          {role === "profissional" && (
             <div className="absolute top-3 right-3 w-7 h-7 rounded-full bg-secondary flex items-center justify-center animate-check-bounce">
               <Check size={14} className="text-secondary-foreground" />
             </div>
@@ -78,8 +74,9 @@ const StepProfile = ({ onNext }: Props) => {
           <div
             className="w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center mb-3 md:mb-4 transition-transform duration-300 group-hover:scale-110"
             style={{
-              background: 'linear-gradient(145deg, hsl(30 70% 55%), hsl(30 65% 42%))',
-              boxShadow: '0 8px 24px hsla(30, 65%, 45%, 0.3)',
+              background:
+                "linear-gradient(145deg, hsl(30 70% 55%), hsl(30 65% 42%))",
+              boxShadow: "0 8px 24px hsla(30, 65%, 45%, 0.3)",
             }}
           >
             <Stethoscope size={24} className="text-white md:hidden" />

@@ -1,49 +1,57 @@
-import { useState, useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useRegistrationStore } from '@/store/registrationStore';
-import StepProfile from '@/components/registration/StepProfile';
-import StepPatientName from '@/components/registration/StepPatientName';
-import StepPatientCPF from '@/components/registration/StepPatientCPF';
-import StepPatientBirthdate from '@/components/registration/StepPatientBirthdate';
-import StepPatientGender from '@/components/registration/StepPatientGender';
-import StepPatientContact from '@/components/registration/StepPatientContact';
-import StepPatientAddress from '@/components/registration/StepPatientAddress';
-import StepPatientSus from '@/components/registration/StepPatientSus';
-import StepPatientComplaint from '@/components/registration/StepPatientComplaint';
-import StepPatientAccess from '@/components/registration/StepPatientAccess';
-import StepProfPersonal from '@/components/registration/StepProfPersonal';
-import StepProfClinic from '@/components/registration/StepProfClinic';
-import StepProfAccess from '@/components/registration/StepProfAccess';
-import SuccessScreen from '@/components/registration/SuccessScreen';
-import { Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
-
-const patientSteps = 10;
-const profSteps = 4;
+import { useState, useEffect } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { useRegistrationStore } from "@/store/registrationStore";
+import StepProfile from "@/components/registration/StepProfile";
+import StepPatientName from "@/components/registration/StepPatientName";
+import StepPatientCPF from "@/components/registration/StepPatientCPF";
+import StepPatientBirthdate from "@/components/registration/StepPatientBirthdate";
+import StepPatientGender from "@/components/registration/StepPatientGender";
+import StepPatientContact from "@/components/registration/StepPatientContact";
+import StepPatientAddress from "@/components/registration/StepPatientAddress";
+import StepPatientSus from "@/components/registration/StepPatientSus";
+import StepPatientComplaint from "@/components/registration/StepPatientComplaint";
+import StepPatientAccess from "@/components/registration/StepPatientAccess";
+import StepProfPersonal from "@/components/registration/StepProfPersonal";
+import StepProfClinic from "@/components/registration/StepProfClinic";
+import StepProfAccess from "@/components/registration/StepProfAccess";
+import SuccessScreen from "@/components/registration/SuccessScreen";
+import { Link } from "react-router-dom";
 
 const Registration = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { role, setRole, currentStep, setCurrentStep, isRegistered } = useRegistrationStore();
+  const {
+    role,
+    setRole,
+    firstStep,
+    setFirstStep,
+    patientStep,
+    setPatientStep,
+    professionalStep,
+    setProfessionalStep,
+    isRegistered,
+  } = useRegistrationStore();
   const [showSuccess, setShowSuccess] = useState(false);
   const [direction, setDirection] = useState(1);
 
   useEffect(() => {
-    const preselect = searchParams.get('role');
-    if (preselect === 'paciente' || preselect === 'profissional') {
+    const preselect = searchParams.get("role");
+    if (preselect === "paciente" || preselect === "profissional") {
       setRole(preselect);
-      if (currentStep === 1) setCurrentStep(2);
+      if (firstStep) setFirstStep(false);
     }
   }, []);
 
-  const totalSteps = role === 'profissional' ? profSteps : patientSteps;
-  const stepNumber = currentStep;
+  const totalSteps = role === "paciente" ? 10 : 4;
+  const stepNumber = role === "paciente" ? patientStep : professionalStep;
 
   const goNext = () => {
     setDirection(1);
-    if (currentStep < totalSteps) {
-      setCurrentStep(currentStep + 1);
+    if (stepNumber < totalSteps) {
+      if (role === "paciente") setPatientStep(patientStep + 1);
+      else setProfessionalStep(professionalStep + 1);
+      console.log(`Progress: ${(stepNumber / totalSteps) * 100}`);
     } else {
       setShowSuccess(true);
     }
@@ -51,47 +59,75 @@ const Registration = () => {
 
   const goBack = () => {
     setDirection(-1);
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
-      if (currentStep === 2 && role) {
-        setRole(null);
+    if (!firstStep) {
+      if (role === "paciente") {
+        if (patientStep > 2) setPatientStep(patientStep - 1);
+        if (patientStep === 2) {
+          setRole(null);
+          setFirstStep(true);
+        }
+      } else {
+        if (professionalStep > 2) setProfessionalStep(professionalStep - 1);
+        if (professionalStep === 2) {
+          setRole(null);
+          setFirstStep(true);
+        }
       }
+      console.log(`Progress: ${(stepNumber / totalSteps) * 100}`);
     } else {
-      navigate('/');
+      navigate("/");
     }
   };
 
-  if (showSuccess || isRegistered) {
-    return <SuccessScreen />;
-  }
+  if (showSuccess || isRegistered) return <SuccessScreen />;
 
   const renderStep = () => {
+    if (firstStep) {
+      return <StepProfile />;
+    }
+
     const sp = { stepNumber, totalSteps };
-    if (currentStep === 1) return <StepProfile onNext={goNext} />;
-    if (role === 'paciente') {
-      switch (currentStep) {
-        case 2: return <StepPatientName onNext={goNext} onBack={goBack} {...sp} />;
-        case 3: return <StepPatientCPF onNext={goNext} onBack={goBack} {...sp} />;
-        case 4: return <StepPatientBirthdate onNext={goNext} onBack={goBack} {...sp} />;
-        case 5: return <StepPatientGender onNext={goNext} onBack={goBack} {...sp} />;
-        case 6: return <StepPatientContact onNext={goNext} onBack={goBack} {...sp} />;
-        case 7: return <StepPatientAddress onNext={goNext} onBack={goBack} {...sp} />;
-        case 8: return <StepPatientSus onNext={goNext} onBack={goBack} {...sp} />;
-        case 9: return <StepPatientComplaint onNext={goNext} onBack={goBack} {...sp} />;
-        case 10: return <StepPatientAccess onNext={goNext} onBack={goBack} {...sp} />;
+
+    if (role === "paciente" && !firstStep) {
+      switch (patientStep) {
+        case 2:
+          return <StepPatientName onNext={goNext} onBack={goBack} {...sp} />;
+        case 3:
+          return <StepPatientCPF onNext={goNext} onBack={goBack} {...sp} />;
+        case 4:
+          return (
+            <StepPatientBirthdate onNext={goNext} onBack={goBack} {...sp} />
+          );
+        case 5:
+          return <StepPatientGender onNext={goNext} onBack={goBack} {...sp} />;
+        case 6:
+          return <StepPatientContact onNext={goNext} onBack={goBack} {...sp} />;
+        case 7:
+          return <StepPatientAddress onNext={goNext} onBack={goBack} {...sp} />;
+        case 8:
+          return <StepPatientSus onNext={goNext} onBack={goBack} {...sp} />;
+        case 9:
+          return (
+            <StepPatientComplaint onNext={goNext} onBack={goBack} {...sp} />
+          );
+        case 10:
+          return <StepPatientAccess onNext={goNext} onBack={goBack} {...sp} />;
       }
     }
-    if (role === 'profissional') {
-      switch (currentStep) {
-        case 2: return <StepProfPersonal onNext={goNext} onBack={goBack} {...sp} />;
-        case 3: return <StepProfClinic onNext={goNext} onBack={goBack} {...sp} />;
-        case 4: return <StepProfAccess onNext={goNext} onBack={goBack} {...sp} />;
+    if (role === "profissional" && !firstStep) {
+      switch (professionalStep) {
+        case 2:
+          return <StepProfPersonal onNext={goNext} onBack={goBack} {...sp} />;
+        case 3:
+          return <StepProfClinic onNext={goNext} onBack={goBack} {...sp} />;
+        case 4:
+          return <StepProfAccess onNext={goNext} onBack={goBack} {...sp} />;
       }
     }
     return null;
   };
 
-  const progress = (currentStep / totalSteps) * 100;
+  const progress = (firstStep) ? 0 : (stepNumber / totalSteps) * 100;
 
   return (
     <div className="min-h-screen flex flex-col relative overflow-hidden">
@@ -135,17 +171,17 @@ const Registration = () => {
               />
             </div>
             <AnimatePresence mode="wait" custom={direction}>
-            <motion.div
-              key={`${role}-${currentStep}`}
-              custom={direction}
-              initial={{ opacity: 0, y: direction * 16, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: direction * -12, scale: 0.98 }}
-              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            >
-              {renderStep()}
-            </motion.div>
-          </AnimatePresence>
+              <motion.div
+                key={`${role}-${stepNumber}`}
+                custom={direction}
+                initial={{ opacity: 0, y: direction * 16, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: direction * -12, scale: 0.98 }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              >
+                {renderStep()}
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
       </div>
