@@ -187,11 +187,12 @@ cd apps/meu-servico
   "name": "@cadus/meu-servico",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "bun --watch src/index.ts",
-    "build": "bun build src/index.ts --outdir dist --target bun",
-    "start": "bun dist/index.js",
-    "test": "vitest",
+    "dev":       "bun --watch src/index.ts",
+    "build":     "bun build src/index.ts --outdir dist --target bun",
+    "start":     "bun dist/index.js",
+    "test":      "vitest",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -199,8 +200,9 @@ cd apps/meu-servico
   },
   "devDependencies": {
     "@types/express": "^4.17.0",
-    "@types/bun": "latest",
-    "vitest": "^3.2.4"
+    "@types/bun":     "latest",
+    "vitest":         "^3.2.4",
+    "typescript":     "^5.0.0"
   }
 }
 ```
@@ -209,11 +211,10 @@ cd apps/meu-servico
 
 ```json
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "composite": true,
-    "outDir": "dist",
-    "rootDir": "src"
+    /*
+      Setup padrão do bun init
+    */
   },
   "include": ["src"]
 }
@@ -355,3 +356,60 @@ Nunca o inverso. Um `repository` jamais chama um `service`, e um `service` jamai
 ### Deploy
 - **Vercel** — frontend (`apps/frontend`)
 - **Render** — serviços backend (`apps/identity`, demais serviços)
+
+---
+
+## Colaboradores
+
+<table> 
+    <tr>
+        <td align="center">
+          <a href="https://github.com/Clarinhaaa">
+            <img src="https://avatars.githubusercontent.com/u/100969119?v=4" width="100px;" alt="Imagem do Colaborador 5"/><br>
+            <sub><b>Ana Clara Calvacante</b></sub>
+          </a>
+        </td>
+        <td align="center">
+          <a href="https://github.com/ama9-cin-ufpe">
+            <img src="https://avatars.githubusercontent.com/u/249635822?v=4" width="100px;" alt="Imagem do Colaborador 5"/><br>
+            <sub><b>Alex Mayrinck</b></sub>
+          </a>
+        </td>
+        <td align="center">
+          <a href="https://github.com/bernardobelfort">
+            <img src="https://avatars.githubusercontent.com/u/153245112?v=4" width="100px;" alt="Imagem do Colaborador 1"/><br>
+            <sub><b>Bernardo Belfort Leao</b></sub>
+          </a>
+        </td>
+        <td align="center">
+          <a href="https://github.com/edisiouchoacn-spec">
+            <img src="https://avatars.githubusercontent.com/u/235191061?v=4" width="100px;" alt="Imagem do Colaborador 2"/><br>
+            <sub><b>Edísio Uchoa Cavalcanti Neto</b></sub>
+          </a>
+        </td>
+        <td align="center">
+          <a href="https://github.com/FranciscoFaustino17">
+            <img src="https://avatars.githubusercontent.com/u/209528271?v=4" width="100px;" alt="Imagem do Colaborador 3"/><br>
+            <sub><b>Francisco Faustino de Souza Neto</b></sub>
+          </a>
+        </td>
+        <td align="center">
+          <a href="https://github.com/GabrielCassio">
+            <img src="https://avatars.githubusercontent.com/u/91679814?v=4" width="100px;" alt="Imagem do Colaborador 4"/><br>
+            <sub><b>Gabriel Cássio Gomes Cileiro</b></sub>
+          </a>
+        </td>
+        <td align="center">
+          <a href="https://github.com/orgs/Cinovar/people/rafaelsamico">
+            <img src="https://avatars.githubusercontent.com/u/207333347?v=4" width="100px;" alt="Imagem do Colaborador 5"/><br>
+            <sub><b>Rafael Samico</b></sub>
+          </a>
+        </td>
+        <td align="center">
+          <a href="https://github.com/VictorLemosFr">
+            <img src="https://avatars.githubusercontent.com/u/107511134?v=4" width="100px;" alt="Imagem do Colaborador 5"/><br>
+            <sub><b>Victor Lemos de Freitas</b></sub>
+          </a>
+        </td>
+      </tr>
+</table>
