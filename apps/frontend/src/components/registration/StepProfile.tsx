@@ -1,19 +1,14 @@
 import { Heart, Stethoscope, Check } from 'lucide-react';
 import { useRegistrationStore } from '@/store/registrationStore';
 
-interface Props {
-  onNext: () => void;
-}
-
-const StepProfile = ({ onNext }: Props) => {
-  const { role, setRole, setCurrentStep } = useRegistrationStore();
+const StepProfile = () => {
+  const { role, setRole, setFirstStep, setPatientStep, setProfessionalStep } = useRegistrationStore();
 
   const handleSelect = (selected: 'paciente' | 'profissional') => {
     setRole(selected);
-    setTimeout(() => {
-      setCurrentStep(2);
-      onNext();
-    }, 350);
+    setFirstStep(false);
+    if (selected === "paciente") setPatientStep(2);
+    else setProfessionalStep(2);
   };
 
   return (
