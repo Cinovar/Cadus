@@ -33,7 +33,6 @@
   },
   "include": [
     "src/**/*",
-    "adapters/**/*",
-    "prisma.config.ts",
+    "prisma.config.ts", "src/infra/adapters/db.ts",
   ],
 }

@@ -1,45 +1,60 @@
 generator client {
   provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  output   = "../src/infra/database/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
 }
 
-# Enumerações para o atributo de gênero da Entidade Identidade
+// Enumerações para o atributo de gênero da Entidade Identidade
 
-enum TipoGenero {
+enum Genero {
   MASCULINO
   FEMININO
   OUTRO
   NAO_INFORMADO
 }
 
-enum TipoPronome {
+enum Pronome {
   ELE_DELE
   ELA_DELA
   ELU_DELU
   OUTRO
 }
 
-# Entidades do Banco de Dados
+// Entidades do Banco de Dados
 
 model Identidade {
   id String @id @default(uuid())
   cpf String @db.VarChar(11) @unique
-  nome String @db.VarChar(255)
-  genero Genero @default(Identidade)
-  telefone String @db.VarChar(11)
+  nome String @db.VarChar(150)
+  dataNascimento DateTime @db.Date
+
+  genero Genero
+  generoCustom String? @db.VarChar(150)
+  pronome Pronome?
+  pronomeCustom String? @db.VarChar(150)
+
+  telefone String @db.VarChar(20)
   email String? @db.VarChar(255)
-  senha String @@db.VarChar(255)
-  criadoEm DateTime @default(now())
+  senha String @db.VarChar(255)
+  
+  enderecoId String
+  endereco Endereco @relation(fields: [enderecoId], references: [id])
+
+  criadoEm DateTime @default(now()) @db.Timestamp(6)
 }
 
-model Atendimento {
 
-}
 
 model Endereco {
+  id String @id @default(uuid())
 
+  cep          String     @db.VarChar(8)
+  logradouro   String?    @db.VarChar(200)
+  numero       String     @db.VarChar(10)
+  complemento  String?    @db.VarChar(100)
+
+  moradores Identidade[]
 }
