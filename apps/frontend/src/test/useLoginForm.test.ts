@@ -1,11 +1,11 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect } from "vitest";
 import { renderHook, act } from "@testing-library/react";
-import { useLoginForm } from "@/hooks/useLoginForm";
+import { useLoginForm } from "../hooks/useLoginForm";
 
 describe("useLoginForm", () => {
   it("começa com campos vazios", () => {
     const { result } = renderHook(() => useLoginForm());
-    expect(result.current.email).toBe("");
+    expect(result.current.login).toBe("");
     expect(result.current.password).toBe("");
     expect(result.current.errors).toEqual({});
   });
@@ -13,9 +13,20 @@ describe("useLoginForm", () => {
   it("atualiza email quando digitado", () => {
     const { result } = renderHook(() => useLoginForm());
     act(() => {
-      result.current.setEmail("usuario@example.com");
+      result.current.setLogin("usuario@example.com");
+      result.current.setTypeLogin("email");
     });
-    expect(result.current.email).toBe("usuario@example.com");
+    expect(result.current.login).toBe("usuario@example.com");
+  });
+
+  it("atualiza cpf quando digitado", () => {
+    const { result } = renderHook(() => useLoginForm());
+    act(() => {
+      // CPF válido gerado aleatoriamente
+      result.current.setLogin("83830252030");
+      result.current.setTypeLogin("cpf");
+    });
+    expect(result.current.login).toBe("83830252030");
   });
 
   it("atualiza senha quando digitada", () => {
@@ -29,7 +40,8 @@ describe("useLoginForm", () => {
   it("valida e rejeita login com email inválido", async () => {
     const { result } = renderHook(() => useLoginForm());
     act(() => {
-      result.current.setEmail("emailinvalido");
+      result.current.setLogin("emailinvalido");
+      result.current.setTypeLogin("email");
       result.current.setPassword("senha123");
     });
     
@@ -37,27 +49,30 @@ describe("useLoginForm", () => {
       await result.current.handleSubmit(new Event("submit") as any);
     });
     
-    expect(result.current.errors.email).toBe("Email inválido");
+    expect(result.current.errors.login).toBe("E-mail inválido");
   });
 
-  it("valida e rejeita login com senha muito curta", async () => {
+  it("valida e rejeita login com cpf inválido", async () => {
     const { result } = renderHook(() => useLoginForm());
     act(() => {
-      result.current.setEmail("usuario@example.com");
-      result.current.setPassword("abc");
+      // CPF inválido
+      result.current.setLogin("123.456.789-00");
+      result.current.setTypeLogin("cpf");
+      result.current.setPassword("senha123");
     });
     
     await act(async () => {
       await result.current.handleSubmit(new Event("submit") as any);
     });
     
-    expect(result.current.errors.password).toBe("Senha deve ter no mínimo 6 caracteres");
+    expect(result.current.errors.login).toBe("CPF inválido");
   });
 
   it("limpa erros quando submissão é válida", async () => {
     const { result } = renderHook(() => useLoginForm());
     act(() => {
-      result.current.setEmail("usuario@example.com");
+      result.current.setLogin("usuario@example.com");
+      result.current.setTypeLogin("email");
       result.current.setPassword("senha123");
     });
     
