@@ -1,7 +1,7 @@
 # ADR-0001 — Adoção do Prisma ORM no Microsserviço de Identidade
 
 - **Status:** Aceito
-- **Data:** 2026-05-30
+- **Data:** 30-05-2026
 - **Decisores:** Time de Arquitetura
 
 ---

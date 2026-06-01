@@ -1,7 +1,7 @@
 # ADR-0001 - Adoção de Moderação Humana e Delegação da Triagem no Microserviço de Cadastro
 
 - **Status:** Revisão
-- **Data:** 2026-05-30
+- **Data:** 10-04-2026
 - **Decisores:** Time de Arquitetura
 ---
 
