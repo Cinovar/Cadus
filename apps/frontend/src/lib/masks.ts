@@ -1,3 +1,10 @@
+const regexNomeBR = /[^A-Za-záàâãéêíóôõúüçÁÀÂÃÉÊÍÓÔÕÚÜÇkKwWyY'\s]/g;
+
+const particulas = new Set(['de', 'da', 'do', 'das', 'dos', 'e', 'em', 'von', 'van']);
+
+export const sanitizeName = (value: string): string =>
+  value.replace(regexNomeBR, '');
+
 export const formatCPF = (value: string) => {
   const digits = value.replace(/\D/g, '').slice(0, 11);
   return digits
@@ -23,13 +30,13 @@ export const validateCPF = (cpf: string): boolean => {
   const digits = cpf.replace(/\D/g, '');
   if (digits.length !== 11) return false;
   if (/^(\d)\1+$/.test(digits)) return false;
-  
+
   let sum = 0;
   for (let i = 0; i < 9; i++) sum += parseInt(digits[i]) * (10 - i);
   let rest = (sum * 10) % 11;
   if (rest === 10) rest = 0;
   if (rest !== parseInt(digits[9])) return false;
-  
+
   sum = 0;
   for (let i = 0; i < 10; i++) sum += parseInt(digits[i]) * (11 - i);
   rest = (sum * 10) % 11;
@@ -40,12 +47,14 @@ export const validateCPF = (cpf: string): boolean => {
 export const formatName = (name: string): string =>
   name
     .split(/(\s+)/)
-    .map((part) => {
+    .map((part, index) => {
       if (!part.trim()) return part;
+      if (index > 0 && particulas.has(part.toLowerCase())) {
+        return part.toLowerCase();
+      }
 
       const characters = Array.from(part);
       const [first = '', ...rest] = characters;
-
       return `${first.toLocaleUpperCase('pt-BR')}${rest.join('').toLocaleLowerCase('pt-BR')}`;
     })
     .join('');
