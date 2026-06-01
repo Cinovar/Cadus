@@ -1,23 +1,33 @@
 import { useState } from 'react';
 import { useRegistrationStore } from '@/store/registrationStore';
-import { formatName } from '@/lib/masks';
+import { formatName, sanitizeName } from '@/lib/masks';
 import { UserRound, ArrowRight, ArrowLeft } from 'lucide-react';
 
 interface Props { onNext: () => void; onBack: () => void; stepNumber?: number; totalSteps?: number; }
+
+const regexNomeBR = /^[A-Za-záàâãéêíóôõúüçÁÀÂÃÉÊÍÓÔÕÚÜÇkKwWyY'\s]+$/;
 
 const StepPatientName = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
   const { patientData, updatePatientData } = useRegistrationStore();
   const [error, setError] = useState('');
 
   const handleChange = (value: string) => {
-    updatePatientData({ nome: formatName(value) });
+    updatePatientData({ nome: formatName(sanitizeName(value)) });
   };
 
   const handleSubmit = () => {
-    if (!patientData.nome?.trim() || patientData.nome.trim().split(' ').length < 2) {
+    const nome = patientData.nome?.trim();
+
+    if (!nome || nome.split(' ').length < 2) {
       setError('Por favor, informe seu nome completo.');
       return;
     }
+
+    if (!regexNomeBR.test(nome)) {
+      setError('Nome contém caracteres inválidos.');
+      return;
+    }
+
     setError('');
     onNext();
   };

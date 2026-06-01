@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useRegistrationStore } from '@/store/registrationStore';
-import { formatCPF, formatPhone, validateCPF } from '@/lib/masks';
+import { formatCPF, formatPhone, formatName, sanitizeName, validateCPF } from '@/lib/masks';
 import { Stethoscope, ArrowLeft, ArrowRight, UserRound, Hash, Phone, Mail } from 'lucide-react';
 
 interface Props { onNext: () => void; onBack: () => void; stepNumber?: number; totalSteps?: number; }
@@ -44,7 +44,12 @@ const StepProfPersonal = ({ onNext, onBack, stepNumber, totalSteps }: Props) => 
           <label className="label-cadus">Nome completo *</label>
           <div className="relative">
             <UserRound size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/40" />
-            <input className="input-cadus pl-12" value={professionalData.nome || ''} onChange={(e) => updateProfessionalData({ nome: e.target.value })} placeholder="Seu nome completo" />
+            <input
+              className="input-cadus pl-12"
+              value={professionalData.nome || ''}
+              onChange={(e) => updateProfessionalData({ nome: formatName(sanitizeName(e.target.value)) })}
+              placeholder="Seu nome completo"
+            />
           </div>
           {errors.nome && <p className="error-text">{errors.nome}</p>}
         </div>
