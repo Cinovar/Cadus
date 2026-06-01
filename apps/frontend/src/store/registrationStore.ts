@@ -43,13 +43,17 @@ export interface ProfessionalData {
 
 interface RegistrationState {
   role: UserRole;
-  currentStep: number;
+  firstStep: boolean;
+  patientStep: number;
+  professionalStep: number;
   patientData: Partial<PatientData>;
   professionalData: Partial<ProfessionalData>;
   isRegistered: boolean;
   registeredRole: UserRole;
   setRole: (role: UserRole) => void;
-  setCurrentStep: (step: number) => void;
+  setFirstStep: (flag: boolean) => void;
+  setPatientStep: (step: number) => void;
+  setProfessionalStep: (step: number) => void;
   updatePatientData: (data: Partial<PatientData>) => void;
   updateProfessionalData: (data: Partial<ProfessionalData>) => void;
   completeRegistration: () => void;
@@ -58,15 +62,28 @@ interface RegistrationState {
 
 export const useRegistrationStore = create<RegistrationState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       role: null,
-      currentStep: 1,
+      firstStep: true,
+      patientStep: 2,
+      professionalStep: 2,
       patientData: {},
       professionalData: {},
       isRegistered: false,
       registeredRole: null,
       setRole: (role) => set({ role }),
-      setCurrentStep: (step) => set({ currentStep: step }),
+      setFirstStep: (flag) => {
+        set({ firstStep: flag })
+        console.log(`FirstStep: ${flag}`)
+      },
+      setPatientStep: (step) => {
+        set({ patientStep: step })
+        console.log(`PatientStep: ${step}`)
+      },
+      setProfessionalStep: (step) => {
+        set({ professionalStep: step })
+        console.log(`ProfessionalStep: ${step}`)
+      },
       updatePatientData: (data) =>
         set((state) => ({ patientData: { ...state.patientData, ...data } })),
       updateProfessionalData: (data) =>
@@ -76,7 +93,9 @@ export const useRegistrationStore = create<RegistrationState>()(
       reset: () =>
         set({
           role: null,
-          currentStep: 1,
+          firstStep: true,
+          patientStep: 2,
+          professionalStep: 2,
           patientData: {},
           professionalData: {},
           isRegistered: false,
