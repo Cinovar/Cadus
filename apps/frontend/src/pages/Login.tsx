@@ -1,22 +1,15 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Mail, Lock, Eye, EyeOff, ShieldCheck, Heart, FileText, Sparkles } from 'lucide-react';
+import { Lock, Eye, EyeOff, ShieldCheck, Heart, FileText, Sparkles, User } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { useLoginForm } from '@/hooks/useLoginForm';
+import { formatCPF } from '@/lib/masks';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { login, setLogin, typeLogin, setTypeLogin, password, setPassword, errors, handleSubmit, isLoading } = useLoginForm();
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast({
-      title: 'Em breve!',
-      description: 'O sistema de login será ativado em breve.',
-    });
-  };
 
   const benefits = [
     {
@@ -35,6 +28,23 @@ const Login = () => {
       description: 'Cartão SUS digital, receitas e documentos sempre à mão.',
     },
   ];
+
+  const verifyType = (value: string) => {
+    // Checa se o usuário está digitando um CPF
+    const cpfRegex = /^[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}-?[0-9]{2}$/;
+
+    if (cpfRegex.test(value)) {
+      setLogin(formatCPF(value));
+      setTypeLogin("cpf");
+    } else { // Se não era CPF, tirar a máscara e considerar um email
+      if (typeLogin === "cpf") {
+        setLogin(value.replace(/[\.\-]+/g, ""));
+        setTypeLogin("email");
+      } else {
+        setLogin(value);
+      }
+    }
+  }
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -119,20 +129,21 @@ const Login = () => {
             <h2 className="font-display font-800 text-lg md:text-xl text-foreground mb-0.5">Entrar na conta</h2>
             <p className="text-muted-foreground text-sm mb-4 md:mb-6">Bem-vindo de volta! Insira seus dados.</p>
 
-            <form onSubmit={handleLogin} className="space-y-3 md:space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
               {/* Email */}
               <div>
-                <label className="text-sm font-medium text-foreground mb-1 block">E-mail</label>
+                <label className="text-sm font-medium text-foreground mb-1 block">Login (e-mail ou CPF)</label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="seu@email.com"
+                    type="text"
+                    value={login}
+                    onChange={(e) => verifyType(e.target.value)}
+                    placeholder="seu@email.com ou 000.000.000-00"
                     className="w-full h-11 pl-10 pr-4 rounded-xl border border-input bg-background text-foreground text-[16px] md:text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
                   />
                 </div>
+                {errors.login && <p className="error-text">{errors.login}</p>}
               </div>
 
               {/* Senha */}
@@ -155,6 +166,7 @@ const Login = () => {
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
+                {errors.password && <p className="error-text">{errors.password}</p>}
               </div>
 
               {/* Botão Entrar */}
@@ -162,7 +174,7 @@ const Login = () => {
                 type="submit"
                 className="btn-primary w-full mt-1"
               >
-                Entrar
+                {!isLoading ? "Entrar" : "Entrando..."}
               </button>
             </form>
 

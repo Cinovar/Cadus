@@ -1,26 +1,26 @@
+import { validateCPF } from "./masks";
+
 export const validateEmail = (email: string): boolean => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 };
 
-export const validatePassword = (password: string): boolean => {
-  return password.length >= 6;
-};
+export const validateLogin = (login: string, typeLogin: string, password: string) => {
+  const errors: { login?: string; password?: string } = {};
 
-export const validateLogin = (email: string, password: string) => {
-  const errors: { email?: string; password?: string } = {};
-
-  if (!email.trim()) {
-    errors.email = "Email é obrigatório";
-  } else if (!validateEmail(email)) {
-    errors.email = "Email inválido";
+  if (!login.trim()) {
+    errors.login = "E-mail ou CPF é obrigatório";
+  } else {
+    if (typeLogin === "cpf" && !validateCPF(login)) errors.login = "CPF inválido";
+    if (typeLogin === "email" && !validateEmail(login)) {
+      const possibleCpfRegex = /^[0-9]+(?:\.[0-9]+)?(?:-[0-9]+)?$/;
+      // Checa se o usuário colocou só dígitos contendo ou não . ou -
+      // Para dar uma mensagem mais esclarecedora ao usuário
+      errors.login = `E-mail ${possibleCpfRegex.test(login) ? "ou CPF " : ""}inválido`;
+    }
   }
 
-  if (!password.trim()) {
-    errors.password = "Senha é obrigatória";
-  } else if (!validatePassword(password)) {
-    errors.password = "Senha deve ter no mínimo 6 caracteres";
-  }
+  if (!password.trim()) errors.password = "Senha é obrigatória";
 
   return {
     isValid: Object.keys(errors).length === 0,
