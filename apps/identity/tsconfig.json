@@ -22,6 +22,7 @@
     "noImplicitOverride": true,
 
     // Prisma
+    "types": ["bun"],
     "esModuleInterop": true,
     "ignoreDeprecations": "6.0",
 
@@ -30,5 +31,9 @@
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false
   },
-  "include": ["src"],
+  "include": [
+    "src/**/*",
+    "adapters/**/*",
+    "prisma.config.ts",
+  ],
 }

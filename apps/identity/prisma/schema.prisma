@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -10,4 +5,41 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+}
+
+# Enumerações para o atributo de gênero da Entidade Identidade
+
+enum TipoGenero {
+  MASCULINO
+  FEMININO
+  OUTRO
+  NAO_INFORMADO
+}
+
+enum TipoPronome {
+  ELE_DELE
+  ELA_DELA
+  ELU_DELU
+  OUTRO
+}
+
+# Entidades do Banco de Dados
+
+model Identidade {
+  id String @id @default(uuid())
+  cpf String @db.VarChar(11) @unique
+  nome String @db.VarChar(255)
+  genero Genero @default(Identidade)
+  telefone String @db.VarChar(11)
+  email String? @db.VarChar(255)
+  senha String @@db.VarChar(255)
+  criadoEm DateTime @default(now())
+}
+
+model Atendimento {
+
+}
+
+model Endereco {
+
 }
