@@ -3,21 +3,17 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRegistrationStore } from '@/store/registrationStore';
 import StepProfile from '@/components/registration/StepProfile';
+import StepUserAccess from '@/components/registration/StepUserAccess';
 import StepPatientName from '@/components/registration/StepPatientName';
-import StepPatientCPF from '@/components/registration/StepPatientCPF';
 import StepPatientBirthdate from '@/components/registration/StepPatientBirthdate';
 import StepPatientGender from '@/components/registration/StepPatientGender';
-import StepPatientContact from '@/components/registration/StepPatientContact';
 import StepPatientAddress from '@/components/registration/StepPatientAddress';
 import StepPatientSus from '@/components/registration/StepPatientSus';
 import StepPatientComplaint from '@/components/registration/StepPatientComplaint';
-import StepPatientAccess from '@/components/registration/StepPatientAccess';
 import StepProfPersonal from '@/components/registration/StepProfPersonal';
 import StepProfClinic from '@/components/registration/StepProfClinic';
-import StepProfAccess from '@/components/registration/StepProfAccess';
 import SuccessScreen from '@/components/registration/SuccessScreen';
 import { Link } from 'react-router-dom';
-import StepUserAccess from '@/components/registration/StepUserAccess';
 
 const Registration = () => {
   const [searchParams] = useSearchParams();
