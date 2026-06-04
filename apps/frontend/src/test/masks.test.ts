@@ -3,10 +3,10 @@ import {
   formatCPF,
   formatPhone,
   formatCEP,
-  validateCPF,
   formatName,
   getFirstName,
 } from "@/lib/masks";
+import { validateCPF } from '@/lib/validation'
 
 describe("formatCPF", () => {
   it("formata CPF completo com pontos e traço", () => {

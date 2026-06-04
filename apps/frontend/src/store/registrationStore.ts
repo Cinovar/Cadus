@@ -3,15 +3,19 @@ import { persist } from 'zustand/middleware';
 
 export type UserRole = 'paciente' | 'profissional' | null;
 
-export interface PatientData {
+interface UserData {
   nome: string;
   cpf: string;
+  email: string;
+  senha: string;
+  telefone: string;
+}
+
+export interface PatientData extends UserData {
   dataNascimento: string;
   genero: string;
   pronome: string;
   nomeSocial: string;
-  telefone: string;
-  email: string;
   cep: string;
   rua: string;
   numero: string;
@@ -24,21 +28,15 @@ export interface PatientData {
   temResponsavel: boolean;
   nomeResponsavel: string;
   queixa: string;
-  senha: string;
 }
 
-export interface ProfessionalData {
-  nome: string;
-  cpf: string;
+export interface ProfessionalData extends UserData {
   conselho: string;
   numeroRegistro: string;
   especialidade: string;
-  telefone: string;
-  email: string;
   clinica: string;
   cargo: string;
   matricula: string;
-  senha: string;
 }
 
 interface RegistrationState {
@@ -46,6 +44,7 @@ interface RegistrationState {
   firstStep: boolean;
   patientStep: number;
   professionalStep: number;
+  userData: Partial<UserData>
   patientData: Partial<PatientData>;
   professionalData: Partial<ProfessionalData>;
   isRegistered: boolean;
@@ -54,6 +53,7 @@ interface RegistrationState {
   setFirstStep: (flag: boolean) => void;
   setPatientStep: (step: number) => void;
   setProfessionalStep: (step: number) => void;
+  updateUserData: (data: Partial<UserData>) => void
   updatePatientData: (data: Partial<PatientData>) => void;
   updateProfessionalData: (data: Partial<ProfessionalData>) => void;
   completeRegistration: () => void;
@@ -67,6 +67,7 @@ export const useRegistrationStore = create<RegistrationState>()(
       firstStep: true,
       patientStep: 2,
       professionalStep: 2,
+      userData: {},
       patientData: {},
       professionalData: {},
       isRegistered: false,
@@ -84,6 +85,8 @@ export const useRegistrationStore = create<RegistrationState>()(
         set({ professionalStep: step })
         console.log(`ProfessionalStep: ${step}`)
       },
+      updateUserData: (data) =>
+        set((state) => ({ userData: { ...state.userData, ...data } })),
       updatePatientData: (data) =>
         set((state) => ({ patientData: { ...state.patientData, ...data } })),
       updateProfessionalData: (data) =>
@@ -96,6 +99,7 @@ export const useRegistrationStore = create<RegistrationState>()(
           firstStep: true,
           patientStep: 2,
           professionalStep: 2,
+          userData: {},
           patientData: {},
           professionalData: {},
           isRegistered: false,
