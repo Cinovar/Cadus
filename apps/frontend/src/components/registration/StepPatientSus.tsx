@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useRegistrationStore } from '@/store/registrationStore';
+import { formatName, sanitizeName } from '@/lib/masks';
 import { FileHeart, ArrowRight, ArrowLeft, Check, CreditCard } from 'lucide-react';
 
 interface Props { onNext: () => void; onBack: () => void; stepNumber?: number; totalSteps?: number; }
@@ -91,7 +92,7 @@ const StepPatientSus = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
               className="input-cadus mt-3 animate-in fade-in duration-200"
               placeholder="Nome do responsável"
               value={patientData.nomeResponsavel || ''}
-              onChange={(e) => updatePatientData({ nomeResponsavel: e.target.value })}
+              onChange={(e) => updatePatientData({ nomeResponsavel: formatName(sanitizeName(e.target.value)) })}
             />
           )}
         </div>

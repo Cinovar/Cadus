@@ -1,24 +1,30 @@
 import { useState } from 'react';
 import { useRegistrationStore } from '@/store/registrationStore';
 import { getFirstName } from '@/lib/masks';
-import { MessageCircle, ArrowRight, ArrowLeft } from 'lucide-react';
+import { MessageCircle, ArrowLeft, Loader2, ShieldCheck } from 'lucide-react';
 
 interface Props { onNext: () => void; onBack: () => void; stepNumber?: number; totalSteps?: number; }
 
 const StepPatientComplaint = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
-  const { patientData, updatePatientData } = useRegistrationStore();
+  const { patientData, updatePatientData, completeRegistration } = useRegistrationStore();
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const firstName = getFirstName(patientData.nome || '');
   const charCount = patientData.queixa?.length || 0;
 
-  const handleSubmit = () => {
-    if (!patientData.queixa?.trim()) {
-      setError('Por favor, descreva brevemente o motivo.');
-      return;
-    }
-    setError('');
-    onNext();
+  const validate = () => {
+    setError(!patientData.queixa?.trim() ? 'Por favor, descreva brevemente o motivo.' : '')
+    return error != '';
   };
+
+  const handleSubmit = async () => {
+    if (!validate()) return;
+    setLoading(true);
+    await new Promise((r) => setTimeout(r, 1500));
+    completeRegistration();
+    setLoading(false);
+    onNext();
+  }
 
   return (
     <>
@@ -28,7 +34,7 @@ const StepPatientComplaint = ({ onNext, onBack, stepNumber, totalSteps }: Props)
           <MessageCircle size={26} className="hidden md:block" />
         </div>
         <h2>{firstName ? `${firstName}, por que busca atendimento?` : 'Por que busca atendimento?'}</h2>
-        <p>Ajuda o profissional a se preparar para você</p>
+        <p>Última etapa — Ajuda o profissional a se preparar para você</p>
         {stepNumber && totalSteps && (
           <div className="step-badge">Etapa {stepNumber} de {totalSteps}</div>
         )}
@@ -52,8 +58,8 @@ const StepPatientComplaint = ({ onNext, onBack, stepNumber, totalSteps }: Props)
         {error && <p className="error-text mt-2">{error}</p>}
       </div>
 
-      <button onClick={handleSubmit} className="btn-primary w-full mt-4 md:mt-8 group">
-        Continuar <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+      <button onClick={handleSubmit} disabled={loading} className="btn-primary w-full mt-4 md:mt-8 group">
+        {loading ? <><Loader2 size={18} className="animate-spin" /> Criando seu cadastro...</> : <><ShieldCheck size={18} /> Criar minha conta</>}
       </button>
 
       <button onClick={onBack} className="btn-back">

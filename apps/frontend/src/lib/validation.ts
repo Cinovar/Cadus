@@ -3,24 +3,40 @@ export const validateEmail = (email: string): boolean => {
   return emailRegex.test(email);
 };
 
-export const validatePassword = (password: string): boolean => {
-  return password.length >= 6;
+export const validateCPF = (cpf: string): boolean => {
+  const digits = cpf.replace(/\D/g, '');
+  if (digits.length !== 11) return false;
+  if (/^(\d)\1+$/.test(digits)) return false;
+
+  let sum = 0;
+  for (let i = 0; i < 9; i++) sum += parseInt(digits[i]) * (10 - i);
+  let rest = (sum * 10) % 11;
+  if (rest === 10) rest = 0;
+  if (rest !== parseInt(digits[9])) return false;
+
+  sum = 0;
+  for (let i = 0; i < 10; i++) sum += parseInt(digits[i]) * (11 - i);
+  rest = (sum * 10) % 11;
+  if (rest === 10) rest = 0;
+  return rest === parseInt(digits[10]);
 };
 
-export const validateLogin = (email: string, password: string) => {
-  const errors: { email?: string; password?: string } = {};
+export const validateLogin = (login: string, typeLogin: string, password: string) => {
+  const errors: { login?: string; password?: string } = {};
 
-  if (!email.trim()) {
-    errors.email = "Email é obrigatório";
-  } else if (!validateEmail(email)) {
-    errors.email = "Email inválido";
+  if (!login.trim()) {
+    errors.login = "E-mail ou CPF é obrigatório";
+  } else {
+    if (typeLogin === "cpf" && !validateCPF(login)) errors.login = "CPF inválido";
+    if (typeLogin === "email" && !validateEmail(login)) {
+      const possibleCpfRegex = /^[0-9]+(?:\.[0-9]+)?(?:-[0-9]+)?$/;
+      // Checa se o usuário colocou só dígitos contendo ou não . ou -
+      // Para dar uma mensagem mais esclarecedora ao usuário
+      errors.login = `E-mail ${possibleCpfRegex.test(login) ? "ou CPF " : ""}inválido`;
+    }
   }
 
-  if (!password.trim()) {
-    errors.password = "Senha é obrigatória";
-  } else if (!validatePassword(password)) {
-    errors.password = "Senha deve ter no mínimo 6 caracteres";
-  }
+  if (!password.trim()) errors.password = "Senha é obrigatória";
 
   return {
     isValid: Object.keys(errors).length === 0,

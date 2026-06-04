@@ -1,128 +1,173 @@
 import { useState } from 'react';
 import { useRegistrationStore } from '@/store/registrationStore';
-import { formatCPF, formatPhone, validateCPF } from '@/lib/masks';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { formatName, sanitizeName } from '@/lib/masks';
+import { Heart, ArrowRight, ArrowLeft, Check } from 'lucide-react';
 
-interface Props { onNext: () => void; onBack: () => void; }
+interface Props { onNext: () => void; onBack: () => void; stepNumber?: number; totalSteps?: number; }
 
-const StepPatientPersonal = ({ onNext, onBack }: Props) => {
+const genderOptions = [
+  { label: 'Feminino', icon: '♀' },
+  { label: 'Masculino', icon: '♂' },
+];
+const genderSecondary = [
+  { label: 'Outro', icon: '◎' },
+  { label: 'Prefiro não informar', icon: '—' },
+];
+const pronomeOptions = ['Ela/Dela', 'Ele/Dele', 'Elu/Delu', 'Outro'];
+
+const StepPatientGender = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
   const { patientData, updatePatientData } = useRegistrationStore();
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [error, setError] = useState('');
+  const [generoOutro, setGeneroOutro] = useState('');
+  const [pronomeOutro, setPronomeOutro] = useState('');
 
-  const validate = () => {
-    const e: Record<string, string> = {};
-    if (!patientData.nome?.trim()) e.nome = 'Por favor, informe seu nome completo.';
-    if (!patientData.cpf || !validateCPF(patientData.cpf)) e.cpf = 'Por favor, informe um CPF válido.';
-    if (!patientData.dataNascimento) e.dataNascimento = 'Por favor, informe sua data de nascimento.';
-    if (!patientData.genero) e.genero = 'Por favor, selecione uma opção.';
-    if (!patientData.telefone || patientData.telefone.replace(/\D/g, '').length < 10)
-      e.telefone = 'Por favor, informe um telefone válido.';
-    setErrors(e);
-    return Object.keys(e).length === 0;
+  const selectedGenero = patientData.genero || '';
+  const showGenderInput = selectedGenero === 'Outro';
+  const showExtras = selectedGenero === 'Outro' || selectedGenero === 'Prefiro não informar';
+
+  const handleSelectGenero = (opt: string) => {
+    updatePatientData({ genero: opt });
+    if (!['Outro', 'Prefiro não informar'].includes(opt)) {
+      updatePatientData({ pronome: '', nomeSocial: '' });
+      setGeneroOutro('');
+      setPronomeOutro('');
+    }
+    setError('');
   };
 
-  const handleSubmit = () => { if (validate()) onNext(); };
+  const validate = () => {
+    if (!selectedGenero) {
+      setError('Por favor, selecione uma opção.');
+      return false;
+    }
+    if (selectedGenero === 'Outro' && !generoOutro.trim()) {
+      setError('Por favor, informe como você se identifica.');
+      return false;
+    }
+    return true;
+  };
 
-  const sexOptions = ['Masculino', 'Feminino', 'Outro', 'Prefiro não informar'];
+  const handleNext = () => {
+    if (!validate()) return;
+    if (selectedGenero === 'Outro') {
+      updatePatientData({ genero: `Outro: ${generoOutro.trim()}` });
+    }
+    if (patientData.pronome === 'Outro' && pronomeOutro.trim()) {
+      updatePatientData({ pronome: `Outro: ${pronomeOutro.trim()}` });
+    }
+    onNext();
+  };
+
+  const isActive = (opt: string) => selectedGenero === opt || (opt === 'Outro' && selectedGenero.startsWith('Outro'));
 
   return (
     <>
-      <h2 className="text-xl font-display font-800 text-foreground">Vamos começar com seus dados.</h2>
-      <p className="text-muted-foreground text-sm mt-1 mb-6">Preencha com calma. Você pode corrigir depois.</p>
-
-      <div className="space-y-4">
-        <div>
-          <label className="label-cadus">Seu nome completo *</label>
-          <input
-            className="input-cadus"
-            value={patientData.nome || ''}
-            onChange={(e) => updatePatientData({ nome: e.target.value })}
-            placeholder="Ex: Maria das Graças Silva"
-          />
-          {errors.nome && <p className="error-text">{errors.nome}</p>}
+      <div className="step-header">
+        <div className="icon-hero">
+          <Heart size={22} className="md:hidden" />
+          <Heart size={26} className="hidden md:block" />
         </div>
+        <h2>Como você se identifica?</h2>
+        <p>Informação importante para seu atendimento</p>
+        {stepNumber && totalSteps && (
+          <div className="step-badge">Etapa {stepNumber} de {totalSteps}</div>
+        )}
+      </div>
 
-        <div>
-          <label className="label-cadus">Seu CPF *</label>
-          <input
-            className="input-cadus"
-            value={patientData.cpf || ''}
-            onChange={(e) => updatePatientData({ cpf: formatCPF(e.target.value) })}
-            placeholder="000.000.000-00"
-            inputMode="numeric"
-          />
-          {errors.cpf && <p className="error-text">{errors.cpf}</p>}
-        </div>
+      <div className="step-divider" />
 
+      <div className="space-y-4 md:space-y-5">
         <div>
-          <label className="label-cadus">Sua data de nascimento *</label>
-          <input
-            type="date"
-            className="input-cadus"
-            value={patientData.dataNascimento || ''}
-            onChange={(e) => updatePatientData({ dataNascimento: e.target.value })}
-          />
-          {errors.dataNascimento && <p className="error-text">{errors.dataNascimento}</p>}
-        </div>
-
-        <div>
-          <label className="label-cadus">Como você se identifica? *</label>
-          <div className="grid grid-cols-2 gap-2">
-            {sexOptions.map((opt) => (
+          <div className="grid grid-cols-2 gap-2.5 md:gap-3">
+            {genderOptions.map((opt) => (
               <button
-                key={opt}
+                key={opt.label}
                 type="button"
-                onClick={() => updatePatientData({ genero: opt })}
-                className={`px-4 py-3 rounded-xl border-2 text-sm font-body font-500 transition-all duration-200 ${
-                  patientData.genero === opt
-                    ? 'border-primary bg-accent text-foreground shadow-sm'
-                    : 'border-border text-muted-foreground hover:border-primary/30 hover:bg-accent/50'
-                }`}
+                onClick={() => handleSelectGenero(opt.label)}
+                className={`selection-card ${isActive(opt.label) ? 'selection-card-active' : ''}`}
               >
-                {opt}
+                {isActive(opt.label) && (
+                  <div className="absolute top-2 right-2 md:top-2.5 md:right-2.5 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
+                    <Check size={12} className="text-primary-foreground" />
+                  </div>
+                )}
+                <span className="mr-1.5 text-base md:text-lg">{opt.icon}</span> {opt.label}
               </button>
             ))}
           </div>
-          {errors.genero && <p className="error-text">{errors.genero}</p>}
+
+          <div className="flex items-center gap-3 my-4 md:my-5">
+            <div className="flex-1 h-px bg-border/60" />
+            <span className="text-[11px] md:text-xs text-muted-foreground/50 font-body">ou</span>
+            <div className="flex-1 h-px bg-border/60" />
+          </div>
+
+          <div className="grid grid-cols-2 gap-2.5 md:gap-3">
+            {genderSecondary.map((opt) => (
+              <button
+                key={opt.label}
+                type="button"
+                onClick={() => handleSelectGenero(opt.label)}
+                className={`selection-card text-[12px] md:text-[13px] ${isActive(opt.label) ? 'selection-card-active' : ''}`}
+              >
+                {isActive(opt.label) && (
+                  <div className="absolute top-2 right-2 md:top-2.5 md:right-2.5 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
+                    <Check size={12} className="text-primary-foreground" />
+                  </div>
+                )}
+                <span className="mr-1 opacity-60">{opt.icon}</span> {opt.label}
+              </button>
+            ))}
+          </div>
+          {error && <p className="error-text mt-3">{error}</p>}
         </div>
 
-        <div>
-          <label className="label-cadus">Seu celular ou telefone *</label>
-          <input
-            className="input-cadus"
-            value={patientData.telefone || ''}
-            onChange={(e) => updatePatientData({ telefone: formatPhone(e.target.value) })}
-            placeholder="(00) 00000-0000"
-            inputMode="tel"
-          />
-          {errors.telefone && <p className="error-text">{errors.telefone}</p>}
-        </div>
+        {showGenderInput && (
+          <div className="animate-in fade-in slide-in-from-top-2 duration-300">
+            <label className="label-cadus">Como você se identifica?</label>
+            <input className="input-cadus" value={generoOutro} onChange={(e) => setGeneroOutro(e.target.value)} placeholder="Digite aqui..." />
+          </div>
+        )}
 
-        <div>
-          <label className="label-cadus">Seu e-mail (opcional)</label>
-          <input
-            type="email"
-            className="input-cadus"
-            value={patientData.email || ''}
-            onChange={(e) => updatePatientData({ email: e.target.value })}
-            placeholder="seu@email.com"
-          />
-          <p className="text-xs text-muted-foreground mt-1">
-            Se não tiver e-mail, tudo bem. Você pode usar só o CPF para entrar.
-          </p>
-        </div>
+        {showExtras && (
+          <div className="animate-in fade-in slide-in-from-top-2 duration-300 space-y-4 md:space-y-5">
+            <div>
+              <label className="label-cadus">Qual pronome você prefere? (opcional)</label>
+              <div className="grid grid-cols-2 gap-2 md:gap-2.5">
+                {pronomeOptions.map((opt) => (
+                  <button key={opt} type="button" onClick={() => updatePatientData({ pronome: opt })}
+                    className={`selection-card text-[13px] md:text-sm !py-2.5 md:!py-3 ${patientData.pronome === opt ? 'selection-card-active' : ''}`}>
+                    {opt}
+                  </button>
+                ))}
+              </div>
+              {patientData.pronome === 'Outro' && (
+                <input className="input-cadus mt-2.5" value={pronomeOutro} onChange={(e) => setPronomeOutro(e.target.value)} placeholder="Qual pronome?" />
+              )}
+            </div>
+            <div>
+              <label className="label-cadus">Nome social (opcional)</label>
+              <input
+                className="input-cadus"
+                value={patientData.nomeSocial || ''}
+                onChange={(e) => updatePatientData({ nomeSocial: formatName(sanitizeName(e.target.value)) })}
+                placeholder="Como prefere ser chamado?"
+              />
+              <p className="text-[11px] md:text-xs text-muted-foreground/60 mt-1.5">Se preferir ser chamado de outro nome, informe aqui.</p>
+            </div>
+          </div>
+        )}
       </div>
 
-      <div className="flex gap-3 mt-8">
-        <button onClick={onBack} className="btn-outline flex-1">
-          <ArrowLeft size={18} /> Voltar
-        </button>
-        <button onClick={handleSubmit} className="btn-primary flex-1">
-          Continuar <ArrowRight size={18} />
-        </button>
-      </div>
+      <button onClick={handleNext} className="btn-primary w-full mt-4 md:mt-8 group">
+        Continuar <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+      </button>
+
+      <button onClick={onBack} className="btn-back">
+        <ArrowLeft size={16} /> Voltar
+      </button>
     </>
   );
 };
 
-export default StepPatientPersonal;
+export default StepPatientGender;

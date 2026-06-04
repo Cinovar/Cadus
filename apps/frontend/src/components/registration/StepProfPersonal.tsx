@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useRegistrationStore } from '@/store/registrationStore';
-import { formatCPF, formatPhone, validateCPF } from '@/lib/masks';
+import { formatCPF, formatPhone, formatName, sanitizeName } from '@/lib/masks';
+import { validateCPF } from '@/lib/validation'
 import { Stethoscope, ArrowLeft, ArrowRight, UserRound, Hash, Phone, Mail } from 'lucide-react';
 
 interface Props { onNext: () => void; onBack: () => void; stepNumber?: number; totalSteps?: number; }
@@ -44,18 +45,16 @@ const StepProfPersonal = ({ onNext, onBack, stepNumber, totalSteps }: Props) => 
           <label className="label-cadus">Nome completo *</label>
           <div className="relative">
             <UserRound size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/40" />
-            <input className="input-cadus pl-12" value={professionalData.nome || ''} onChange={(e) => updateProfessionalData({ nome: e.target.value })} placeholder="Seu nome completo" />
+            <input
+              className="input-cadus pl-12"
+              value={professionalData.nome || ''}
+              onChange={(e) => updateProfessionalData({ nome: formatName(sanitizeName(e.target.value)) })}
+              placeholder="Seu nome completo"
+            />
           </div>
           {errors.nome && <p className="error-text">{errors.nome}</p>}
         </div>
-        <div>
-          <label className="label-cadus">CPF *</label>
-          <div className="relative">
-            <Hash size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/40" />
-            <input className="input-cadus pl-12" value={professionalData.cpf || ''} onChange={(e) => updateProfessionalData({ cpf: formatCPF(e.target.value) })} placeholder="000.000.000-00" inputMode="numeric" />
-          </div>
-          {errors.cpf && <p className="error-text">{errors.cpf}</p>}
-        </div>
+        
         <div>
           <label className="label-cadus">Conselho profissional *</label>
           <select className="input-cadus" value={professionalData.conselho || ''} onChange={(e) => updateProfessionalData({ conselho: e.target.value })}>
@@ -64,30 +63,16 @@ const StepProfPersonal = ({ onNext, onBack, stepNumber, totalSteps }: Props) => 
           </select>
           {errors.conselho && <p className="error-text">{errors.conselho}</p>}
         </div>
+
         <div>
           <label className="label-cadus">Número do {professionalData.conselho || 'registro'} *</label>
           <input className="input-cadus" value={professionalData.numeroRegistro || ''} onChange={(e) => updateProfessionalData({ numeroRegistro: e.target.value })} placeholder="Número do registro" />
           {errors.numeroRegistro && <p className="error-text">{errors.numeroRegistro}</p>}
         </div>
+        
         <div>
           <label className="label-cadus">Especialidade / Área de atuação</label>
           <input className="input-cadus" value={professionalData.especialidade || ''} onChange={(e) => updateProfessionalData({ especialidade: e.target.value })} placeholder="Ex: Fonoaudiologia" />
-        </div>
-        <div>
-          <label className="label-cadus">Telefone profissional *</label>
-          <div className="relative">
-            <Phone size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/40" />
-            <input className="input-cadus pl-12" value={professionalData.telefone || ''} onChange={(e) => updateProfessionalData({ telefone: formatPhone(e.target.value) })} placeholder="(00) 00000-0000" inputMode="tel" />
-          </div>
-          {errors.telefone && <p className="error-text">{errors.telefone}</p>}
-        </div>
-        <div>
-          <label className="label-cadus">E-mail profissional *</label>
-          <div className="relative">
-            <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/40" />
-            <input type="email" className="input-cadus pl-12" value={professionalData.email || ''} onChange={(e) => updateProfessionalData({ email: e.target.value })} placeholder="seu@email.com" />
-          </div>
-          {errors.email && <p className="error-text">{errors.email}</p>}
         </div>
       </div>
 
