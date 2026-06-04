@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useRegistrationStore } from '@/store/registrationStore';
-import { getFirstName } from '@/lib/masks';
+import { formatDate, getFirstName } from '@/lib/masks';
+import { validateDate } from '@/lib/validation';
 import { Calendar, ArrowRight, ArrowLeft } from 'lucide-react';
 
 interface Props { onNext: () => void; onBack: () => void; stepNumber?: number; totalSteps?: number; }
@@ -11,10 +12,11 @@ const StepPatientBirthdate = ({ onNext, onBack, stepNumber, totalSteps }: Props)
   const firstName = getFirstName(patientData.nome || '');
 
   const validate = () => {
-    if (!patientData.dataNascimento) {
-      setError('Por favor, informe sua data de nascimento.');
+    if (!patientData.dataNascimento || !validateDate(patientData.dataNascimento)) {
+      setError('Por favor, informe uma data válida.');
       return false;
     }
+
     setError('');
     return true;
   };
@@ -40,10 +42,11 @@ const StepPatientBirthdate = ({ onNext, onBack, stepNumber, totalSteps }: Props)
         <div className="relative">
           <Calendar size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/40" />
           <input
-            type="date"
+            type="text"
             className="input-cadus pl-12"
+            placeholder="dd/mm/yyyy"
             value={patientData.dataNascimento || ''}
-            onChange={(e) => updatePatientData({ dataNascimento: e.target.value })}
+            onChange={(e) => updatePatientData({ dataNascimento: formatDate(e.target.value) })}
           />
         </div>
         {error && <p className="error-text mt-2">{error}</p>}

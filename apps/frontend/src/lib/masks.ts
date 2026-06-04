@@ -44,6 +44,14 @@ export const formatName = (name: string): string =>
 export const getFirstName = (name: string): string =>
   formatName((name || '').trim().split(' ')[0]);
 
+export const formatDate = (date: string): string => {
+  const digits = date.replace(/\D/g, '').slice(0, 8);
+
+  if (digits.length <= 2) return digits;
+  if (digits.length <= 4) return `${digits.slice(0, 2)}/${digits.slice(2)}`;
+  return `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`;
+}
+
 export const fetchAddress = async (cep: string) => {
   const digits = cep.replace(/\D/g, '');
   if (digits.length !== 8) return null;

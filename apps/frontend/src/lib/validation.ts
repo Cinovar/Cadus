@@ -21,6 +21,18 @@ export const validateCPF = (cpf: string): boolean => {
   return rest === parseInt(digits[10]);
 };
 
+export const validateDate = (dateStr: string): boolean => {
+  const dateRegex = /(?:((?:0[1-9]|1[0-9]|2[0-9])\/(?:0[1-9]|1[0-2])|(?:30)\/(?!02)(?:0[1-9]|1[0-2])|31\/(?:0[13578]|1[02]))\/(?:19|20)[0-9]{2})/;
+
+  if (!dateRegex.test(dateStr)) return false;
+
+  const [day, month, year] = dateStr.split('/').map(Number);
+  const date = new Date(year, month - 1, day);
+  const validLeapYear = date.getFullYear() === year && date.getMonth() + 1 === month && date.getDate() === day;
+
+  return validLeapYear && (date <= new Date());
+}
+
 export const validateLogin = (login: string, typeLogin: string, password: string) => {
   const errors: { login?: string; password?: string } = {};
 
