@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useRegistrationStore } from '@/store/registrationStore';
-import { Building2, ArrowLeft, ArrowRight, Info } from 'lucide-react';
+import { Building2, ArrowLeft, Info, Loader2, ShieldCheck } from 'lucide-react';
 
 interface Props { onNext: () => void; onBack: () => void; stepNumber?: number; totalSteps?: number; }
 
@@ -14,8 +14,9 @@ const clinics = [
 const roles = ['Docente', 'Residente', 'Estagiário', 'Coordenador', 'Outro'];
 
 const StepProfClinic = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
-  const { professionalData, updateProfessionalData } = useRegistrationStore();
+  const { professionalData, updateProfessionalData, completeRegistration } = useRegistrationStore();
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(false);
 
   const validate = () => {
     const e: Record<string, string> = {};
@@ -25,6 +26,15 @@ const StepProfClinic = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
     return Object.keys(e).length === 0;
   };
 
+  const handleSubmit = async () => {
+    if (!validate()) return;
+    setLoading(true);
+    await new Promise((r) => setTimeout(r, 1500));
+    completeRegistration();
+    setLoading(false);
+    onNext();
+  }
+
   return (
     <>
       <div className="step-header">
@@ -33,7 +43,7 @@ const StepProfClinic = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
           <Building2 size={26} className="hidden md:block" />
         </div>
         <h2>Sua clínica</h2>
-        <p>Selecione onde você atuará no Cadus</p>
+        <p>Última etapa — Selecione onde você atuará no Cadus</p>
         {stepNumber && totalSteps && (
           <div className="step-badge">Etapa {stepNumber} de {totalSteps}</div>
         )}
@@ -69,8 +79,8 @@ const StepProfClinic = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
         </div>
       </div>
 
-      <button onClick={() => { if (validate()) onNext(); }} className="btn-primary w-full mt-6 md:mt-8 group">
-        Continuar <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+      <button onClick={handleSubmit} disabled={loading} className="btn-primary w-full mt-4 md:mt-8 group">
+        {loading ? <><Loader2 size={18} className="animate-spin" /> Criando seu cadastro...</> : <><ShieldCheck size={18} /> Criar minha conta</>}
       </button>
 
       <button onClick={onBack} className="btn-back">

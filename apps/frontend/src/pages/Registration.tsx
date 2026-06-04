@@ -17,6 +17,7 @@ import StepProfClinic from '@/components/registration/StepProfClinic';
 import StepProfAccess from '@/components/registration/StepProfAccess';
 import SuccessScreen from '@/components/registration/SuccessScreen';
 import { Link } from 'react-router-dom';
+import StepUserAccess from '@/components/registration/StepUserAccess';
 
 const Registration = () => {
   const [searchParams] = useSearchParams();
@@ -43,7 +44,7 @@ const Registration = () => {
     }
   }, []);
 
-  const totalSteps = role === "paciente" ? 10 : 4;
+  const totalSteps = role === "paciente" ? 8 : 4;
   const stepNumber = role === "paciente" ? patientStep : professionalStep;
 
   const goNext = () => {
@@ -82,29 +83,25 @@ const Registration = () => {
   if (showSuccess || isRegistered) return <SuccessScreen />;
 
   const renderStep = () => {
-    if (firstStep) {
-      return <StepProfile />;
-    }
+    if (firstStep) return <StepProfile />;
 
     const sp = { stepNumber, totalSteps };
-    if (role === "paciente" && !firstStep) {
+    if (!firstStep && stepNumber === 2) return <StepUserAccess onNext={goNext} onBack={goBack} {...sp}/>
+
+    if (role === "paciente" && stepNumber > 2 && !firstStep) {
       switch (patientStep) {
-        case 2: return <StepPatientName onNext={goNext} onBack={goBack} {...sp} />;
-        case 3: return <StepPatientCPF onNext={goNext} onBack={goBack} {...sp} />;
+        case 3: return <StepPatientName onNext={goNext} onBack={goBack} {...sp} />;
         case 4: return <StepPatientBirthdate onNext={goNext} onBack={goBack} {...sp} />;
         case 5: return <StepPatientGender onNext={goNext} onBack={goBack} {...sp} />;
-        case 6: return <StepPatientContact onNext={goNext} onBack={goBack} {...sp} />;
-        case 7: return <StepPatientAddress onNext={goNext} onBack={goBack} {...sp} />;
-        case 8: return <StepPatientSus onNext={goNext} onBack={goBack} {...sp} />;
-        case 9: return <StepPatientComplaint onNext={goNext} onBack={goBack} {...sp} />;
-        case 10: return <StepPatientAccess onNext={goNext} onBack={goBack} {...sp} />;
+        case 6: return <StepPatientAddress onNext={goNext} onBack={goBack} {...sp} />;
+        case 7: return <StepPatientSus onNext={goNext} onBack={goBack} {...sp} />;
+        case 8: return <StepPatientComplaint onNext={goNext} onBack={goBack} {...sp} />;
       }
     }
-    if (role === "profissional" && !firstStep) {
+    if (role === "profissional" && stepNumber > 2 && !firstStep) {
       switch (professionalStep) {
-        case 2: return <StepProfPersonal onNext={goNext} onBack={goBack} {...sp} />;
-        case 3: return <StepProfClinic onNext={goNext} onBack={goBack} {...sp} />;
-        case 4: return <StepProfAccess onNext={goNext} onBack={goBack} {...sp} />;
+        case 3: return <StepProfPersonal onNext={goNext} onBack={goBack} {...sp} />;
+        case 4: return <StepProfClinic onNext={goNext} onBack={goBack} {...sp} />;
       }
     }
     return null;
