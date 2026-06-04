@@ -42,7 +42,7 @@ export const usePatientRegistration = () => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     
     setIsLoading(false);
-    console.log("Cadastro bem-sucedido:", patientData);
+    console.log(patientData);
     return true;
   };
 

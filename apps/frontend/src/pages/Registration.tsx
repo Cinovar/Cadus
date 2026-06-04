@@ -48,7 +48,6 @@ const Registration = () => {
     if (stepNumber < totalSteps) {
       if (role === "paciente") setPatientStep(patientStep + 1);
       else setProfessionalStep(professionalStep + 1);
-      console.log(`Progress: ${(stepNumber / totalSteps) * 100}`);
     } else {
       setShowSuccess(true);
     }
@@ -70,7 +69,6 @@ const Registration = () => {
           setFirstStep(true);
         }
       }
-      console.log(`Progress: ${(stepNumber / totalSteps) * 100}`);
     } else {
       navigate('/');
     }
