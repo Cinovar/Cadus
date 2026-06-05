@@ -7,8 +7,6 @@ const StepProfile = () => {
   const handleSelect = (selected: 'paciente' | 'profissional') => {
     setRole(selected);
     setFirstStep(false);
-    if (selected === "paciente") setPatientStep(2);
-    else setProfessionalStep(2);
   };
 
   return (
