@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { useRegistrationStore } from '@/store/registrationStore';
 import { getFirstName } from '@/lib/masks';
-import { MessageCircle, ArrowLeft, Loader2, ShieldCheck } from 'lucide-react';
+import { MessageCircle, ArrowLeft } from 'lucide-react';
+import RegisterButton from '../RegisterButton';
 
 interface Props { onNext: () => void; onBack: () => void; stepNumber?: number; totalSteps?: number; }
 
 const StepPatientComplaint = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
-  const { patientData, updatePatientData, completeRegistration } = useRegistrationStore();
+  const { patientData, updatePatientData } = useRegistrationStore();
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
   const firstName = getFirstName(patientData.nome || '');
   const charCount = patientData.queixa?.length || 0;
 
@@ -23,15 +23,6 @@ const StepPatientComplaint = ({ onNext, onBack, stepNumber, totalSteps }: Props)
 
     return error === '';
   };
-
-  const handleSubmit = async () => {
-    if (!validate()) return;
-    setLoading(true);
-    await new Promise((r) => setTimeout(r, 1500));
-    completeRegistration();
-    setLoading(false);
-    onNext();
-  }
 
   return (
     <>
@@ -68,9 +59,7 @@ const StepPatientComplaint = ({ onNext, onBack, stepNumber, totalSteps }: Props)
         {error && <p className="error-text mt-2">{error}</p>}
       </div>
 
-      <button onClick={handleSubmit} disabled={loading} className="btn-primary w-full mt-4 md:mt-8 group">
-        {loading ? <><Loader2 size={18} className="animate-spin" /> Criando seu cadastro...</> : <><ShieldCheck size={18} /> Criar minha conta</>}
-      </button>
+      <RegisterButton onValidate={validate} onNext={onNext}/>
 
       <button onClick={onBack} className="btn-back">
         <ArrowLeft size={16} /> Voltar
