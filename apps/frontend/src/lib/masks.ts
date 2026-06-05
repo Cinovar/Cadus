@@ -1,9 +1,9 @@
-const regexNomeBR = /[^A-Za-záàâãéêíóôõúüçÁÀÂÃÉÊÍÓÔÕÚÜÇkKwWyY'\s]/g;
+const regexBrName = /[^A-Za-záàâãéêíóôõúüçÁÀÂÃÉÊÍÓÔÕÚÜÇkKwWyY'\s]/g;
 
-const particulas = new Set(['de', 'da', 'do', 'das', 'dos', 'e', 'em', 'von', 'van']);
+const particles = new Set(['de', 'da', 'do', 'das', 'dos', 'e', 'em', 'von', 'van']);
 
 export const sanitizeName = (value: string): string =>
-  value.replace(regexNomeBR, '');
+  value.replace(regexBrName, '');
 
 export const formatCPF = (value: string) => {
   const digits = value.replace(/\D/g, '').slice(0, 11);
@@ -31,7 +31,7 @@ export const formatName = (name: string): string =>
     .split(/(\s+)/)
     .map((part, index) => {
       if (!part.trim()) return part;
-      if (index > 0 && particulas.has(part.toLowerCase())) {
+      if (index > 0 && particles.has(part.toLowerCase())) {
         return part.toLowerCase();
       }
 

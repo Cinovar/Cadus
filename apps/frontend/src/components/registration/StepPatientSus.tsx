@@ -14,15 +14,15 @@ const comoChegouOptions = [
 
 const StepPatientSus = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
   const { patientData, updatePatientData } = useRegistrationStore();
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const handleSubmit = () => {
-    if (!patientData.comoChegou) {
-      setError('Por favor, informe como chegou até nós.');
-      return;
-    }
-    setError('');
-    onNext();
+  const validate = () => {
+    const e: Record<string, string> = {};
+    if (!patientData.comoChegou) e.comoChegou = 'Por favor, informe como chegou até nós.';
+    if (patientData.temResponsavel && !patientData.nomeResponsavel.trim())
+      e.nomeResponsavel = 'Por favor, insira o nome do responsável.'
+    setErrors(e);
+    return Object.keys(e).length === 0;
   };
 
   return (
@@ -76,6 +76,7 @@ const StepPatientSus = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
             ))}
           </div>
         </div>
+        {errors.comoChegou && <p className="error-text">{errors.comoChegou}</p>}
 
         <div>
           <label className="label-cadus flex items-center gap-3">
@@ -96,11 +97,10 @@ const StepPatientSus = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
             />
           )}
         </div>
-
-        {error && <p className="error-text">{error}</p>}
+        {errors.nomeResponsavel && <p className="error-text">{errors.nomeResponsavel}</p>}
       </div>
 
-      <button onClick={handleSubmit} className="btn-primary w-full mt-4 md:mt-8 group">
+      <button onClick={() => {if (validate()) onNext()} } className="btn-primary w-full mt-4 md:mt-8 group">
         Continuar <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
       </button>
 
