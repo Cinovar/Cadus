@@ -1,13 +1,13 @@
-export type Either<L, R> = Error<L, R> | Success<L, R>;
+export type Either<L, R> = Failure<L, R> | Success<L, R>;
 
-export class Error<L, R> {
+export class Failure<L, R> {
     readonly value: L;
 
     constructor(value: L){
         this.value = value;
     }
 
-    isError(): this is Error<L, R> {
+    isError(): this is Failure<L, R> {
         return true;
     }
 
@@ -23,7 +23,7 @@ export class Success<L, R> {
         this.value = value;
     }
 
-    isError(): this is Error<L, R> {
+    isError(): this is Failure<L, R> {
         return false;
     }
 
@@ -33,8 +33,8 @@ export class Success<L, R> {
 }
 
 
-export const error = <L, R>(l: L): Either<L, R> => {
-  return new Error<L, R>(l)
+export const failure = <L, R = any>(l: L): Either<L, R> => {
+  return new Failure<L, R>(l)
 }
 
 export const success = <L, R>(r: R): Either<L, R> => {
