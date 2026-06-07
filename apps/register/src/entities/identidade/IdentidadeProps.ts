@@ -1,30 +1,30 @@
-import { Nome } from "./Name";
-import { Cpf } from "./Cpf";
-import { DataNascimento } from "./DataNascimento";
-import { Email } from "./Email";
-import { Genero } from "./Genero";
-import { Pronome } from "./Pronome";
-import { Senha } from "./Senha";
-import { Telefone } from "./Telefone";
-import { EnderecoEntity } from "./Endereco";
+import type { Id } from "./Id"
+import type { Nome } from "./Nome";
+import type { Cpf } from "./Cpf";
+import type { Data } from "./Data";
+import type { Email } from "./Email";
+import type { Genero } from "./Genero";
+import type { Pronome } from "./Pronome";
+import type { Senha } from "./Senha";
+import type { Telefone } from "./Telefone";
 
 
 // A interface de propriedades para entidade de Identidade não precisa receber um ID
 // precisamente, pois é atribuição do sistema daqueles que trabalham com requisições
 export interface IdentidadeProps {
-    id?: string;
+    id: Id;
     nome: Nome;
     cpf: Cpf;
-    dataNascimento: DataNascimento;
+    dataNascimento: Data;
 
     genero: Genero;
     pronome?: Pronome;
     
-    email?: Email;
+    email: Email;
     telefone: Telefone;
     senha: Senha;
-    endereco: EnderecoEntity;
+    enderecoId: Id;
 
-    criadoEm: Date;
-    atualizadoEm: Date;
+    criadoEm: Data;
+    atualizadoEm: Data;
 }
