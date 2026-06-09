@@ -73,18 +73,9 @@ export const useRegistrationStore = create<RegistrationState>()(
       isRegistered: false,
       registeredRole: null,
       setRole: (role) => set({ role }),
-      setFirstStep: (flag) => {
-        set({ firstStep: flag })
-        console.log(`FirstStep: ${flag}`)
-      },
-      setPatientStep: (step) => {
-        set({ patientStep: step })
-        console.log(`PatientStep: ${step}`)
-      },
-      setProfessionalStep: (step) => {
-        set({ professionalStep: step })
-        console.log(`ProfessionalStep: ${step}`)
-      },
+      setFirstStep: (flag) => set({ firstStep: flag }),
+      setPatientStep: (step) => set({ patientStep: step }),
+      setProfessionalStep: (step) => set({ professionalStep: step }),
       updateUserData: (data) =>
         set((state) => ({ userData: { ...state.userData, ...data } })),
       updatePatientData: (data) =>

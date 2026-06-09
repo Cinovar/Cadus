@@ -15,11 +15,8 @@ const StepProfPersonal = ({ onNext, onBack, stepNumber, totalSteps }: Props) => 
   const validate = () => {
     const e: Record<string, string> = {};
     if (!professionalData.nome?.trim()) e.nome = 'Por favor, informe seu nome.';
-    if (!professionalData.cpf || !validateCPF(professionalData.cpf)) e.cpf = 'CPF inválido.';
     if (!professionalData.conselho) e.conselho = 'Selecione seu conselho.';
     if (!professionalData.numeroRegistro?.trim()) e.numeroRegistro = 'Informe o número de registro.';
-    if (!professionalData.telefone || professionalData.telefone.replace(/\D/g, '').length < 10) e.telefone = 'Telefone inválido.';
-    if (!professionalData.email?.trim() || !professionalData.email.includes('@')) e.email = 'E-mail inválido.';
     setErrors(e);
     return Object.keys(e).length === 0;
   };

@@ -1,9 +1,9 @@
-const regexNomeBR = /[^A-Za-záàâãéêíóôõúüçÁÀÂÃÉÊÍÓÔÕÚÜÇkKwWyY'\s]/g;
+const regexBrName = /[^A-Za-záàâãéêíóôõúüçÁÀÂÃÉÊÍÓÔÕÚÜÇkKwWyY'\s]/g;
 
-const particulas = new Set(['de', 'da', 'do', 'das', 'dos', 'e', 'em', 'von', 'van']);
+const particles = new Set(['de', 'da', 'do', 'das', 'dos', 'e', 'em', 'von', 'van']);
 
 export const sanitizeName = (value: string): string =>
-  value.replace(regexNomeBR, '');
+  value.replace(regexBrName, '');
 
 export const formatCPF = (value: string) => {
   const digits = value.replace(/\D/g, '').slice(0, 11);
@@ -31,7 +31,7 @@ export const formatName = (name: string): string =>
     .split(/(\s+)/)
     .map((part, index) => {
       if (!part.trim()) return part;
-      if (index > 0 && particulas.has(part.toLowerCase())) {
+      if (index > 0 && particles.has(part.toLowerCase())) {
         return part.toLowerCase();
       }
 
@@ -43,6 +43,14 @@ export const formatName = (name: string): string =>
 
 export const getFirstName = (name: string): string =>
   formatName((name || '').trim().split(' ')[0]);
+
+export const formatDate = (date: string): string => {
+  const digits = date.replace(/\D/g, '').slice(0, 8);
+
+  if (digits.length <= 2) return digits;
+  if (digits.length <= 4) return `${digits.slice(0, 2)}/${digits.slice(2)}`;
+  return `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`;
+}
 
 export const fetchAddress = async (cep: string) => {
   const digits = cep.replace(/\D/g, '');

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useRegistrationStore } from '@/store/registrationStore';
-import { Building2, ArrowLeft, Info, Loader2, ShieldCheck } from 'lucide-react';
+import { Building2, ArrowLeft, Info } from 'lucide-react';
+import RegisterButton from '../RegisterButton';
 
 interface Props { onNext: () => void; onBack: () => void; stepNumber?: number; totalSteps?: number; }
 
@@ -14,9 +15,8 @@ const clinics = [
 const roles = ['Docente', 'Residente', 'Estagiário', 'Coordenador', 'Outro'];
 
 const StepProfClinic = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
-  const { professionalData, updateProfessionalData, completeRegistration } = useRegistrationStore();
+  const { professionalData, updateProfessionalData } = useRegistrationStore();
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [loading, setLoading] = useState(false);
 
   const validate = () => {
     const e: Record<string, string> = {};
@@ -25,15 +25,6 @@ const StepProfClinic = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
     setErrors(e);
     return Object.keys(e).length === 0;
   };
-
-  const handleSubmit = async () => {
-    if (!validate()) return;
-    setLoading(true);
-    await new Promise((r) => setTimeout(r, 1500));
-    completeRegistration();
-    setLoading(false);
-    onNext();
-  }
 
   return (
     <>
@@ -79,9 +70,7 @@ const StepProfClinic = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
         </div>
       </div>
 
-      <button onClick={handleSubmit} disabled={loading} className="btn-primary w-full mt-4 md:mt-8 group">
-        {loading ? <><Loader2 size={18} className="animate-spin" /> Criando seu cadastro...</> : <><ShieldCheck size={18} /> Criar minha conta</>}
-      </button>
+      <RegisterButton onValidate={validate} onNext={onNext}/>
 
       <button onClick={onBack} className="btn-back">
         <ArrowLeft size={16} /> Voltar

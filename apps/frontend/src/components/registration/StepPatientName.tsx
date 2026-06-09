@@ -5,8 +5,6 @@ import { UserRound, ArrowRight, ArrowLeft } from 'lucide-react';
 
 interface Props { onNext: () => void; onBack: () => void; stepNumber?: number; totalSteps?: number; }
 
-const regexNomeBR = /^[A-Za-záàâãéêíóôõúüçÁÀÂÃÉÊÍÓÔÕÚÜÇkKwWyY'\s]+$/;
-
 const StepPatientName = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
   const { patientData, updatePatientData } = useRegistrationStore();
   const [error, setError] = useState('');
@@ -20,11 +18,6 @@ const StepPatientName = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
 
     if (!nome || nome.split(' ').length < 2) {
       setError('Por favor, informe seu nome completo.');
-      return;
-    }
-
-    if (!regexNomeBR.test(nome)) {
-      setError('Nome contém caracteres inválidos.');
       return;
     }
 
