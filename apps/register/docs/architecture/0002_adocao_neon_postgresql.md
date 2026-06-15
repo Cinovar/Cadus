@@ -1,7 +1,7 @@
 # ADR-0005 — Adoção do Neon como Banco de Dados do Microsserviço de Identidade
 
 - **Status:** Aceito
-- **Data:** 30-05-2026
+- **Data:** 2026-05-31
 - **Decisores:** Time de Arquitetura
 
 ---
@@ -40,16 +40,12 @@ O Neon oferece dois modos de conexão:
 - **Conexão direta (TCP)** — recomendada para o microsserviço de identidade em produção, onde o processo é de longa duração e o Prisma gerencia o pool de conexões internamente
 - **Driver serverless (`@neondatabase/serverless`)** — compatível com `node-postgres` e indicado para funções de curta duração (lambdas, edge functions); pode ser adotado pontualmente se o serviço evoluir para esse modelo
 
-Para produção, recomenda-se **desabilitar o scale-to-zero** no branch principal, evitando a latência de cold start em um serviço de autenticação onde responsividade é crítica.
-
 ### Sobre conformidade com dados de saúde
 
 O sistema opera com dados de pacientes do SUS, classificados como **dados sensíveis** pela LGPD (Lei 13.709/2018). A conformidade exigível no contexto brasileiro é:
 
 - **LGPD** — exige base legal para tratamento de dados sensíveis, consentimento explícito, medidas técnicas de segurança e registro do tratamento junto à ANPD; o Neon está em conformidade
 - **HIPAA** — padrão americano de segurança para dados de saúde (PHI); não é exigência legal no Brasil, mas serve como referência de maturidade; o Neon possui certificação HIPAA desde março de 2025, exigindo assinatura de BAA para ativação
-
-A ANVISA não regula diretamente o armazenamento de dados — sua competência incide sobre produtos e serviços com valor clínico regulatório (laudos, receitas digitais), fora do escopo deste serviço.
 
 ---
 
