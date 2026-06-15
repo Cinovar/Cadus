@@ -76,7 +76,16 @@ cd cadus
 
 # Instalar todas as dependências do workspace
 bun install
+
 ```
+## Variáveis de Ambiente
+
+Cada serviço pode exigir variáveis de ambiente específicas. Crie um arquivo `.env` na raiz do serviço baseando-se no `.env.example` correspondente.
+
+| Variável | Descrição | Exemplo |
+|----------|-----------|---------|
+| `PORT` | Porta do serviço | `3000` |
+| `NODE_ENV` | Ambiente de execução | `development` |
 
 ---
 
