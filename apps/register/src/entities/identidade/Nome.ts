@@ -1,5 +1,5 @@
 import { InvalidNomeError } from "../errors/InvalidNome"
-import { type Either, success, failure} from "../../utils/Either"
+import { type Either, success, failure} from "../../shared/Either"
 
 export class Nome {
     private readonly _nome: string;

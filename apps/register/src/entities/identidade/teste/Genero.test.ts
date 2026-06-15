@@ -6,7 +6,7 @@ describe('GeneroVO', () => {
     
     describe('CENÁRIOS DE SUCESSO', () => {
         test('deve retornar true para uma opção de gênero listada', () => {
-            const resultado = Genero.validation(GeneroEnum.NAO_INFORMADO);
+            const resultado = Genero.noFormatGeneroError(GeneroEnum.NAO_INFORMADO);
             expect(resultado).toBe(true);
         });
     });

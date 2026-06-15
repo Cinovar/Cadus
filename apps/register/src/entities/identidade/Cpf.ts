@@ -1,5 +1,5 @@
 import { InvalidCpfError, FormatCpfError, NoFieldCpfError, NoExistCpfError } from "../errors/InvalidCpf";
-import { type Either, success, failure } from "../../utils/Either";
+import { type Either, success, failure } from "../../shared/Either";
 
 export class Cpf {
     private readonly cpf: string;

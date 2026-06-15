@@ -1,14 +1,14 @@
 export interface IdentidadeDados {
     nome: string;
     cpf: string;
-    dataNascimento: Date;
+    dataNascimento: string;
 
     genero: string;
     pronome?: string;
     
     email: string;
     telefone: string;
-    senha: string;
+    senhaHash: string;
     enderecoId: string;
 
     criadoEm: Date;

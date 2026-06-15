@@ -1,46 +1,79 @@
 import { InvalidEnderecoError } from "../errors/InvalidEndereco";
-import { type Either, success, failure } from "../../utils/Either";
+import { type Either, success, failure } from "../../shared/Either";
 import type { EnderecoDados } from "./EnderecoDados";
 import type { EnderecoProps} from "./EnderecoProps";
+
+// VOs
+import { EnderecoId } from "./EnderecoId";
+import { Data } from "../../shared/value-objects/Data";
 import { Cep } from "./Cep";
 import { Logradouro } from "./Logradouro";
 import { Numero } from "./Numero";
 import { Complemento } from "./Complemento";
 
 // Validation
-import { Validation } from "../../utils/Validation";
+import { Validation } from "../../shared/Validation";
 
+// Utils
+import { localDate } from "../../shared/utils/CreateDate";
 
 export class Endereco { 
-    private _id: string;
+    private _id: EnderecoId;
     private props: EnderecoProps;
-    private _criadoEm: Date;
-    private _atualizadoEm: Date;
-    private _deletadoEm: Date | undefined;
+    private _criadoEm: Data;
+    private _atualizadoEm: Data;
+    private _deletadoEm: Data | undefined;
 
-
-    constructor (props: EnderecoProps, id: string) {
+    constructor (
+        props: EnderecoProps, 
+        id: EnderecoId,
+        criadoEm: Data,
+        atualizadoEm: Data,
+        deletadoEm?: Data | undefined
+    ) {
         this._id = id;
         this.props = props;
-        this._criadoEm = new Date();
-        this._atualizadoEm = this._criadoEm;
+        this._criadoEm = criadoEm;
+        this._atualizadoEm = atualizadoEm;
+        this._deletadoEm = deletadoEm;
     }
     
-    public static async create ({cep, logradouro, numero, complemento}: EnderecoDados, id: string): Promise<Either<Error[], Endereco>> {
+    public static create (
+        {cep, logradouro, numero, complemento }: EnderecoDados, 
+        id: EnderecoId, 
+    ): Either<Error[], Endereco> {
 
         const validations: Record<string, Either<Error, any>> = {
             cep: Cep.create(cep),
             logradouro: Logradouro.create(logradouro),
             numero: Numero.create(Number(numero)),
             complemento: Complemento.create(complemento),
+            criadoEm: Data.create(localDate()),
+            atualizadoEm: Data.create(localDate())
         } 
 
-        const resultValidation: Either<Error[], any> = Validation.combine(validations);
+        const resultado: Either<Error[], any> = Validation.combine(validations);
 
-        return success(new Endereco(resultValidation.value, id));
+        if (resultado.isError()){
+            return failure(resultado.value);
+        }
+
+        const { criadoEm, atualizadoEm, ...props} = resultado.value;
+
+        return success(new Endereco(props, id, criadoEm, atualizadoEm));
     }
 
-    public get id (): string  {
+    public static reconstitute (
+        props: EnderecoProps,
+        id: EnderecoId,
+        criadoEm: Data,
+        atualizadoEm: Data,
+        deletadoEm?: Data | undefined
+    ): Endereco {
+        return new Endereco(props, id, criadoEm, atualizadoEm, deletadoEm);
+    }
+
+    public get id (): EnderecoId  {
         return this._id;
     }
 
@@ -59,5 +92,17 @@ export class Endereco {
     public get complemento (): Complemento {
         return this.props.complemento;
     }
-    
+
+    public get criadoEm (): Data {
+        return this._criadoEm;
+    }
+
+    public get atualizadoEm(): Data {
+        return this._atualizadoEm;
+    }
+
+    public get deletadoEm(): Data | undefined {
+        return this._deletadoEm;
+    }
+
 }

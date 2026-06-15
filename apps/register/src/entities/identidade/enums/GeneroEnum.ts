@@ -1,4 +1,4 @@
-export enum GeneroEnum {
+export enum GeneroEnum { 
     MASCULINO = 'MASCULINO',
     FEMININO = 'FEMININO',
     OUTRO = 'OUTRO',

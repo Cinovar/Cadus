@@ -1,6 +1,6 @@
 export enum PronomeEnum {
-    ELE_DELE = 'ELE_DELE',
-    ELA_DELA = 'ELA_DELA',
-    ELU_DELU = 'ELU_DELU',
+    ELE_DELE = 'ELE/DELE',
+    ELA_DELA = 'ELA/DELA',
+    ELU_DELU = 'ELU/DELU',
     OUTRO = 'OUTRO'
 }
