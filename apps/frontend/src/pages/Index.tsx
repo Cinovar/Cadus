@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
-import { User, Briefcase, UserCheck, ClipboardList, CheckCircle, ArrowRight, Smartphone, Clock, ShieldCheck } from 'lucide-react';
+import { UserCheck, ClipboardList, CheckCircle, Smartphone, Clock, ShieldCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
+import CtaButtons from '@/components/CtaButtons';
 import Footer from '@/components/Footer';
 import heroIllustration from '@/assets/hero-illustration.png';
 
@@ -39,7 +39,6 @@ const Index = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
 
-      {/* Hero — mobile-first, Dinova-inspired: centered, impactful */}
       <section className="hero-gradient py-14 sm:py-16 md:py-20 lg:py-28">
         <div className="container relative z-10">
           <div className="flex flex-col items-center gap-8 md:flex-row md:gap-10 lg:gap-14">
@@ -59,26 +58,13 @@ const Index = () => {
                 Preencha seu cadastro pelo celular, no seu tempo. Quando chegar na clínica, já sabem quem você é.
               </p>
 
-              {/* CTAs — stacked on mobile, prominent */}
-              <div className="flex flex-col gap-3 mt-8 md:mt-10 md:flex-row md:gap-4">
-                <Link
-                  to="/cadastro?role=paciente"
-                  className="flex items-center justify-center gap-2.5 px-7 py-4 rounded-full bg-card text-primary font-display font-700 text-[15px] md:text-base transition-all duration-200 hover:shadow-lg hover:scale-[1.02] min-h-[52px] shadow-md"
-                >
-                  <User size={20} />
-                  Sou Paciente
-                </Link>
-                <Link
-                  to="/cadastro?role=profissional"
-                  className="flex items-center justify-center gap-2.5 px-7 py-4 rounded-full border-2 border-primary-foreground/30 text-primary-foreground font-display font-700 text-[15px] md:text-base transition-all duration-200 hover:bg-primary-foreground/10 min-h-[52px]"
-                >
-                  <Briefcase size={20} />
-                  Sou Profissional
-                </Link>
+              {/* CTA buttons */}
+              <div className="flex flex-col gap-3 mt-8 md:mt-10 md:flex-row md:gap-4 px-4">
+                <CtaButtons />
               </div>
 
-              {/* Trust badges */}
-              <div className="flex items-center justify-center md:justify-start gap-5 mt-6 text-primary-foreground/60 text-[12px] md:text-sm font-body">
+              {/* Seção para acalmar FUDs do usuário (Feat, Uncertainty e Doubt) */}
+              <div className="flex items-center justify-center md:justify-start gap-5 mt-6 text-primary-foreground/80 text-[12px] md:text-sm font-body">
                 <span className="flex items-center gap-1.5"><Smartphone size={14} /> Pelo celular</span>
                 <span className="flex items-center gap-1.5"><Clock size={14} /> 5 minutos</span>
                 <span className="flex items-center gap-1.5"><ShieldCheck size={14} /> Dados seguros</span>
@@ -98,7 +84,7 @@ const Index = () => {
       </section>
 
 
-      {/* Como funciona — section label + title pattern */}
+      {/* Como funciona (título) */}
       <section className="py-10 sm:py-14 md:py-20 lg:py-28">
         <div className="container max-w-5xl">
           <motion.div
@@ -115,7 +101,7 @@ const Index = () => {
           </motion.div>
 
           <div className="relative">
-            {/* Linha conectora horizontal — desktop */}
+            {/* Linha conectora horizontal (desktop) */}
             <motion.svg
               className="absolute top-[52px] hidden md:block z-0 h-[4px]"
               style={{ left: 'calc(16.666% - 8px)', right: 'calc(16.666% + 44px)' }}
@@ -139,7 +125,7 @@ const Index = () => {
               />
             </motion.svg>
 
-            {/* Linha conectora vertical — mobile */}
+            {/* Linha conectora vertical (mobile) */}
             <div className="absolute left-[28px] top-[60px] bottom-[60px] w-px border-l-2 border-dashed border-primary/20 md:hidden z-0" />
 
             <div className="grid md:grid-cols-3 gap-5 md:gap-6 relative z-10">
@@ -148,21 +134,22 @@ const Index = () => {
                   num: '01',
                   icon: <UserCheck size={24} className="text-primary-foreground" />,
                   title: 'Escolha seu perfil',
-                  desc: 'Paciente, profissional, gestor ou aluno — cada um tem seu caminho.',
+                  desc: 'Siga seu caminho entre paciente e profissional — docente ou discente.',
                 },
                 {
                   num: '02',
                   icon: <ClipboardList size={24} className="text-primary-foreground" />,
                   title: 'Preencha seus dados',
-                  desc: 'Responda no seu ritmo. Seus dados ficam salvos automaticamente.',
+                  desc: 'Responda no seu ritmo, seus dados ficam salvos automaticamente.',
                 },
                 {
                   num: '03',
                   icon: <CheckCircle size={24} className="text-primary-foreground" />,
                   title: 'Tudo pronto',
-                  desc: 'Seus dados já estão no sistema. É só chegar e ser atendido.',
+                  desc: 'Seus dados já estão no sistema. Agora é só aguardar o atendimento.',
                 },
               ].map((step, i) => (
+                /* Cards */
                 <motion.div
                   key={i}
                   className="relative group flex md:flex-col items-start md:items-center gap-4 md:gap-0 md:text-center"
@@ -172,14 +159,12 @@ const Index = () => {
                   variants={fadeUp}
                   custom={i}
                 >
-                  {/* Ícone */}
                   <div className="relative shrink-0 mb-0 md:mb-5">
                     <div className="w-14 h-14 md:w-[104px] md:h-[104px] rounded-2xl md:rounded-3xl bg-gradient-to-br from-primary to-[#14919B] flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all duration-300">
                       <div className="scale-100 md:scale-[1.6]">{step.icon}</div>
                     </div>
                   </div>
 
-                  {/* Card */}
                   <div className="relative bg-card rounded-xl md:rounded-2xl p-4 md:p-6 shadow-sm border border-border/50 group-hover:-translate-y-1 group-hover:shadow-md transition-all duration-300 flex-1 md:flex-none md:w-full overflow-hidden">
                     <span className="absolute -top-2 -right-1 text-[3.5rem] md:text-[5rem] font-display font-800 text-primary/[0.04] leading-none select-none pointer-events-none">
                       {step.num}
@@ -220,7 +205,7 @@ const Index = () => {
               Comece agora
             </span>
             <h2 className="text-[1.35rem] leading-tight sm:text-3xl md:text-4xl lg:text-5xl font-display font-800 text-primary-foreground tracking-tight">
-              Seus dados, antes da consulta<span className="text-highlight">.</span>
+              Seus dados prontos antes da consulta<span className="text-highlight">.</span>
             </h2>
           </motion.div>
           <motion.div
@@ -230,32 +215,19 @@ const Index = () => {
             variants={fadeUp}
             custom={1}
           >
-            <p className="text-primary-foreground/70 mt-2 md:mt-4 text-[13px] md:text-lg font-body max-w-[280px] sm:max-w-sm md:max-w-2xl mx-auto">
+            <p className="text-primary-foreground/80 mt-2 md:mt-4 text-[13px] md:text-lg font-body max-w-[280px] sm:max-w-sm md:max-w-2xl mx-auto">
               Cadastre-se agora e chegue na clínica pronto para ser atendido.
             </p>
           </motion.div>
           <motion.div
-            className="flex flex-col gap-3 mt-8 md:mt-10 md:flex-row md:gap-4 justify-center"
+            className="flex flex-col gap-4 mt-8 md:mt-10 md:flex-row justify-center"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeUp}
             custom={2}
           >
-            <Link
-              to="/cadastro?role=paciente"
-              className="flex items-center justify-center gap-2 px-7 py-4 md:px-9 rounded-full bg-card text-primary font-display font-700 text-[15px] md:text-base transition-all duration-200 hover:scale-[1.02] shadow-[0_0_30px_rgba(255,255,255,0.12)] hover:shadow-[0_0_40px_rgba(255,255,255,0.2)] min-h-[52px]"
-            >
-              <User size={18} />
-              Cadastro de Paciente
-            </Link>
-            <Link
-              to="/cadastro?role=profissional"
-              className="flex items-center justify-center gap-2 px-7 py-4 md:px-9 rounded-full border-2 border-primary-foreground/30 text-primary-foreground font-display font-700 text-[15px] md:text-base transition-all duration-200 hover:bg-primary-foreground/10 min-h-[52px]"
-            >
-              <Briefcase size={18} />
-              Cadastro de Profissional
-            </Link>
+            <CtaButtons />
           </motion.div>
         </div>
       </section>
