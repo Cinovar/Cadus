@@ -1,19 +1,22 @@
 # Cadus — Documentação do Projeto
 
-🚀 Arquitetura de microsserviços escalável com monorepo gerenciado por Bun workspaces e fundamentado em Clean Architecture.
 
-- [📌 Índice]()
-- [✨ Features & Capacidades]()
-- [🛠️ Stack Tecnológica]()
-- [🏗️ Estrutura do Monorepo]()
-- [🎯 Princípios de Arquitetura]()
-- [⚙️ Pré-requisitos & Instalação]()
-- [🚀 Executando o Projeto]()
-- [🧪 Suíte de Testes]()
-- [➕ Criando um Novo Serviço]()
-- [🧰 Ferramentas de Apoio]()
-- [🤝 Contribuição & Licença]()
-- [✨ Features & Capacidades]()
+## 📌 Índice
+
+- [📌 Índice](#-índice)
+- [✨ Features & Capacidades](#features--capacidades)
+- [🛠️ Stack Tecnológica](#️-stack-tecnológica)
+- [🏗️ Estrutura do Monorepo](#️-estrutura-do-monorepo)
+- [🎯 Princípios de Arquitetura](#-princípios-de-arquitetura)
+- [⚙️ Pré-requisitos & Instalação](#️-pré-requisitos--instalação)
+- [🚀 Executando o Projeto](#-executando-o-projeto)
+- [🧪 Suíte de Testes](#-suíte-de-testes)
+- [➕ Criando um Novo Serviço](#-criando-um-novo-serviço)
+- [🧰 Ferramentas de Apoio](#-ferramentas-de-apoio)
+- [🤝 Contribuição](#-contribuição)
+- [📄 Licença](#-licença)
+
+## ✨ Features & Capacidades
 
 O Cadus é uma plataforma distribuída projetada para alta performance e isolamento de contextos.
 
@@ -128,13 +131,15 @@ bun --filter @cadus/frontend build
 # Build do Microsserviço (Gera um bundle otimizado para o runtime Bun)
 bun --filter @cadus/identity build
 ```
-## 🧪 Suíte de TestesA arquitetura desacoplada permite uma estratégia de testes altamente eficiente dividida em duas frentes.
+## 🧪 Suíte de Testes
+A arquitetura desacoplada permite uma estratégia de testes altamente eficiente dividida em duas frentes.
 
 | Tipo de Teste | Escopo | Localização | Ferramenta |
+| ------------- | ------ | ----------- | ---------- |
 | Unitário / Integração | Use Cases, Entities e Adapters | apps/<app>/src/**/*.test.ts(x) | Vitest |
 | End-to-End (E2E) | Fluxos interconectados | Frontend ↔ APIapps/e2e/tests/**/*.spec.ts | Playwright | 
 
-## Executando Testes Unitários (Vitest) 
+### Executando Testes Unitários (Vitest) 
 ```Bash
 # Executar toda a suíte unitária do monorepo
 bun test
@@ -238,15 +243,16 @@ Por fim, execute bun install na raiz para sincronizar os workspaces.
 
 ## 🧰 Ferramentas de Apoio
 - Diagramas & Modelagem: Mermaid para diagramas de sequência evolutivos dentro do repositório Markdown e draw.io para plantas arquiteturais.
+- Modelagem de Dados: DrawSQl para estruturar as enitdades do sistema.
 - Design & UI Prototypes: Figma para design system e Lovable para prototipação ágil de componentes de alta fidelidade.
 - Governança & Agilidade: Jira / GitHub Projects para acompanhamento de Sprints e mapeamento de débitos técnicos.
 
-## Contribuição
+## 🤝 Contribuição
 Faça o Fork do repositório.Crie sua branch de feature: `git checkout -b feature/MinhaFeature.`  
 Valide o alinhamento arquitetural antes do commit: `bun test` e `bun lint`.  
 Envie o Pull Request para a branch main.
 
-## 🤝 Licença
+## 📄 Licença
 Este projeto está sob a licenca Apache 2.0. Veja o arquivo `LICENSE`para mais detalhes.
 
 Powered by **Cadus** | Desenvolvido com foco em Engenharia de Software de Impacto
