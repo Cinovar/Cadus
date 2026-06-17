@@ -1,6 +1,7 @@
-import { InvalidIdError } from "../errors/InvalidId";
-import { type Either, success, failure } from "../../shared/Either";
-import { ValueObject } from "../../shared/value-objects/ValueObject";
+import { InvalidIdError } from "../../errors/InvalidId";
+import { type Either, success, failure } from "../../../shared/Either";
+import { ValueObject } from "../../../shared/value-objects/ValueObject";
+import crypto from "node:crypto";
 
 
 export interface IdentidadeIdProps {

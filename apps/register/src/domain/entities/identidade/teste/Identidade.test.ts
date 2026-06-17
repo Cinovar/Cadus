@@ -9,15 +9,15 @@ import type { IdentidadeDados } from '../IdentidadeDados';
 import { hash } from 'bcrypt';
 
 // Errors
-import { InvalidCpfError } from '../../errors/InvalidCpf';
-import { InvalidNomeError } from '../../errors/InvalidNome';
-import { InvalidTelefoneError } from '../../errors/InvalidTelefone';
-import { InvalidGeneroError } from '../../errors/InvalidGenero';
-import { InvalidSenhaError } from '../../errors/InvalidSenha';
-import { InvalidIdError } from '../../errors/InvalidId';
-import { InvalidEmailError } from '../../errors/InvalidEmail';
-import { InvalidPronomeError } from '../../errors/InvalidPronome';
-import { InvalidDataError } from '../../errors/InvalidData';
+import { InvalidCpfError } from '../../../errors/InvalidCpf';
+import { InvalidNomeError } from '../../../errors/InvalidNome';
+import { InvalidTelefoneError } from '../../../errors/InvalidTelefone';
+import { InvalidGeneroError } from '../../../errors/InvalidGenero';
+import { InvalidSenhaError } from '../../../errors/InvalidSenha';
+import { InvalidIdError } from '../../../errors/InvalidId';
+import { InvalidEmailError } from '../../../errors/InvalidEmail';
+import { InvalidPronomeError } from '../../../errors/InvalidPronome';
+import { InvalidDataError } from '../../../errors/InvalidData';
 
 // Criando testes para o modelo de entrada das Entiaddes de entrada do domínio de identidade.
 // Funções

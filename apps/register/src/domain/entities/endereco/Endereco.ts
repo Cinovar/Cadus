@@ -1,21 +1,21 @@
-import { InvalidEnderecoError } from "../errors/InvalidEndereco";
-import { type Either, success, failure } from "../../shared/Either";
+import { InvalidEnderecoError } from "../../errors/InvalidEndereco";
+import { type Either, success, failure } from "../../../shared/Either";
 import type { EnderecoDados } from "./EnderecoDados";
 import type { EnderecoProps} from "./EnderecoProps";
 
 // VOs
 import { EnderecoId } from "./EnderecoId";
-import { Data } from "../../shared/value-objects/Data";
+import { Data } from "../../../../shared/value-objects/Data";
 import { Cep } from "./Cep";
 import { Logradouro } from "./Logradouro";
 import { Numero } from "./Numero";
 import { Complemento } from "./Complemento";
 
 // Validation
-import { Validation } from "../../shared/Validation";
+import { Validation } from "../../../../shared/Validation";
 
 // Utils
-import { localDate } from "../../shared/utils/CreateDate";
+import { localDate } from "../../../shared/utils/CreateDate";
 
 export class Endereco { 
     private _id: EnderecoId;

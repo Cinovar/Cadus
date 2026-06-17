@@ -1,5 +1,5 @@
-import { InvalidGeneroError } from "../errors/InvalidGenero"
-import { type Either, success, failure} from "../../shared/Either"
+import { InvalidGeneroError } from "../../errors/InvalidGenero"
+import { type Either, success, failure} from "../../../shared/Either"
 import { GeneroEnum } from "./enums/GeneroEnum";
 export class Genero {
     private readonly _genero: string;

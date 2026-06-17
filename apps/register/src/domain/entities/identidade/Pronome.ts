@@ -1,5 +1,5 @@
-import { InvalidPronomeError } from "../errors/InvalidPronome"
-import { type Either, success, failure } from "../../shared/Either"
+import { InvalidPronomeError } from "../../errors/InvalidPronome"
+import { type Either, success, failure } from "../../../shared/Either"
 import { PronomeEnum } from "./enums/PronomeEnum";
 
 export class Pronome {

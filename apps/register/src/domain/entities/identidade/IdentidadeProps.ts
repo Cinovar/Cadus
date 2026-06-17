@@ -1,7 +1,7 @@
 import type { IdentidadeId } from "./IdentidadeId"
 import type { Nome } from "./Nome";
 import type { Cpf } from "./Cpf";
-import type { Data } from "../../shared/value-objects/Data";
+import type { Data } from "../../../shared/value-objects/Data";
 import type { Email } from "./Email";
 import type { Genero } from "./Genero";
 import type { Pronome } from "./Pronome";

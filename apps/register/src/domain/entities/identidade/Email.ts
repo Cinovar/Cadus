@@ -1,5 +1,5 @@
-import { InvalidEmailError } from "../errors/InvalidEmail"
-import { type Either, success, failure} from "../../shared/Either"
+import { InvalidEmailError } from "../../errors/InvalidEmail"
+import { type Either, success, failure} from "../../../shared/Either"
 
 export class Email{
     private readonly _email: string;

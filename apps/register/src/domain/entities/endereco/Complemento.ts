@@ -1,5 +1,5 @@
-import { InvalidComplementoError } from "../errors/InvalidComplemento";
-import { type Either, success, failure } from "../../shared/Either";
+import { InvalidComplementoError } from "../../errors/InvalidComplemento";
+import { type Either, success, failure } from "../../../shared/Either";
 
 export class Complemento {
     private _complemento: string | undefined;

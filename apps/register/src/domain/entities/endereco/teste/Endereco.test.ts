@@ -3,7 +3,7 @@ import { describe, expect, test } from "vitest";
 import { Endereco } from "../Endereco";
 import { EnderecoId } from "../EnderecoId";
 import type { EnderecoDados } from "../EnderecoDados";
-import { Validation } from "../../../shared/Validation";
+import { Validation } from "../../../../shared/Validation";
 import { Logradouro } from "../Logradouro";
 
 

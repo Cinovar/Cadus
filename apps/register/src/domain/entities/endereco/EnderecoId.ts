@@ -1,5 +1,5 @@
-import { InvalidIdError } from "../errors/InvalidId";
-import { type Either, success, failure } from "../../shared/Either";
+import { InvalidIdError } from "../../errors/InvalidId";
+import { type Either, success, failure } from "../../../shared/Either";
 import { ValueObject } from "../../shared/value-objects/ValueObject";
 
 export interface EnderecoIdProps {

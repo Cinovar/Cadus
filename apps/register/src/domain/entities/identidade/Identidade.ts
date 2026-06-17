@@ -2,7 +2,7 @@ import { IdentidadeId } from "./IdentidadeId";
 import { EnderecoId } from "../endereco/EnderecoId";
 import { Nome } from "./Nome";
 import { Cpf } from "./Cpf";
-import { Data } from "../../shared/value-objects/Data";
+import { Data } from "../../../shared/value-objects/Data";
 import { Email } from "./Email";
 import { Genero } from "./Genero";
 import { Pronome } from "./Pronome";
@@ -14,13 +14,13 @@ import type { IdentidadeProps } from "./IdentidadeProps";
 // Types of user data
 import type { IdentidadeDados } from "./IdentidadeDados";
 
-import {type Either, failure, success } from "../../shared/Either";
+import {type Either, failure, success } from "../../../shared/Either";
 
 // Validation
-import { Validation } from "../../shared/Validation";
+import { Validation } from "../../../shared/Validation";
 
 // Errors
-import { InvalidPronomeError } from "../errors/InvalidPronome";
+import { InvalidPronomeError } from "../../errors/InvalidPronome";
 
 // Modelo de Identidade
 export class Identidade {

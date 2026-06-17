@@ -1,5 +1,5 @@
-import { InvalidTelefoneError } from "../errors/InvalidTelefone"
-import { type Either, success, failure} from "../../shared/Either"
+import { InvalidTelefoneError } from "../../errors/InvalidTelefone"
+import { type Either, success, failure} from "../../../shared/Either"
 export class Telefone {
     private readonly _telefone: string;
 

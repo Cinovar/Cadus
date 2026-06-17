@@ -1,5 +1,5 @@
-import { InvalidNumeroError } from "../errors/InvalidNumero";
-import { type Either, success, failure } from "../../shared/Either";
+import { InvalidNumeroError } from "../../errors/InvalidNumero";
+import { type Either, success, failure } from "../../../shared/Either";
 
 export class Numero {
     private _numero: number;

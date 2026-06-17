@@ -1,5 +1,5 @@
-import { InvalidLogradouroError } from "../errors/InvalidLogradouro";
-import { type Either, success, failure } from "../../shared/Either";
+import { InvalidLogradouroError } from "../../errors/InvalidLogradouro";
+import { type Either, success, failure } from "../../../shared/Either";
 
 export class Logradouro {
     private _logradouro: string;

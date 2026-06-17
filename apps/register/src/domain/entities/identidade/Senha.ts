@@ -1,5 +1,5 @@
-import { InvalidSenhaError } from "../errors/InvalidSenha"
-import { type Either, success, failure} from "../../shared/Either"
+import { InvalidSenhaError } from "../../errors/InvalidSenha"
+import { type Either, success, failure} from "../../../shared/Either"
 export class Senha {
     private readonly _senha;
     constructor (senha: string) {

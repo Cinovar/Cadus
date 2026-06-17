@@ -1,5 +1,5 @@
-import { InvalidCepError } from "../errors/InvalidCep";
-import { type Either, success, failure } from "../../shared/Either";
+import { InvalidCepError } from "../../errors/InvalidCep";
+import { type Either, success, failure } from "../../../shared/Either";
 
 export class Cep {
     private _cep: string;
