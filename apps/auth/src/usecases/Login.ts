@@ -2,6 +2,7 @@ import { Cpf } from '../entities/Cpf'
 import { Senha } from '../entities/Senha'
 import { type Either, failure, success } from '../shared/Either'
 import type { IRegisterClient } from '../infra/http/IRegisterClient'
+import type { ITentativaLoginRepositorio } from '../infra/database/ITentativaLoginRepositorio'
 import bcrypt from 'bcrypt'
 
 export interface LoginDTO {
@@ -14,7 +15,10 @@ export interface LoginResultado {
 }
 
 export class LoginUseCase {
-  constructor(private readonly registerClient: IRegisterClient) {}
+  constructor(
+    private readonly registerClient: IRegisterClient,
+    private readonly tentativaRepo: ITentativaLoginRepositorio
+  ) {}
 
   async execute({ cpf, senha }: LoginDTO): Promise<Either<Error, LoginResultado>> {
     // Passo 1: valida formato do CPF
@@ -29,21 +33,37 @@ export class LoginUseCase {
       return failure(senhaResult.value)
     }
 
+    const cpfNormalizado = cpfResult.value.value
+
     // Passo 3: busca usuário no register
-    const usuario = await this.registerClient.buscarUsuarioPorCpf(cpfResult.value.value)
+    const usuario = await this.registerClient.buscarUsuarioPorCpf(cpfNormalizado)
     if (!usuario) {
       return failure(new Error('CPF não cadastrado'))
     }
 
     // Passo 4: compara senha com hash
     const senhaCorreta = await bcrypt.compare(senha, usuario.senhaHash)
+
+    // Passo 5: verifica bloqueio e tentativas
+    const tentativa = await this.tentativaRepo.buscarPorCpf(cpfNormalizado)
+
+    if (tentativa?.bloqueadoAte && tentativa.bloqueadoAte > new Date()) {
+      return failure(new Error('Usuário bloqueado temporariamente'))
+    }
+
     if (!senhaCorreta) {
+      const atualizado = await this.tentativaRepo.incrementar(cpfNormalizado)
+      if (atualizado.tentativas >= 5) {
+        await this.tentativaRepo.bloquear(cpfNormalizado)
+        return failure(new Error('Usuário bloqueado por 10 minutos'))
+      }
       return failure(new Error('Senha incorreta'))
     }
 
-    // Passo 5: verifica bloqueio (a implementar)
-    // Passo 6: gera JWT e cria sessão (a implementar)
+    // Login bem sucedido — reseta tentativas
+    await this.tentativaRepo.resetar(cpfNormalizado)
 
+    // Passo 6: gera JWT e cria sessão (a implementar)
     return success({ token: '' })
   }
 }
