@@ -25,7 +25,7 @@ import { InvalidPronomeError } from "../../errors/InvalidPronome";
 // Modelo de Identidade
 export class Identidade {
     private _id: IdentidadeId;
-    private props: IdentidadeProps;
+    private _props: IdentidadeProps;
     private _criadoEm: Data;
     private _atualizadoEm: Data;
     private _deletadoEm: Data | undefined;
@@ -38,7 +38,7 @@ export class Identidade {
         deletadoEm?: Data
     ) {
         this._id = IdentidadeId;
-        this.props = props;
+        this._props = props;
         this._criadoEm = criadoEm;
         this._atualizadoEm = atualizadoEm;
         this._deletadoEm = deletadoEm;
@@ -90,44 +90,48 @@ export class Identidade {
     }
 
     // Getters for the class members
+    public get value() : IdentidadeProps {
+        return this._props;
+    }
+
     public get IdentidadeId() : IdentidadeId {
         return this._id;
     }
 
     public get nome() : Nome {
-        return this.props.nome;
+        return this._props.nome;
     }
 
     public get cpf() : Cpf {
-        return this.props.cpf;
+        return this._props.cpf;
     }
 
     public get dataNascimento() : Data {
-        return this.props.dataNascimento;
+        return this._props.dataNascimento;
     }
 
     public get genero() : Genero {
-        return this.props.genero;
+        return this._props.genero;
     }
 
     public get pronome() : Pronome | undefined{
-        return this.props.pronome;
+        return this._props.pronome;
     }
 
     public get email() : Email  {
-        return this.props.email;
+        return this._props.email;
     }
 
     public get telefone() : Telefone {
-        return this.props.telefone;
+        return this._props.telefone;
     }
 
     public get senha() : Senha {
-        return this.props.senha;
+        return this._props.senha;
     }
 
     public get endereco() : EnderecoId {
-        return this.props.enderecoId;
+        return this._props.enderecoId;
     }
 
     public get criadoEm(): Data {

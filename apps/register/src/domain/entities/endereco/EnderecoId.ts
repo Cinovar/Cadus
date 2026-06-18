@@ -1,6 +1,6 @@
 import { InvalidIdError } from "../../errors/InvalidId";
 import { type Either, success, failure } from "../../../shared/Either";
-import { ValueObject } from "../../shared/value-objects/ValueObject";
+import { ValueObject } from "../../../shared/value-objects/ValueObject";
 
 export interface EnderecoIdProps {
     id: string

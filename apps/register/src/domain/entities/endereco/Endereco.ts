@@ -5,21 +5,21 @@ import type { EnderecoProps} from "./EnderecoProps";
 
 // VOs
 import { EnderecoId } from "./EnderecoId";
-import { Data } from "../../../../shared/value-objects/Data";
+import { Data } from "../../../shared/value-objects/Data";
 import { Cep } from "./Cep";
 import { Logradouro } from "./Logradouro";
 import { Numero } from "./Numero";
 import { Complemento } from "./Complemento";
 
 // Validation
-import { Validation } from "../../../../shared/Validation";
+import { Validation } from "../../../shared/Validation";
 
 // Utils
 import { localDate } from "../../../shared/utils/CreateDate";
 
 export class Endereco { 
     private _id: EnderecoId;
-    private props: EnderecoProps;
+    private _props: EnderecoProps;
     private _criadoEm: Data;
     private _atualizadoEm: Data;
     private _deletadoEm: Data | undefined;
@@ -32,7 +32,7 @@ export class Endereco {
         deletadoEm?: Data | undefined
     ) {
         this._id = id;
-        this.props = props;
+        this._props = props;
         this._criadoEm = criadoEm;
         this._atualizadoEm = atualizadoEm;
         this._deletadoEm = deletadoEm;
@@ -73,24 +73,29 @@ export class Endereco {
         return new Endereco(props, id, criadoEm, atualizadoEm, deletadoEm);
     }
 
+    // Getters e Setters
+    public get value (): EnderecoProps {
+        return this._props;
+    }
+
     public get id (): EnderecoId  {
         return this._id;
     }
 
     public get cep (): Cep {
-        return this.props.cep;
+        return this._props.cep;
     }
 
     public get logradouro (): Logradouro {
-        return this.props.logradouro;
+        return this._props.logradouro;
     }
 
     public get numero (): Numero {
-        return this.props.numero;
+        return this._props.numero;
     }
 
     public get complemento (): Complemento {
-        return this.props.complemento;
+        return this._props.complemento;
     }
 
     public get criadoEm (): Data {
