@@ -2,6 +2,7 @@ import { describe, test, expect } from 'vitest'
 import { LoginUseCase } from '../../usecases/Login'
 import type { IRegisterClient } from '../../infra/http/IRegisterClient'
 import type { ITentativaLoginRepositorio } from '../../infra/database/ITentativaLoginRepositorio'
+import { JwtService } from '../../infra/auth/JwtService'
 import bcrypt from 'bcrypt'
 
 const senhaHash = await bcrypt.hash('minhasenha123', 10)
@@ -22,8 +23,10 @@ const mockTentativaRepo: ITentativaLoginRepositorio = {
   async resetar() {}
 }
 
+const jwtService = new JwtService()
+
 describe('LoginUseCase', () => {
-  const usecase = new LoginUseCase(mockRegisterClient, mockTentativaRepo)
+  const usecase = new LoginUseCase(mockRegisterClient, mockTentativaRepo, jwtService)
 
   test('deve falhar com CPF inválido', async () => {
     const resultado = await usecase.execute({
@@ -65,7 +68,7 @@ describe('LoginUseCase', () => {
       async bloquear() {},
       async resetar() {}
     }
-    const usecaseBloqueado = new LoginUseCase(mockRegisterClient, repoBloqueado)
+    const usecaseBloqueado = new LoginUseCase(mockRegisterClient, repoBloqueado, jwtService)
     const resultado = await usecaseBloqueado.execute({
       cpf: '529.982.247-25',
       senha: 'minhasenha123'
@@ -73,11 +76,12 @@ describe('LoginUseCase', () => {
     expect(resultado.isError()).toBe(true)
   })
 
-  test('deve ter sucesso com CPF e senha corretos', async () => {
+  test('deve retornar token com CPF e senha corretos', async () => {
     const resultado = await usecase.execute({
       cpf: '529.982.247-25',
       senha: 'minhasenha123'
     })
     expect(resultado.isSuccess()).toBe(true)
+    expect(resultado.value).toHaveProperty('token')
   })
 })
