@@ -1,228 +1,215 @@
 # Cadus — Documentação do Projeto
 
-> Arquitetura de microsserviços com monorepo gerenciado por Bun workspaces.
 
----
+## 📌 Índice
 
-## Índice
+- [📌 Índice](#-índice)
+- [✨ Features & Capacidades](#features--capacidades)
+- [🛠️ Stack Tecnológica](#️-stack-tecnológica)
+- [🏗️ Estrutura do Monorepo](#️-estrutura-do-monorepo)
+- [🎯 Princípios de Arquitetura](#-princípios-de-arquitetura)
+- [⚙️ Pré-requisitos & Instalação](#️-pré-requisitos--instalação)
+- [🚀 Executando o Projeto](#-executando-o-projeto)
+- [🧪 Suíte de Testes](#-suíte-de-testes)
+- [➕ Criando um Novo Serviço](#-criando-um-novo-serviço)
+- [🧰 Ferramentas de Apoio](#-ferramentas-de-apoio)
+- [🤝 Contribuição](#-contribuição)
+- [📄 Licença](#-licença)
 
-- [Stack Tecnológica](#stack-tecnológica)
-- [Estrutura do Monorepo](#estrutura-do-monorepo)
-- [Pré-requisitos](#pré-requisitos)
-- [Instalação](#instalação)
-- [Executando o Projeto](#executando-o-projeto)
-- [Testes](#testes)
-- [Criando um Novo Serviço](#criando-um-novo-serviço)
-- [Princípios de Arquitetura](#princípios-de-arquitetura)
-- [Ferramentas de Apoio](#ferramentas-de-apoio)
+## ✨ Features & Capacidades
 
----
+O Cadus é uma plataforma distribuída projetada para alta performance e isolamento de contextos.
 
-## Stack Tecnológica
+- 🔍 Gestão de Identidade: Módulo isolado para gerenciamento, autenticação e ciclo de vida de pacientes.
+- ⚡ Runtime Ultra-rápido: Execução nativa sobre Bun, eliminando gargalos de inicialização e gerenciamento de pacotes.
+- 🛡️ Clean Architecture Strict: Camada de domínio 100% agnóstica a frameworks, garantindo testabilidade e proteção contra acoplamento técnico.
+- 🔄 Monorepo Inteligente: Workspaces gerenciados de forma centralizada com compartilhamento eficiente de configurações de tipagem e linters.
+- 🌐 Suíte de Testes Híbrida: Testes unitários isolados por microsserviço combinados com uma esteira end-to-end automatizada.
 
-| Camada               | Tecnologia                  |
-|----------------------|-----------------------------|
-| Runtime              | Bun 1.x                     |
-| Backend              | Express                     |
-| Frontend             | React via Vite              |
-| Testes unitários     | Vitest                      |
-| Testes E2E           | Playwright                  |
-| Linter / Formatter   | ESLint + Prettier           |
-| Versionamento        | Git + GitHub                |
-| Gestão do projeto    | Jira / GitHub Projects      |
-| Diagramas            | Mermaid / draw.io           |
-| Prototipagem         | Figma                       |
-| Deploy               | Vercel / Render             |
+## 🛠️ Stack Tecnológica
+| Camada | Tecnologia | Papel no Ecossistema | 
+| ------ | ---------- | -------------------- |
+| Runtime & Package Manager | Bun 1.x | Motor de execução, bundler e gerenciador de workspaces rápido. | 
+| Backend Framework | Express | Roteamento e interface HTTP nos microsserviços (app/). | 
+| Frontend Framework | React + Vite | Interface de usuário SPA de alta performance com HMR. | 
+| Testes Unitários | Vitest | Validação ágil de Use Cases e Entities. | 
+| Testes E2E | Playwright| Validação de fluxos integrados e jornadas de usuário. | 
+| Qualidade de Código | ESLint + Prettier | Padronização estática e formatação automatizada. |
+| Deploy & InfraVercel / RenderHospedagem | otimizada para o Frontend e Serviços de borda. |
 
----
+## 🏗️ Estrutura do Monorepo
 
-## Estrutura do Monorepo
-
-```
+```Plaintext
 cadus/
 ├── apps/
-│   ├── frontend/           # React + Vite + TypeScript
-│   ├── identity/           # Serviço de identidade dos pacientes
-│   └── e2e/                # Testes end-to-end com Playwright
-├── package.json            # Dependências, scripts e declaração de workspaces
-├── tsconfig.json           # Configuração TypeScript base (estendida por cada app)
-└── vitest.config.ts        # Configuração raiz do Vitest
+│   ├── frontend/           # SPA React + Vite + TypeScript
+│   ├── identity/           # Microsserviço de identidade dos pacientes (Clean Arch)
+│   └── e2e/                # Suíte de testes end-to-end com Playwright
+├── package.json            # Dependências globais, scripts maestros e workspaces
+├── tsconfig.json           # Configuração TypeScript base (estendida pelos apps)
+└── vitest.config.ts        # Configuração raiz e pooling do Vitest
 ```
 
----
+## 🎯 Princípios de Arquitetura
 
-## Pré-requisitos
+Cada microsserviço dentro do ecossistema do Cadus deve seguir rigorosamente as regras abaixo para garantir manutenibilidade e isolamento.
+1. Macro-Arquitetura (Microsserviços)
+- **Responsabilidade Única:** Cada serviço resolve um único domínio de negócio. Se um contexto acumula regras não relacionadas, ele deve ser fatiado.
+- **Isolamento de Dados:** Cada serviço é proprietário exclusivo de sua camada de persistência. Acesso direto ao banco de dados alheio é proibido. Comunicações acontecem via API HTTP/gRPC ou Eventos.
+2. Micro-Arquitetura (Estrutura Interna do Serviço)
+- A estrutura interna adota o padrão Clean Architecture, onde o núcleo de negócios (Domínio) dita as regras e os detalhes técnicos (Frameworks, Banco de Dados) adaptam-se a ele.
 
-- **Bun** 1.0 ou superior
+```Plaintext
+src/
+├── index.ts               # Entry point — responsável apenas por inicializar o servidor
+├── app/                   # Interface HTTP (Routes, Controllers, Middlewares Express)
+├── usecases/              # Lógica de aplicação (Orquestradores de fluxo de negócio)
+├── domain/                # Núcleo da aplicação (Independente de tecnologia externa)
+│   ├── entities/          # Regras e validações intrínsecas de negócio
+│   └── repositories/      # Interfaces/Contratos dos repositórios (Ports)
+├── infra/                 # Detalhes técnicos (Implementação de Repositórios, DB, Drivers)
+└── shared/                # Erros customizados, DTOs globais e utilitários
+```
+3. Regra de Dependência & Inversão (DIP)
+As dependências fluem exclusivamente de fora para dentro. O Domínio nunca conhece o Banco de Dados ou o Express.
 
-```bash
-# Instalar o Bun
+
+```Plaintext
+app (Express) ──> usecases ──> domain (Entities / Interfaces) <── infra (Implementações/DB)
+```
+
+Onde cada tipo de código deve viver:
+
+| Código | Onde colocar | Responsabilidade |
+| ------ | ------------ | ---------------- |
+| Entrada/Saída HTTP | app/ | Receber requisições do Express, delegar para usecases e formatar respostas. | 
+| Lógica de Orquestração |  usecases/ |  Validar fluxos de ações da aplicação (ex: RegisterPatientUseCase). | 
+| Regras de Negócio Puras | domain/entities/ | Modelos ricos com validações que não dependem do contexto de software. | 
+|  Contratos e Portas | domain/repositories/ | Interfaces abstratas que descrevem a comunicação com o exterior. | 
+| Chamadas ao Banco/Drivers | infra/ | Implementação real de queries SQL, ORMs, integrações com APIs terceiras.|
+
+## ⚙️ Pré-requisitos & Instalação
+### Pré-requisitos
+O projeto utiliza o Bun como runtime e gerenciador de pacotes integrado, dispensando a necessidade de uma instalação isolada do Node.js.
+
+```Bash
+# Instalação do Bun Runtime
 curl -fsSL https://bun.sh/install | bash
 
-# Verificar versão
+# Verificação do ambiente
 bun --version
 ```
-
-> O Bun já inclui runtime, bundler, gerenciador de pacotes e executor de scripts — não é necessário instalar Node.js separadamente.
-
----
-
-## Instalação
-
-```bash
-# Clonar o repositório
+### Instalação do Monorepo
+```Bash
+# Clonagem do repositório oficial
 git clone https://github.com/seu-org/cadus.git
 cd cadus
 
-# Instalar todas as dependências do workspace
+# Instalação otimizada de todas as dependências do workspace
 bun install
+
 ```
+## Variáveis de Ambiente
 
----
+Cada serviço pode exigir variáveis de ambiente específicas. Crie um arquivo `.env` na raiz do serviço baseando-se no `.env.example` correspondente.
 
-## Executando o Projeto
+| Variável | Descrição | Exemplo |
+|----------|-----------|---------|
+| `PORT` | Porta do serviço | `3000` |
+| `NODE_ENV` | Ambiente de execução | `development` |
 
-### Frontend
-
-```bash
-# Modo desenvolvimento com HMR
-bun --filter @cadus/frontend dev
-
-# Build de produção
-bun --filter @cadus/frontend build
-
-# Preview do build de produção
-bun --filter @cadus/frontend preview
-```
-
-### Todos os serviços em paralelo
-
-```bash
+## 🚀 Executando o Projeto
+O Bun Workspaces permite orquestrar comandos centralizados a partir da raiz usando filtros. 
+### Desenvolver todos os serviços simultaneamente
+```Bash
 bun dev:all
 ```
+### Executar um aplicativo ou serviço específico
+```Bash
+# Executar o Frontend React
+bun --filter @cadus/frontend dev
 
-### Um app específico
-
-```bash
+# Executar o serviço Identity
 bun --filter @cadus/identity dev
 ```
+### Compilar para Produção (Build)
+```Bash
+# Build do Frontend
+bun --filter @cadus/frontend build
 
----
+# Build do Microsserviço (Gera um bundle otimizado para o runtime Bun)
+bun --filter @cadus/identity build
+```
+## 🧪 Suíte de Testes
+A arquitetura desacoplada permite uma estratégia de testes altamente eficiente dividida em duas frentes.
 
-## Testes
+| Tipo de Teste | Escopo | Localização | Ferramenta |
+| ------------- | ------ | ----------- | ---------- |
+| Unitário / Integração | Use Cases, Entities e Adapters | apps/<app>/src/**/*.test.ts(x) | Vitest |
+| End-to-End (E2E) | Fluxos interconectados | Frontend ↔ APIapps/e2e/tests/**/*.spec.ts | Playwright | 
 
-### Testes Unitários (Vitest)
-
-Os testes unitários vivem **dentro de cada app**, junto do código que testam.
-
-> **Por que Vitest e não Bun Test?** O Vitest oferece integração nativa com Vite (usada no frontend), suporte a múltiplos projetos no monorepo e cobertura via V8/Istanbul.
-
-```bash
-# Rodar todos os testes unitários do monorepo
+### Executando Testes Unitários (Vitest) 
+```Bash
+# Executar toda a suíte unitária do monorepo
 bun test
 
-# Rodar em modo watch (desenvolvimento)
+# Executar em modo interativo (Watch Mode)
 bun test --watch
 
-# Rodar com relatório de coverage
+# Gerar relatório de cobertura de código (Coverage)
 bun test --coverage
 
-# Rodar testes de um app específico
-bun --filter @cadus/frontend test
-bun --filter @cadus/identity test
+# Filtrar testes de um serviço específico
+bun --filter @cadus/seu-servico test
 ```
 
-### Testes E2E (Playwright)
-
-Os testes E2E vivem em `apps/e2e` e testam o sistema como um todo, atravessando frontend e backend.
-
-```bash
-# Rodar todos os testes E2E
+### Executando Testes End-to-End (Playwright)
+```Bash
+# Executar testes E2E em modo headless
 bun --filter @cadus/e2e test
 
-# Rodar com interface visual do Playwright
+# Abrir a interface visual interativa do Playwright
 bun --filter @cadus/e2e test --ui
-
-# Rodar em modo debug (browser visível)
-bun --filter @cadus/e2e test --debug
-
-# Rodar um arquivo específico
-bun --filter @cadus/e2e test tests/login.spec.ts
-
-# Rodar testes que correspondem a um padrão
-bun --filter @cadus/e2e test --grep "deve fazer login"
 ```
 
-### Rodar tudo
-
-```bash
-# Unitários + E2E em sequência
-bun test:all
-```
-
-### Localização dos testes por responsabilidade
-
-| Tipo de teste        | Localização                        | Ferramenta |
-|----------------------|------------------------------------|------------|
-| Unitário/componente  | `apps/<app>/src/**/*.test.ts(x)`   | Vitest     |
-| E2E / fluxo completo | `apps/e2e/tests/**/*.spec.ts`      | Playwright |
-
----
-
-## Criando um Novo Serviço
-
-Siga este passo a passo para adicionar um novo microsserviço ao workspace.
-
-### 1. Criar a estrutura de pastas
-
-```bash
-mkdir -p apps/meu-servico/src/{controllers,services,repositories,routes,middlewares}
+## ➕ Criando um Novo Serviço
+Siga este passo a passo padronizado para expandir o ecossistema mantendo a conformidade com a Clean Architecture.
+1. Inicializar a Infraestrutura de Pastas
+```Bash
+mkdir -p apps/meu-servico/src/{app,usecases,domain/{entities,repositories},infra,shared}
 cd apps/meu-servico
 ```
+2. Configurar o package.json do Serviço
+Crie o arquivo apps/meu-servico/package.json:
 
-### 2. Criar o `package.json`
-
-```json
+```JSON
 {
   "name": "@cadus/meu-servico",
   "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev":       "bun --watch src/index.ts",
-    "build":     "bun build src/index.ts --outdir dist --target bun",
-    "start":     "bun dist/index.js",
-    "test":      "vitest",
+    "dev": "bun --watch src/index.ts",
+    "build": "bun build src/index.ts --outdir dist --target bun",
+    "start": "bun dist/index.js",
+    "test": "vitest",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "express": "^4.18.0"
+    "express": "^4.19.0"
   },
   "devDependencies": {
-    "@types/express": "^4.17.0",
-    "@types/bun":     "latest",
-    "vitest":         "^3.2.4",
-    "typescript":     "^5.0.0"
+    "@types/express": "^4.17.21",
+    "@types/bun": "latest",
+    "vitest": "^3.2.4",
+    "typescript": "^5.0.0"
   }
 }
 ```
 
-### 3. Criar o `tsconfig.json`
+3. Configurar o vitest.config.ts Local
 
-```json
-{
-  "compilerOptions": {
-    /*
-      Setup padrão do bun init
-    */
-  },
-  "include": ["src"]
-}
-```
-
-### 4. Criar o `vitest.config.ts`
-
-```ts
+```TypeScript
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
@@ -232,11 +219,8 @@ export default defineConfig({
   },
 });
 ```
-
-### 5. Criar o entry point
-
-```ts
-// src/index.ts
+4. Criar o Servidor Base (src/index.ts)
+```TypeScript
 import express from "express";
 
 const app = express();
@@ -245,17 +229,17 @@ const PORT = process.env.PORT ?? 3002;
 app.use(express.json());
 
 app.get("/health", (_req, res) => {
-  res.json({ status: "ok", service: "meu-servico" });
+  res.json({ status: "ok", service: "meu-servico", architecture: "clean" });
 });
 
 app.listen(PORT, () => {
-  console.log(`meu-servico rodando na porta ${PORT}`);
+  console.log(`🚀 @cadus/meu-servico ativo na porta ${PORT}`);
 });
 ```
 
-### 6. Registrar no `tsconfig.json` da raiz
-
-```json
+5. Registrar a referência no tsconfig.json raiz  
+Adicione o caminho do novo serviço na seção references:
+```JSON
 {
   "references": [
     { "path": "apps/frontend" },
@@ -264,152 +248,20 @@ app.listen(PORT, () => {
   ]
 }
 ```
+Por fim, execute bun install na raiz para sincronizar os workspaces.
 
-### 7. Instalar as dependências
+## 🧰 Ferramentas de Apoio
+- Diagramas & Modelagem: Mermaid para diagramas de sequência evolutivos dentro do repositório Markdown e draw.io para plantas arquiteturais.
+- Modelagem de Dados: DrawSQl para estruturar as enitdades do sistema.
+- Design & UI Prototypes: Figma para design system e Lovable para prototipação ágil de componentes de alta fidelidade.
+- Governança & Agilidade: Jira / GitHub Projects para acompanhamento de Sprints e mapeamento de débitos técnicos.
 
-```bash
-# na raiz do monorepo
-bun install
-```
+## 🤝 Contribuição
+Faça o Fork do repositório.Crie sua branch de feature: `git checkout -b feature/MinhaFeature.`  
+Valide o alinhamento arquitetural antes do commit: `bun test` e `bun lint`.  
+Envie o Pull Request para a branch main.
 
-> O glob `apps/*` no `workspaces` do `package.json` raiz já cobre o novo serviço automaticamente.
+## 📄 Licença
+Este projeto está sob a licenca Apache 2.0. Veja o arquivo `LICENSE`para mais detalhes.
 
----
-
-## Princípios de Arquitetura
-
-Cada serviço deve seguir rigorosamente estes princípios. Eles não são sugestões — são as regras que mantêm o sistema sustentável à medida que cresce.
-
-### Responsabilidade Única
-
-Cada serviço resolve **um único problema de negócio**. Se um serviço começa a acumular responsabilidades não relacionadas, é sinal de que precisa ser dividido.
-
-```
-✅ auth-service   → autenticação, geração e validação de tokens
-✅ orders-service → criação, consulta e cancelamento de pedidos
-❌ auth-service   → autenticação + envio de e-mails + gestão de perfil
-```
-
-### Isolamento de Dados
-
-Cada serviço é o **único dono do seu banco de dados**. Nenhum serviço acessa diretamente o banco de outro.
-
-```
-✅ orders-service consulta seu próprio banco de pedidos
-✅ orders-service chama auth-service via HTTP para validar um token
-❌ orders-service faz SELECT diretamente no banco do auth-service
-```
-
-### Comunicação via Interface
-
-Serviços se comunicam **exclusivamente por APIs HTTP** (ou eventos). Nunca por imports diretos de código de outro serviço.
-
-```
-✅ fetch("http://auth-service/validate")
-❌ import { validateToken } from "@cadus/auth-service/src/services/token"
-```
-
-### Estrutura interna de cada serviço
-
-```
-src/
-├── index.ts            # entry point — só inicializa o servidor
-├── routes/             # define as rotas e conecta controllers
-├── controllers/        # recebe a requisição, delega para services, retorna resposta
-├── services/           # lógica de negócio pura — sem Express, sem banco
-├── repositories/       # acesso ao banco de dados — sem lógica de negócio
-└── middlewares/        # autenticação, validação, tratamento de erros
-```
-
-A regra de dependência flui em uma única direção:
-
-```
-routes → controllers → services → repositories
-```
-
-Nunca o inverso. Um `repository` jamais chama um `service`, e um `service` jamais conhece o Express.
-
-### Onde cada tipo de código deve viver
-
-| Código                | Onde colocar       |
-|-----------------------|--------------------|
-| Lógica de negócio     | dentro do app dono |
-| Chamadas ao banco     | `repositories/`    |
-| Regras de negócio     | `services/`        |
-| Entrada/saída HTTP    | `controllers/`     |
-
----
-
-## Ferramentas de Apoio
-
-### Diagramas
-- **Mermaid** — diagramas versionados junto ao código em arquivos `.md`
-- **draw.io** — diagramas de arquitetura mais elaborados
-
-### Prototipagem
-- **Figma** — design de interfaces e design system
-- **Lovable** - criação de protótipos de alta fidelidade
-
-### Gestão
-- **Jira** ou **GitHub Projects** — rastreamento de tarefas e sprints
-
-### Deploy
-- **Vercel** — frontend (`apps/frontend`)
-- **Render** — serviços backend (`apps/identity`, demais serviços)
-
----
-
-## Colaboradores
-
-<table> 
-    <tr>
-        <td align="center">
-          <a href="https://github.com/Clarinhaaa">
-            <img src="https://avatars.githubusercontent.com/u/100969119?v=4" width="100px;" alt="Imagem do Colaborador 5"/><br>
-            <sub><b>Ana Clara Calvacante</b></sub>
-          </a>
-        </td>
-        <td align="center">
-          <a href="https://github.com/ama9-cin-ufpe">
-            <img src="https://avatars.githubusercontent.com/u/249635822?v=4" width="100px;" alt="Imagem do Colaborador 5"/><br>
-            <sub><b>Alex Mayrinck</b></sub>
-          </a>
-        </td>
-        <td align="center">
-          <a href="https://github.com/bernardobelfort">
-            <img src="https://avatars.githubusercontent.com/u/153245112?v=4" width="100px;" alt="Imagem do Colaborador 1"/><br>
-            <sub><b>Bernardo Belfort Leao</b></sub>
-          </a>
-        </td>
-        <td align="center">
-          <a href="https://github.com/edisiouchoacn-spec">
-            <img src="https://avatars.githubusercontent.com/u/235191061?v=4" width="100px;" alt="Imagem do Colaborador 2"/><br>
-            <sub><b>Edísio Uchoa Cavalcanti Neto</b></sub>
-          </a>
-        </td>
-        <td align="center">
-          <a href="https://github.com/FranciscoFaustino17">
-            <img src="https://avatars.githubusercontent.com/u/209528271?v=4" width="100px;" alt="Imagem do Colaborador 3"/><br>
-            <sub><b>Francisco Faustino de Souza Neto</b></sub>
-          </a>
-        </td>
-        <td align="center">
-          <a href="https://github.com/GabrielCassio">
-            <img src="https://avatars.githubusercontent.com/u/91679814?v=4" width="100px;" alt="Imagem do Colaborador 4"/><br>
-            <sub><b>Gabriel Cássio Gomes Cileiro</b></sub>
-          </a>
-        </td>
-        <td align="center">
-          <a href="https://github.com/orgs/Cinovar/people/rafaelsamico">
-            <img src="https://avatars.githubusercontent.com/u/207333347?v=4" width="100px;" alt="Imagem do Colaborador 5"/><br>
-            <sub><b>Rafael Samico</b></sub>
-          </a>
-        </td>
-        <td align="center">
-          <a href="https://github.com/VictorLemosFr">
-            <img src="https://avatars.githubusercontent.com/u/107511134?v=4" width="100px;" alt="Imagem do Colaborador 5"/><br>
-            <sub><b>Victor Lemos de Freitas</b></sub>
-          </a>
-        </td>
-      </tr>
-</table>
+Powered by **Cadus** | Desenvolvido com foco em Engenharia de Software de Impacto

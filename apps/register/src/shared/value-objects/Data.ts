@@ -1,4 +1,4 @@
-import { InvalidDataError } from "../../entities/errors/InvalidData"
+import { InvalidDataError } from "../../domain/errors/InvalidData"
 import { type Either, success, failure} from "../Either"
 export class Data {
     private readonly _data: Date;
