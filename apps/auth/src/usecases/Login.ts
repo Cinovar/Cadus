@@ -3,6 +3,7 @@ import { Senha } from '../entities/Senha'
 import { type Either, failure, success } from '../shared/Either'
 import type { IRegisterClient } from '../infra/http/IRegisterClient'
 import type { ITentativaLoginRepositorio } from '../infra/database/ITentativaLoginRepositorio'
+import type { ISessaoRepositorio } from '../infra/database/ISessaoRepositorio'
 import { JwtService } from '../infra/auth/JwtService'
 import bcrypt from 'bcrypt'
 
@@ -19,7 +20,8 @@ export class LoginUseCase {
   constructor(
     private readonly registerClient: IRegisterClient,
     private readonly tentativaRepo: ITentativaLoginRepositorio,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
+    private readonly sessaoRepo: ISessaoRepositorio
   ) {}
 
   async execute({ cpf, senha }: LoginDTO): Promise<Either<Error, LoginResultado>> {
@@ -65,8 +67,11 @@ export class LoginUseCase {
     // Login bem sucedido — reseta tentativas
     await this.tentativaRepo.resetar(cpfNormalizado)
 
-    // Passo 6: gera JWT
+    // Passo 6: gera JWT e cria sessão
     const token = this.jwtService.gerar({ cpf: cpfNormalizado })
+    const expiresAt = new Date(Date.now() + 8 * 60 * 60 * 1000)
+    await this.sessaoRepo.criar(cpfNormalizado, token, expiresAt)
+
     return success({ token })
   }
 }

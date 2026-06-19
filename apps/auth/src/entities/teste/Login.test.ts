@@ -2,6 +2,7 @@ import { describe, test, expect } from 'vitest'
 import { LoginUseCase } from '../../usecases/Login'
 import type { IRegisterClient } from '../../infra/http/IRegisterClient'
 import type { ITentativaLoginRepositorio } from '../../infra/database/ITentativaLoginRepositorio'
+import type { ISessaoRepositorio } from '../../infra/database/ISessaoRepositorio'
 import { JwtService } from '../../infra/auth/JwtService'
 import bcrypt from 'bcrypt'
 
@@ -23,10 +24,16 @@ const mockTentativaRepo: ITentativaLoginRepositorio = {
   async resetar() {}
 }
 
+const mockSessaoRepo: ISessaoRepositorio = {
+  async criar() {},
+  async buscarPorToken() { return { ativo: true } },
+  async invalidar() {}
+}
+
 const jwtService = new JwtService()
 
 describe('LoginUseCase', () => {
-  const usecase = new LoginUseCase(mockRegisterClient, mockTentativaRepo, jwtService)
+  const usecase = new LoginUseCase(mockRegisterClient, mockTentativaRepo, jwtService, mockSessaoRepo)
 
   test('deve falhar com CPF inválido', async () => {
     const resultado = await usecase.execute({
@@ -68,7 +75,7 @@ describe('LoginUseCase', () => {
       async bloquear() {},
       async resetar() {}
     }
-    const usecaseBloqueado = new LoginUseCase(mockRegisterClient, repoBloqueado, jwtService)
+    const usecaseBloqueado = new LoginUseCase(mockRegisterClient, repoBloqueado, jwtService, mockSessaoRepo)
     const resultado = await usecaseBloqueado.execute({
       cpf: '529.982.247-25',
       senha: 'minhasenha123'
