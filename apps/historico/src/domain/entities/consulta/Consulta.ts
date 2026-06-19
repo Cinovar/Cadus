@@ -38,7 +38,7 @@ export class Consulta {
         : success(undefined),
       instituicao:    Instituicao.create(dados.instituicao),
       dataConsulta:   Data.create(dados.dataConsulta),
-      criadoEm:       Data.create(new Date()),
+      criadoEm: Data.create(new Date().toLocaleDateString("pt-BR")),
     };
 
     const result = Validation.combine(consultaProps);

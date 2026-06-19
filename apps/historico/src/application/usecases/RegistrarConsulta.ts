@@ -5,7 +5,7 @@ import type { RegistrarConsultaDTO } from "../dtos/RegistrarConsultaDTO";
 import { Consulta } from "../../domain/entities/consulta/Consulta";
 import { ConsultaId } from "../../domain/entities/consulta/ConsultaId";
 import { CryptoIdGenerator } from "../../infra/adapters/CryptoIdGenerator";
-import { failure } from "../../shared/Either";
+import { failure, success } from "../../shared/Either";
 
 export class RegistrarConsulta implements IRegistrarConsultaUC {
   private readonly _consultaRepo: IConsultaRepository;
@@ -34,6 +34,6 @@ export class RegistrarConsulta implements IRegistrarConsultaUC {
       criadoEm:       new Date(),
     });
 
-    return consulta as any;
+    return success(consulta);
   }
 }
