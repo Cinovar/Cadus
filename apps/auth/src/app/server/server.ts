@@ -1,5 +1,7 @@
 import express from "express";
 import { loginController } from "../controllers/LoginController";
+import { logoutController } from "../controllers/LogoutController";
+import { authMiddleware } from "../middlewares/authMiddleware";
 
 const app = express();
 const port = 3001;
@@ -11,6 +13,7 @@ app.get("/health", (req, res) => {
 });
 
 app.post("/auth/login", loginController);
+app.post("/auth/logout", authMiddleware, logoutController);
 
 app.listen(port, () => {
   console.log(`Auth service rodando na porta ${port}`);
