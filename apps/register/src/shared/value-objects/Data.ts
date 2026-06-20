@@ -10,16 +10,23 @@ export class Data {
     }
 
     public static create(data: string | Date): Either<InvalidDataError, Data> {
-        const dataNormalizada: string = data instanceof Date? data.toDateString(): data;
-
-        if (!Data.noFieldExistsDataError(dataNormalizada)){
-            return failure(new InvalidDataError(dataNormalizada));
-        }
-        if (!Data.formatDataError(dataNormalizada)) {
-            return failure(new InvalidDataError(dataNormalizada));
+        if (data instanceof Date) {
+            if (Number.isNaN(data.getTime())) {
+                return failure(new InvalidDataError(data.toString()));
+            }
+            return success(new Data(data));
         }
 
-        return success(new Data(new Date(data)));
+        if (!Data.noFieldExistsDataError(data)){
+            return failure(new InvalidDataError(data));
+        }
+        if (!Data.formatDataError(data)) {
+            return failure(new InvalidDataError(data));
+        }
+
+        const [dia, mes, ano] = data.split("/").map(Number);
+
+        return success(new Data(new Date(ano as number, (mes as number) - 1, dia as number)));
     }
 
 
