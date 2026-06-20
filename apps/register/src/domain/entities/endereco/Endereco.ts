@@ -86,7 +86,7 @@ export class Endereco {
         return this._props.cep;
     }
 
-    public get logradouro (): Logradouro {
+    public get logradouro (): Logradouro | undefined {
         return this._props.logradouro;
     }
 
@@ -94,7 +94,7 @@ export class Endereco {
         return this._props.numero;
     }
 
-    public get complemento (): Complemento {
+    public get complemento (): Complemento | undefined {
         return this._props.complemento;
     }
 

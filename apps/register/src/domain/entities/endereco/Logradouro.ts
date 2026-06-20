@@ -2,26 +2,17 @@ import { InvalidLogradouroError } from "../../errors/InvalidLogradouro";
 import { type Either, success, failure } from "../../../shared/Either";
 
 export class Logradouro {
-    private _logradouro: string;
-    constructor (logradouro: string) {
+    private _logradouro: string | undefined;
+    constructor (logradouro: string | undefined) {
         this._logradouro = logradouro;
     }
 
-    public static create (logradouro: string): Either<InvalidLogradouroError, Logradouro> {
-        if (Logradouro.noFieldExist(logradouro)) {
-            return failure(new InvalidLogradouroError(logradouro));
-        }
+    public static create (logradouro: string | undefined): Either<InvalidLogradouroError, Logradouro> {
+
         return success(new Logradouro(logradouro));
     }
 
-    public static noFieldExist (logradouro: string): boolean {
-        if (logradouro.length > 0) {
-            return false;
-        }
-        return true;
-    }
-
-    public get value (): string {
+    public get value (): string | undefined {
         return this._logradouro;
     }
 } 

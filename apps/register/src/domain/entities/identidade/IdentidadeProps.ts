@@ -10,11 +10,10 @@ import type { Telefone } from "./Telefone";
 
 import type { EnderecoId } from "../endereco/EnderecoId";
 
-
-// A interface de propriedades para entidade de Identidade não precisa receber um ID
-// precisamente, pois é atribuição do sistema daqueles que trabalham com requisições
+/**
+ *  Interface que descreve as propriedades da entidade Identidade.
+ */
 export interface IdentidadeProps {
-    id: IdentidadeId;
     nome: Nome;
     cpf: Cpf;
     dataNascimento: Data;
@@ -26,7 +25,4 @@ export interface IdentidadeProps {
     telefone: Telefone;
     senha: Senha;
     enderecoId: EnderecoId;
-
-    criadoEm: Data;
-    atualizadoEm: Data;
 }

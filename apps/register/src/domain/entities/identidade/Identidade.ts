@@ -13,6 +13,7 @@ import { Senha } from "./Senha";
 import type { IdentidadeProps } from "./IdentidadeProps";
 // Types of user data
 import type { IdentidadeDados } from "./IdentidadeDados";
+import type { IdentidadeCreateInput } from "./IdentidadeCreateInput";
 
 import {type Either, failure, success } from "../../../shared/Either";
 
@@ -33,7 +34,7 @@ export class Identidade {
     constructor(
         props: IdentidadeProps, 
         IdentidadeId: IdentidadeId, 
-        criadoEm: Data, 
+        criadoEm: Data,
         atualizadoEm: Data,
         deletadoEm?: Data
     ) {
@@ -47,7 +48,7 @@ export class Identidade {
     
     // Método de fábrica para criar uma nova instância de IdentidadeEntity
     public static create (
-        {nome, cpf, dataNascimento, genero, pronome, email, telefone, enderecoId, senhaHash}: IdentidadeDados,
+        {nome, cpf, dataNascimento, genero, pronome, email, telefone, enderecoId, senha}: IdentidadeCreateInput,
          IdentidadeId: IdentidadeId
         ): Either<Error[], Identidade> {
         
@@ -61,7 +62,7 @@ export class Identidade {
             email: Email.create(email),
             telefone: Telefone.create(telefone),
             enderecoId: EnderecoId.reconstitute(enderecoId), // IdentidadeId de uma entidade de Endereço atribuída a Identidade/User
-            senha: Senha.create(senhaHash),
+            senha: Senha.create(senha),
             criadoEm: Data.create(new Date()),
             atualizadoEm: Data.create(new Date())
         }
@@ -139,6 +140,6 @@ export class Identidade {
     }
 
     public get atualizadoEm(): Data {
-        return this._criadoEm;
+        return this._atualizadoEm;
     }
 }

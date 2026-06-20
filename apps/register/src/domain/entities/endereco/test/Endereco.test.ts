@@ -1,15 +1,14 @@
+// Estruturas de Teste
 import { describe, expect, test } from "vitest";
-
+// Entidades e Value Objects
+import type { EnderecoDados } from "../EnderecoDados";
 import { Endereco } from "../Endereco";
 import { EnderecoId } from "../EnderecoId";
-import type { EnderecoDados } from "../EnderecoDados";
-import { Validation } from "../../../../shared/Validation";
 import { Logradouro } from "../Logradouro";
 
 
 // Mockup básico de teste
 const makeId = () => EnderecoId.generate();
-
 const dadosValidos = {
   cep: '60110-001',
   logradouro: 'Rua dos Bobos',
@@ -17,14 +16,12 @@ const dadosValidos = {
   complemento: undefined,
 };
 
-
 describe('Entidade - Endereco', () => {
 
   describe('CENÁRIOS DE SUCESSO', () => {
 
     test('cria um endereço com dados válidos', () => {
       const resultado = Endereco.create(dadosValidos, makeId());
-      console.log(resultado);
 
       expect(resultado.isError()).toBe(false);
     });

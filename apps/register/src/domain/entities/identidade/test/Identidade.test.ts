@@ -34,7 +34,7 @@ describe('IdentidadeEntity', () => {
         email: "joao.silva@example.com",
         telefone: "11 99999-9999",
         enderecoId: "Rua Sigismundo Gonçalves",
-        senhaHash: expect.any(String),
+        senha: expect.any(String),
         criadoEm: expect.any(Date),
         atualizadoEm: expect.any(Date)
     }
@@ -52,7 +52,7 @@ describe('IdentidadeEntity', () => {
             email: "joao.silva@example.com",
             telefone: "11 99999-9999",
             enderecoId: "Rua Sigismundo Gonçalves",
-            senhaHash: "minhasenha",
+            senha: "minhasenha",
             criadoEm: new Date(),
             atualizadoEm: new Date()
         };
@@ -91,7 +91,7 @@ describe('IdentidadeEntity', () => {
             email: "joao.silva@example.com",
             telefone: "11 -asd 99999-9999",
             enderecoId: EnderecoId.generate().value,
-            senhaHash: "minhasenha",
+            senha: "minhasenha",
             criadoEm: new Date(),
             atualizadoEm: new Date()
         };
@@ -141,7 +141,7 @@ describe('IdentidadeEntity', () => {
             });
 
             test('deve falhar com senha ausente',  () => {
-                const resultado =  Identidade.create({ ...entradaDadosTeste2, senhaHash: "" }, identidadeId);
+                const resultado =  Identidade.create({ ...entradaDadosTeste2, senha: "" }, identidadeId);
                 if (resultado.isError()){
                      expect(resultado.value.some(e => e instanceof InvalidSenhaError)).toBe(true);
                 }

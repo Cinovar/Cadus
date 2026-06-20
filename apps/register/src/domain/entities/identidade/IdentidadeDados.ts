@@ -1,3 +1,5 @@
+import type { EnderecoDados } from "../endereco/EnderecoDados";
+
 export interface IdentidadeDados {
     nome: string;
     cpf: string;
@@ -8,9 +10,6 @@ export interface IdentidadeDados {
     
     email: string;
     telefone: string;
-    senhaHash: string;
-    enderecoId: string;
-
-    criadoEm: Date;
-    atualizadoEm: Date;
+    senha: string;
+    endereco: EnderecoDados;
 }
