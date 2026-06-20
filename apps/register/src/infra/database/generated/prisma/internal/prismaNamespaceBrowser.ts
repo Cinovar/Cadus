@@ -84,7 +84,9 @@ export const IdentidadeScalarFieldEnum = {
   email: 'email',
   senha: 'senha',
   enderecoId: 'enderecoId',
-  criadoEm: 'criadoEm'
+  criadoEm: 'criadoEm',
+  atualizadoEm: 'atualizadoEm',
+  deletadoEm: 'deletadoEm'
 } as const
 
 export type IdentidadeScalarFieldEnum = (typeof IdentidadeScalarFieldEnum)[keyof typeof IdentidadeScalarFieldEnum]
@@ -95,7 +97,10 @@ export const EnderecoScalarFieldEnum = {
   cep: 'cep',
   logradouro: 'logradouro',
   numero: 'numero',
-  complemento: 'complemento'
+  complemento: 'complemento',
+  criadoEm: 'criadoEm',
+  atualizadoEm: 'atualizadoEm',
+  deletadoEm: 'deletadoEm'
 } as const
 
 export type EnderecoScalarFieldEnum = (typeof EnderecoScalarFieldEnum)[keyof typeof EnderecoScalarFieldEnum]
