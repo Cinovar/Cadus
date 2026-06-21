@@ -35,7 +35,7 @@ O Cadus é uma plataforma distribuída projetada para alta performance e isolame
 | Testes Unitários | Vitest | Validação ágil de Use Cases e Entities. | 
 | Testes E2E | Playwright| Validação de fluxos integrados e jornadas de usuário. | 
 | Qualidade de Código | ESLint + Prettier | Padronização estática e formatação automatizada. |
-| Deploy & InfraVercel / RenderHospedagem | otimizada para o Frontend e Serviços de borda. |
+| Deploy & Infra | Vercel / Render | Hospedagem otimizada para o Frontend e Serviços de borda. |
 
 ## 🏗️ Estrutura do Monorepo
 
