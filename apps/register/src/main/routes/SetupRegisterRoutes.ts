@@ -1,45 +1,24 @@
-// Router, adapters e factories
 import type { Router } from "express";
 import { makeRegisterIdentidadeController } from "../factories/MakeRegisterIdentidadeController";
 import { makeRegisterEnderecoController } from "../factories/MakeRegisterEnderecoController";
 import { makeFindIdentidadeController } from "../factories/MakeFindIdentidadeController";
 import { makeFindEnderecoController } from "../factories/MakeFindEnderecoController";
+import { makeGetUsuarioByCpfController } from "../factories/MakeGetUsuarioByCpfController";
 import { adaptRoute } from "../../infra/adapters/ExpressRouterAdapater";
 
-/**
- * Configura as rotas para registro de identidades e endereços
- * 
- * POST /identidades - Registra nova identidade
- * POST /enderecos - Registra novo endereço
- * GET /identidades/:id - Encontra identidade existente
- * GET /enderecos/:id - Encontra endereco existente
- * @param router - Router do Express
- */
 export const setupRegisterRoutes = (router: Router): void => {
-  const registerIdentidadeController = makeRegisterIdentidadeController();
-  const registerEnderecoController = makeRegisterEnderecoController();
-  const findIdentidadeController = makeFindEnderecoController();
-  const findEnderecoController = makeFindEnderecoController();
+    const registerIdentidadeController = makeRegisterIdentidadeController();
+    const registerEnderecoController = makeRegisterEnderecoController();
+    const findIdentidadeController = makeFindIdentidadeController();
+    const findEnderecoController = makeFindEnderecoController();
+    const getUsuarioByCpfController = makeGetUsuarioByCpfController();
 
-  // Rota para registrar nova identidade
-  router.post(
-    "/identidades",
-    adaptRoute(registerIdentidadeController)
-  );
+    router.post("/identidades", adaptRoute(registerIdentidadeController));
+    router.get("/identidades/:cpf", adaptRoute(findIdentidadeController));
 
-  router.get(
-    "/identidades/:id",
-    adaptRoute(findIdentidadeController)
-  )
+    router.post("/enderecos", adaptRoute(registerEnderecoController));
+    router.get("/enderecos/:cep", adaptRoute(findEnderecoController));
 
-  // Rota para registrar novo endereço
-  router.post(
-    "/enderecos",
-    adaptRoute(registerEnderecoController)
-  );
-  router.get(
-    "/enderecos/:id",
-    adaptRoute(findEnderecoController)
-  )
+    // Rota de integração com o serviço auth
+    router.get("/usuarios/:cpf", adaptRoute(getUsuarioByCpfController));
 };
-

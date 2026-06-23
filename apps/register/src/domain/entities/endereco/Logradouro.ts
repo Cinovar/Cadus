@@ -8,6 +8,9 @@ export class Logradouro {
     }
 
     public static create (logradouro: string | undefined): Either<InvalidLogradouroError, Logradouro> {
+        if (typeof logradouro === "string" && logradouro.trim().length === 0) {
+            return failure(new InvalidLogradouroError(logradouro));
+        }
 
         return success(new Logradouro(logradouro));
     }
@@ -15,4 +18,4 @@ export class Logradouro {
     public get value (): string | undefined {
         return this._logradouro;
     }
-} 
+}

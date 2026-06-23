@@ -3,7 +3,7 @@ import type { BaseController } from "./BaseController";
 import { ok, badRequest, notFound, serverError } from "./helpers/HttpHelper";
 import type { FindIdentidade } from "../../application/usecases/find-identidade/FindIdentidade";
 
-export class FindIdentidadeController implements BaseController {
+export class GetUsuarioByCpfController implements BaseController {
     private readonly findIdentidadeUC: FindIdentidade;
 
     constructor(findIdentidadeUC: FindIdentidade) {
@@ -25,10 +25,16 @@ export class FindIdentidadeController implements BaseController {
             }
 
             if (result.value === null) {
-                return notFound(new Error(`Identidade com CPF '${cpf}' não encontrada`));
+                return notFound(new Error(`Usuário com CPF '${cpf}' não encontrado`));
             }
 
-            return ok(result.value);
+            const identidade = result.value;
+
+            return ok({
+                cpf: identidade.cpf.value,
+                senhaHash: identidade.senha.value,
+                email: identidade.email.value,
+            });
         } catch (error) {
             const errorMessage =
                 error instanceof Error ? error.message : "Erro desconhecido";

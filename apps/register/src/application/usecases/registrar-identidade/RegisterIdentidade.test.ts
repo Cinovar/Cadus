@@ -2,9 +2,9 @@ import { describe, test, expect, beforeEach } from "vitest";
 
 import { RegisterIdentidade } from "./RegisterIdentidade";
 import { RegisterEndereco } from "../registrar-endereco/RegisterEndereco";
-import { InMemoryIdentidadeRepo } from "../../ports/respositories/in-memory-tests/InMemoryIdentidadeRepo"; // ⚠️ confirmar path real
-import { InMemoryEnderecoRepository } from "../../ports/respositories/in-memory-tests/InMemoryEnderecoRepository"; // ⚠️ confirmar path real
-import { FakeHashProvider } from "../../helpers/FakeHashProvider"; // ⚠️ confirmar path real
+import { InMemoryIdentidadeRepo } from "../../ports/respositories/in-memory-tests/InMemoryIdentidadeRepo";
+import { InMemoryEnderecoRepository } from "../../ports/respositories/in-memory-tests/InMemoryEnderecoRepository";
+import { FakeHashProvider } from "../../helpers/FakeHashProvider";
 
 import type { IdentidadeDados } from "../../../domain/entities/identidade/IdentidadeDados";
 
@@ -19,7 +19,7 @@ function makeIdentidadeDados(override: Partial<IdentidadeDados> = {}): Identidad
         telefone: "11 99999-9999",
         senha: "MinhaSenha123",
         endereco: {
-            cep: "50670901",
+            cep: "50670-901",
             logradouro: "Rua Sigismundo Gonçalves",
             numero: 100,
             complemento: "Apto 101",
@@ -61,7 +61,7 @@ describe("RegisterIdentidade", () => {
 
             const enderecosCadastrados = await enderecoRepo.findAllEnderecos();
             expect(enderecosCadastrados).toHaveLength(1);
-            expect(enderecosCadastrados[0]?.cep.value).toBe("50670901");
+            expect(enderecosCadastrados[0]?.cep.value).toBe("50670-901");
         });
 
         test("deve reaproveitar um endereco ja existente (mesmo CEP) em vez de duplicar", async () => {
@@ -72,8 +72,7 @@ describe("RegisterIdentidade", () => {
             const segundaIdentidade = makeIdentidadeDados({
                 cpf: "159.079.700-06",
                 email: "segunda@example.com",
-                // mesmo CEP da primeira identidade
-                endereco: { cep: "50670901", numero: 200 },
+                endereco: { cep: "50670-901", numero: 200 },
             });
 
             const resultado1 = await registerIdentidade.registerIdentidade(primeiraIdentidade);
@@ -83,8 +82,6 @@ describe("RegisterIdentidade", () => {
             expect(resultado2.isSuccess()).toBe(true);
 
             const enderecosCadastrados = await enderecoRepo.findAllEnderecos();
-            // Mesmo com 2 identidades, o endereco com CEP "50670901" deve
-            // existir uma única vez no repositório.
             expect(enderecosCadastrados).toHaveLength(1);
 
             if (resultado1.isSuccess() && resultado2.isSuccess()) {
@@ -112,7 +109,7 @@ describe("RegisterIdentidade", () => {
 
             const tentativaDuplicada = makeIdentidadeDados({
                 email: "outro-email@example.com",
-                endereco: { cep: "01310930", numero: 50 },
+                endereco: { cep: "01310-930", numero: 50 },
             });
             const resultado = await registerIdentidade.registerIdentidade(tentativaDuplicada);
 
@@ -149,12 +146,12 @@ describe("RegisterIdentidade", () => {
             const identidadeA = makeIdentidadeDados({
                 cpf: "706.300.900-17",
                 email: "a@example.com",
-                endereco: { cep: "50670901", numero: 100 },
+                endereco: { cep: "50670-901", numero: 100 },
             });
             const identidadeB = makeIdentidadeDados({
                 cpf: "159.079.700-06",
                 email: "b@example.com",
-                endereco: { cep: "01310930", numero: 200 },
+                endereco: { cep: "01310-930", numero: 200 },
             });
 
             await registerIdentidade.registerIdentidade(identidadeA);

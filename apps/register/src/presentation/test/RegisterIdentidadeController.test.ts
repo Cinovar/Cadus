@@ -1,25 +1,15 @@
 import { describe, expect, test, vi, beforeEach } from "vitest";
-import { RegisterIdentidadeController } from "./RegisterIdentidadeController";
+import { RegisterIdentidadeController } from "../controllers/RegisterIdentidadeController";
 import type { IRegisterIdentidadeUC } from "../../application/ports/IRegisterIdentidadeUC";
 import type { HttpRequest, HttpResponse } from "../protocol-interfaces/Http";
 import type { IdentidadeDados } from "../../domain/entities/identidade/IdentidadeDados";
 import { success, failure } from "../../shared/Either";
 import type { Identidade } from "../../domain/entities/identidade/Identidade";
 
-/**
- * Testes do RegisterIdentidadeController
- * 
- * Demonstra como a arquitetura SOLID facilita testes:
- * - Fácil mockar IRegisterIdentidadeUC (Dependency Inversion)
- * - Testes isolados de regras de negócio (Single Responsibility)
- * - ValidatorHelper pode ser testado independentemente
- */
-
 describe("RegisterIdentidadeController", () => {
   let controller: RegisterIdentidadeController;
-  let mockUseCase: IRegisterIdentidadeUC;
+  let mockRegisterIdentidade: ReturnType<typeof vi.fn>;
 
-  // Mock de uma identidade válida
   const mockIdentidadeData: IdentidadeDados = {
     nome: "João Silva",
     cpf: "12345678901",
@@ -29,30 +19,28 @@ describe("RegisterIdentidadeController", () => {
     email: "joao@example.com",
     telefone: "11987654321",
     senha: "senha123",
-    enderecoId: "endereco-123",
-    criadoEm: new Date(),
-    atualizadoEm: new Date(),
+    endereco: {
+      cep: "01310-100",
+      numero: 123,
+    },
   };
 
   const mockIdentidade = {
     cpf: "12345678901",
     email: "joao@example.com",
     value: mockIdentidadeData,
-  } as Identidade;
+  } as unknown as Identidade;
 
   beforeEach(() => {
-    // Setup: Criar mock do use case
-    mockUseCase = {
-      registerIdentidade: vi.fn(),
+    mockRegisterIdentidade = vi.fn();
+    const mockUseCase: IRegisterIdentidadeUC = {
+      registerIdentidade: mockRegisterIdentidade,
     };
-
-    // Instanciar controller com mock (Dependency Injection)
     controller = new RegisterIdentidadeController(mockUseCase);
   });
 
   describe("CENÁRIOS DE SUCESSO", () => {
     test("Deve registrar identidade com dados válidos", async () => {
-      // Arrange
       const request: HttpRequest = {
         body: {
           nome: "João Silva",
@@ -63,33 +51,26 @@ describe("RegisterIdentidadeController", () => {
           email: "JOAO@EXAMPLE.COM",
           telefone: "(11) 98765-4321",
           senha: "senha123",
-          enderecoId: "endereco-123",
+          endereco: { cep: "01310-100", numero: 123 },
         },
       };
 
-      vi.mocked(mockUseCase.registerIdentidade).mockResolvedValueOnce(
-        success(mockIdentidade)
-      );
+      mockRegisterIdentidade.mockResolvedValueOnce(success(mockIdentidade));
 
-      // Act
       const response: HttpResponse = await controller.handle(request);
 
-      // Assert
-      expect(response.statusCode).toBe(200);
+      expect(response.statusCode).toBe(201);
       expect(response.body).toEqual(mockIdentidade);
-      expect(mockUseCase.registerIdentidade).toHaveBeenCalledOnce();
+      expect(mockRegisterIdentidade).toHaveBeenCalledOnce();
 
-      // Verificar que dados foram normalizados corretamente
-      const callArgs = vi.mocked(mockUseCase.registerIdentidade).mock
-        .calls[0][0];
-      expect(callArgs.nome).toBe("João Silva"); // Trimmed
-      expect(callArgs.cpf).toBe("12345678901"); // Sem pontuação
-      expect(callArgs.email).toBe("joao@example.com"); // Lowercase
-      expect(callArgs.telefone).toBe("11987654321"); // Sem pontuação
+      const callArgs = mockRegisterIdentidade.mock.calls[0][0];
+      expect(callArgs.nome).toBe("João Silva");
+      expect(callArgs.cpf).toBe("12345678901");
+      expect(callArgs.email).toBe("joao@example.com");
+      expect(callArgs.telefone).toBe("11987654321");
     });
 
     test("Deve ignorar campo pronome se não fornecido", async () => {
-      // Arrange
       const request: HttpRequest = {
         body: {
           nome: "Maria Silva",
@@ -99,98 +80,67 @@ describe("RegisterIdentidadeController", () => {
           email: "maria@example.com",
           telefone: "(11) 91234-5678",
           senha: "senha456",
-          enderecoId: "endereco-456",
+          endereco: { cep: "01310-100", numero: 456 },
         },
       };
 
-      vi.mocked(mockUseCase.registerIdentidade).mockResolvedValueOnce(
-        success(mockIdentidade)
-      );
+      mockRegisterIdentidade.mockResolvedValueOnce(success(mockIdentidade));
 
-      // Act
       const response: HttpResponse = await controller.handle(request);
 
-      // Assert
-      expect(response.statusCode).toBe(200);
-      expect(mockUseCase.registerIdentidade).toHaveBeenCalledOnce();
+      expect(response.statusCode).toBe(201);
+      expect(mockRegisterIdentidade).toHaveBeenCalledOnce();
     });
   });
 
   describe("CENÁRIOS DE ERRO - Validação", () => {
     test("Deve retornar 400 quando body está faltando", async () => {
-      // Arrange
       const request: HttpRequest = {};
-
-      // Act
       const response: HttpResponse = await controller.handle(request);
-
-      // Assert
       expect(response.statusCode).toBe(400);
       expect(response.body).toContain("Corpo da requisição");
     });
 
     test("Deve retornar 400 quando body não é objeto", async () => {
-      // Arrange
-      const request: HttpRequest = {
-        body: "não é objeto",
-      };
-
-      // Act
+      const request: HttpRequest = { body: "não é objeto" };
       const response: HttpResponse = await controller.handle(request);
-
-      // Assert
       expect(response.statusCode).toBe(400);
       expect(response.body).toContain("Corpo da requisição");
     });
 
     test("Deve retornar 400 quando campo obrigatório falta", async () => {
-      // Arrange
       const request: HttpRequest = {
         body: {
           nome: "João Silva",
           cpf: "123.456.789-01",
-          // dataNascimento faltando
           genero: "masculino",
           email: "joao@example.com",
           telefone: "(11) 98765-4321",
           senha: "senha123",
-          enderecoId: "endereco-123",
+          endereco: { cep: "01310-100", numero: 123 },
         },
       };
-
-      // Act
       const response: HttpResponse = await controller.handle(request);
-
-      // Assert
       expect(response.statusCode).toBe(400);
       expect(response.body).toContain("Missing param: dataNascimento");
     });
 
     test("Deve retornar 400 quando múltiplos campos faltam", async () => {
-      // Arrange
       const request: HttpRequest = {
         body: {
           nome: "João Silva",
-          // cpf faltando
-          // dataNascimento faltando
           genero: "masculino",
           email: "joao@example.com",
-          // telefone faltando
           senha: "senha123",
-          enderecoId: "endereco-123",
+          endereco: { cep: "01310-100", numero: 123 },
         },
       };
-
-      // Act
       const response: HttpResponse = await controller.handle(request);
-
-      // Assert
       expect(response.statusCode).toBe(400);
       expect(response.body).toContain("Missing param:");
     });
 
     test("Deve retornar 400 quando campo é string vazia", async () => {
-      // Arrange
       const request: HttpRequest = {
         body: {
           nome: "",
@@ -200,20 +150,15 @@ describe("RegisterIdentidadeController", () => {
           email: "joao@example.com",
           telefone: "(11) 98765-4321",
           senha: "senha123",
-          enderecoId: "endereco-123",
+          endereco: { cep: "01310-100", numero: 123 },
         },
       };
-
-      // Act
       const response: HttpResponse = await controller.handle(request);
-
-      // Assert
       expect(response.statusCode).toBe(400);
       expect(response.body).toContain("Missing param: nome");
     });
 
     test("Deve retornar 400 quando campo é null", async () => {
-      // Arrange
       const request: HttpRequest = {
         body: {
           nome: "João Silva",
@@ -223,14 +168,10 @@ describe("RegisterIdentidadeController", () => {
           email: "joao@example.com",
           telefone: "(11) 98765-4321",
           senha: "senha123",
-          enderecoId: "endereco-123",
+          endereco: { cep: "01310-100", numero: 123 },
         },
       };
-
-      // Act
       const response: HttpResponse = await controller.handle(request);
-
-      // Assert
       expect(response.statusCode).toBe(400);
       expect(response.body).toContain("Missing param: cpf");
     });
@@ -238,7 +179,6 @@ describe("RegisterIdentidadeController", () => {
 
   describe("CENÁRIOS DE ERRO - Use Case", () => {
     test("Deve retornar 400 quando identidade já existe", async () => {
-      // Arrange
       const request: HttpRequest = {
         body: {
           nome: "João Silva",
@@ -248,25 +188,20 @@ describe("RegisterIdentidadeController", () => {
           email: "joao@example.com",
           telefone: "(11) 98765-4321",
           senha: "senha123",
-          enderecoId: "endereco-123",
+          endereco: { cep: "01310-100", numero: 123 },
         },
       };
 
-      const error = new Error("A identidade já existe.");
-      vi.mocked(mockUseCase.registerIdentidade).mockResolvedValueOnce(
-        failure(error)
+      mockRegisterIdentidade.mockResolvedValueOnce(
+        failure(new Error("A identidade já existe."))
       );
 
-      // Act
       const response: HttpResponse = await controller.handle(request);
-
-      // Assert
       expect(response.statusCode).toBe(400);
       expect(response.body).toContain("A identidade já existe");
     });
 
     test("Deve retornar 400 quando use case retorna erros de validação", async () => {
-      // Arrange
       const request: HttpRequest = {
         body: {
           nome: "João Silva",
@@ -276,22 +211,15 @@ describe("RegisterIdentidadeController", () => {
           email: "joao@example.com",
           telefone: "(11) 98765-4321",
           senha: "senha123",
-          enderecoId: "endereco-123",
+          endereco: { cep: "01310-100", numero: 123 },
         },
       };
 
-      const errors = [
-        new Error("CPF inválido"),
-        new Error("Email inválido"),
-      ];
-      vi.mocked(mockUseCase.registerIdentidade).mockResolvedValueOnce(
-        failure(errors)
+      mockRegisterIdentidade.mockResolvedValueOnce(
+        failure([new Error("CPF inválido"), new Error("Email inválido")])
       );
 
-      // Act
       const response: HttpResponse = await controller.handle(request);
-
-      // Assert
       expect(response.statusCode).toBe(400);
       expect(response.body).toContain("Dados inválidos");
       expect(response.body).toContain("CPF inválido");
@@ -301,7 +229,6 @@ describe("RegisterIdentidadeController", () => {
 
   describe("CENÁRIOS DE ERRO - Exceções", () => {
     test("Deve retornar 500 quando ocorre erro inesperado no use case", async () => {
-      // Arrange
       const request: HttpRequest = {
         body: {
           nome: "João Silva",
@@ -311,18 +238,15 @@ describe("RegisterIdentidadeController", () => {
           email: "joao@example.com",
           telefone: "(11) 98765-4321",
           senha: "senha123",
-          enderecoId: "endereco-123",
+          endereco: { cep: "01310-100", numero: 123 },
         },
       };
 
-      vi.mocked(mockUseCase.registerIdentidade).mockRejectedValueOnce(
+      mockRegisterIdentidade.mockRejectedValueOnce(
         new Error("Erro de conexão com banco")
       );
 
-      // Act
       const response: HttpResponse = await controller.handle(request);
-
-      // Assert
       expect(response.statusCode).toBe(500);
       expect(response.body).toBeDefined();
     });
@@ -330,7 +254,6 @@ describe("RegisterIdentidadeController", () => {
 
   describe("CENÁRIOS LIMITE", () => {
     test("Deve normalizar dados com espaços em branco", async () => {
-      // Arrange
       const request: HttpRequest = {
         body: {
           nome: "  João Silva  ",
@@ -340,26 +263,20 @@ describe("RegisterIdentidadeController", () => {
           email: "  JOAO@EXAMPLE.COM  ",
           telefone: "(11) 98765-4321",
           senha: "senha123",
-          enderecoId: "endereco-123",
+          endereco: { cep: "01310-100", numero: 123 },
         },
       };
 
-      vi.mocked(mockUseCase.registerIdentidade).mockResolvedValueOnce(
-        success(mockIdentidade)
-      );
+      mockRegisterIdentidade.mockResolvedValueOnce(success(mockIdentidade));
 
-      // Act
-      const response: HttpResponse = await controller.handle(request);
+      await controller.handle(request);
 
-      // Assert
-      const callArgs = vi.mocked(mockUseCase.registerIdentidade).mock
-        .calls[0][0];
-      expect(callArgs.nome).toBe("João Silva"); // Trimmed
-      expect(callArgs.email).toBe("joao@example.com"); // Lowercase e trimmed
+      const callArgs = mockRegisterIdentidade.mock.calls[0][0];
+      expect(callArgs.nome).toBe("João Silva");
+      expect(callArgs.email).toBe("joao@example.com");
     });
 
     test("Deve remover caracteres especiais do CPF", async () => {
-      // Arrange
       const request: HttpRequest = {
         body: {
           nome: "João Silva",
@@ -369,25 +286,19 @@ describe("RegisterIdentidadeController", () => {
           email: "joao@example.com",
           telefone: "(11) 98765-4321",
           senha: "senha123",
-          enderecoId: "endereco-123",
+          endereco: { cep: "01310-100", numero: 123 },
         },
       };
 
-      vi.mocked(mockUseCase.registerIdentidade).mockResolvedValueOnce(
-        success(mockIdentidade)
-      );
+      mockRegisterIdentidade.mockResolvedValueOnce(success(mockIdentidade));
 
-      // Act
       await controller.handle(request);
 
-      // Assert
-      const callArgs = vi.mocked(mockUseCase.registerIdentidade).mock
-        .calls[0][0];
-      expect(callArgs.cpf).toBe("12345678901"); // Sem pontuação
+      const callArgs = mockRegisterIdentidade.mock.calls[0][0];
+      expect(callArgs.cpf).toBe("12345678901");
     });
 
     test("Deve remover caracteres especiais do telefone", async () => {
-      // Arrange
       const request: HttpRequest = {
         body: {
           nome: "João Silva",
@@ -397,58 +308,16 @@ describe("RegisterIdentidadeController", () => {
           email: "joao@example.com",
           telefone: "(11) 9-8765-4321",
           senha: "senha123",
-          enderecoId: "endereco-123",
+          endereco: { cep: "01310-100", numero: 123 },
         },
       };
 
-      vi.mocked(mockUseCase.registerIdentidade).mockResolvedValueOnce(
-        success(mockIdentidade)
-      );
+      mockRegisterIdentidade.mockResolvedValueOnce(success(mockIdentidade));
 
-      // Act
       await controller.handle(request);
 
-      // Assert
-      const callArgs = vi.mocked(mockUseCase.registerIdentidade).mock
-        .calls[0][0];
-      expect(callArgs.telefone).toBe("11987654321"); // Sem pontuação
-    });
-
-    test("Deve criar datas de auditoria automaticamente", async () => {
-      // Arrange
-      const request: HttpRequest = {
-        body: {
-          nome: "João Silva",
-          cpf: "123.456.789-01",
-          dataNascimento: "1990-01-15",
-          genero: "masculino",
-          email: "joao@example.com",
-          telefone: "(11) 98765-4321",
-          senha: "senha123",
-          enderecoId: "endereco-123",
-        },
-      };
-
-      const beforeCall = new Date();
-      vi.mocked(mockUseCase.registerIdentidade).mockResolvedValueOnce(
-        success(mockIdentidade)
-      );
-
-      // Act
-      await controller.handle(request);
-      const afterCall = new Date();
-
-      // Assert
-      const callArgs = vi.mocked(mockUseCase.registerIdentidade).mock
-        .calls[0][0];
-      expect(callArgs.criadoEm).toBeInstanceOf(Date);
-      expect(callArgs.atualizadoEm).toBeInstanceOf(Date);
-      expect(callArgs.criadoEm.getTime()).toBeGreaterThanOrEqual(
-        beforeCall.getTime()
-      );
-      expect(callArgs.criadoEm.getTime()).toBeLessThanOrEqual(
-        afterCall.getTime()
-      );
+      const callArgs = mockRegisterIdentidade.mock.calls[0][0];
+      expect(callArgs.telefone).toBe("11987654321");
     });
   });
 });
