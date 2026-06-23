@@ -1,5 +1,5 @@
 import type { IRegisterIdentidadeUC } from "../../application/ports/IRegisterIdentidadeUC";
-import { ok, badRequest, serverError } from "./helpers/HttpHelper";
+import { created, badRequest, serverError } from "./helpers/HttpHelper";
 import { ValidatorHelper } from "./helpers/ValidatorHelper";
 import type { HttpRequest, HttpResponse } from "../protocol-interfaces/Http";
 import type { BaseController } from "./BaseController";
@@ -76,7 +76,8 @@ export class RegisterIdentidadeController implements BaseController {
       }
 
       // Retorna identidade criada
-      return ok(result.value);
+      return created(result.value);
+
     } catch (error) {
       // Tratamento de erros inesperados
       const errorMessage =
