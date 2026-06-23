@@ -80,13 +80,13 @@ const Registration = () => {
     if (firstStep) return <StepProfile />;
 
     const sp = { stepNumber, totalSteps };
-    if (!firstStep && stepNumber === 2) return <StepUserAccess onNext={goNext} onBack={goBack} {...sp}/>
+    if (!firstStep && stepNumber === 2) return <StepPatientName onNext={goNext} onBack={goBack} {...sp}/>
 
     if (role === "paciente" && stepNumber > 2 && !firstStep) {
       switch (patientStep) {
-        case 3: return <StepPatientName onNext={goNext} onBack={goBack} {...sp} />;
-        case 4: return <StepPatientBirthdate onNext={goNext} onBack={goBack} {...sp} />;
-        case 5: return <StepPatientGender onNext={goNext} onBack={goBack} {...sp} />;
+        case 3: return <StepUserAccess onNext={goNext} onBack={goBack} {...sp} />;
+        case 4: return <StepPatientGender onNext={goNext} onBack={goBack} {...sp} />;
+        case 5: return <StepPatientBirthdate onNext={goNext} onBack={goBack} {...sp} />;
         case 6: return <StepPatientAddress onNext={goNext} onBack={goBack} {...sp} />;
         case 7: return <StepPatientSus onNext={goNext} onBack={goBack} {...sp} />;
         case 8: return <StepPatientComplaint onNext={goNext} onBack={goBack} {...sp} />;
