@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { useRegistrationStore } from '@/store/registrationStore';
-import { formatName, sanitizeName } from '@/lib/masks';
-import { UserRound, ArrowRight, ArrowLeft } from 'lucide-react';
+import { useState } from "react";
+import { useRegistrationStore } from "@/store/registrationStore";
+import { formatName, sanitizeName, getFirstName } from "@/lib/masks";
+import { UserRound, ArrowRight, ArrowLeft } from "lucide-react";
 
 interface Props {
   onNext: () => void;
@@ -31,15 +31,14 @@ const StepPatientName = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
   };
 
   const handleSubmit = () => {
-    const nome = patientData.nome?.trim();
-
-    if (!nome || nome.split(' ').length < 2) {
-      setError('Por favor, informe seu nome completo.');
-      return;
+    if (validate()) {
+      updatePatientData({
+        primeiroNome: getFirstName(
+          patientData.nomeSocial ? patientData.nomeSocial : patientData.nome,
+        ),
+      });
+      onNext();
     }
-
-    setError('');
-    onNext();
   };
 
   return (

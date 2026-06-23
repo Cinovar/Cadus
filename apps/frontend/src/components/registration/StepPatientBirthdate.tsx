@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useRegistrationStore } from '@/store/registrationStore';
-import { formatDate, getFirstName } from '@/lib/masks';
+import { formatDate } from '@/lib/masks';
 import { validateDate } from '@/lib/validation';
 import { Calendar, ArrowRight, ArrowLeft } from 'lucide-react';
 
@@ -9,7 +9,6 @@ interface Props { onNext: () => void; onBack: () => void; stepNumber?: number; t
 const StepPatientBirthdate = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
   const { patientData, updatePatientData } = useRegistrationStore();
   const [error, setError] = useState('');
-  const firstName = getFirstName(patientData.nome || '');
 
   const validate = () => {
     if (!patientData.dataNascimento || !validateDate(patientData.dataNascimento)) {
@@ -28,7 +27,7 @@ const StepPatientBirthdate = ({ onNext, onBack, stepNumber, totalSteps }: Props)
           <Calendar size={22} className="md:hidden" />
           <Calendar size={26} className="hidden md:block" />
         </div>
-        <h2>{firstName ? `${firstName}, quando você nasceu?` : 'Quando você nasceu?'}</h2>
+        <h2>{patientData.primeiroNome ? `${patientData.primeiroNome}, quando você nasceu?` : 'Quando você nasceu?'}</h2>
         <p>Necessário para o prontuário clínico</p>
         {stepNumber && totalSteps && (
           <div className="step-badge">Etapa {stepNumber} de {totalSteps}</div>
