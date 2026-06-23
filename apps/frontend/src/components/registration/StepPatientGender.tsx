@@ -1,63 +1,99 @@
-import { useState } from 'react';
-import { useRegistrationStore } from '@/store/registrationStore';
-import { Heart, ArrowRight, ArrowLeft, Check } from 'lucide-react';
+import { useState } from "react";
+import { useRegistrationStore } from "@/store/registrationStore";
+import { Heart, ArrowRight, ArrowLeft, Check } from "lucide-react";
 
-interface Props { onNext: () => void; onBack: () => void; stepNumber?: number; totalSteps?: number; }
+interface Props {
+  onNext: () => void;
+  onBack: () => void;
+  stepNumber?: number;
+  totalSteps?: number;
+}
 
-const genderOptions = [
-  { label: 'Feminino', icon: '♀' },
-  { label: 'Masculino', icon: '♂' },
+const opcoesGenero = [
+  "Mulher",
+  "Homem",
+  "Outra identidade",
+  "Prefiro não informar",
 ];
-const genderSecondary = [
-  { label: 'Outro', icon: '◎' },
-  { label: 'Prefiro não informar', icon: '—' },
-];
-const pronomeOptions = ['Ela/Dela', 'Ele/Dele', 'Elu/Delu', 'Outro'];
 
-const StepPatientGender = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
+const outrasOpcoesGenero = [
+  "Não-binário",
+  "Gênero flúido",
+  "Bigênero",
+  "Pangênero",
+  "Agênero",
+  "Travesti",
+  "Prefiro me autodescrever",
+];
+
+const opcoesPronome = ["Ela/Dela", "Ele/Dele", "Elu/Delu", "Prefiro me autodescrever"];
+
+const StepPatientGender = ({
+  onNext,
+  onBack,
+  stepNumber,
+  totalSteps,
+}: Props) => {
   const { patientData, updatePatientData } = useRegistrationStore();
-  const [error, setError] = useState('');
-  const [generoOutro, setGeneroOutro] = useState('');
-  const [pronomeOutro, setPronomeOutro] = useState('');
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const selectedGenero = patientData.genero || '';
-  const showGenderInput = selectedGenero === 'Outro';
-  const showExtras = selectedGenero === 'Outro' || selectedGenero === 'Prefiro não informar';
+  const [outroGenero, setOutroGenero] = useState("");
+  const [autodescGenero, setAutodescGenero] = useState(false);
+
+  const [listaPronomes, setListaPronomes] = useState([]);
+  const [autodescPronome, setAutodescPronome] = useState(false);
+  const [outroPronome, setOutroPronome] = useState("");
+
+  const selectedGenero = patientData.genero || "";
+  const showGenderInput = selectedGenero === "Outra identidade";
+  const showPronounsInput =
+    selectedGenero === "Outra identidade" ||
+    selectedGenero === "Prefiro não informar";
 
   const handleSelectGenero = (opt: string) => {
     updatePatientData({ genero: opt });
-    if (!['Outro', 'Prefiro não informar'].includes(opt)) {
-      updatePatientData({ pronome: '', nomeSocial: '' });
-      setGeneroOutro('');
-      setPronomeOutro('');
-    }
-    setError('');
+
+    if (opt !== "Outra identidade") setOutroGenero("");
+
+    if (opt === "Mulher") setListaPronomes(["Ela/Dela"]);
+    else if (opt === "Homem") setListaPronomes(["Ele/Dele"]);
+    else setListaPronomes([]);
   };
 
   const validate = () => {
-    if (!selectedGenero) {
-      setError('Por favor, selecione uma opção.');
-      return false;
-    }
-    if (selectedGenero === 'Outro' && !generoOutro.trim()) {
-      setError('Por favor, informe como você se identifica.');
-      return false;
-    }
-    return true;
+    const e: Record<string, string> = {};
+    // Gênero
+    if (!patientData.genero) e.genero = "Por favor, informe sua identidade.";
+    if (patientData.genero === "Outra identidade" && !outroGenero.trim())
+      e.outroGenero = "Por favor, informe sua identidade.";
+    // Pronomes
+    if (
+      (patientData.genero === "Outra identidade" ||
+        patientData.genero === "Prefiro não informar") &&
+      listaPronomes.length === 0 &&
+      !outroPronome.trim()
+    )
+      e.pronomes = "Por favor, informe seu(s) pronome(s).";
+
+    setErrors(e);
+    return Object.keys(e).length === 0;
   };
 
-  const handleNext = () => {
+  const handleSubmit = () => {
     if (!validate()) return;
-    if (selectedGenero === 'Outro') {
-      updatePatientData({ genero: `Outro: ${generoOutro.trim()}` });
-    }
-    if (patientData.pronome === 'Outro' && pronomeOutro.trim()) {
-      updatePatientData({ pronome: `Outro: ${pronomeOutro.trim()}` });
-    }
+
+    if (outroGenero.trim())
+      updatePatientData({ genero: `${outroGenero.trim()}` });
+
+    const listaPronAux = outroPronome.trim()
+      ? [...listaPronomes, outroPronome.trim()]
+      : listaPronomes;
+    updatePatientData({ pronomes: listaPronAux });
+
     onNext();
   };
 
-  const isActive = (opt: string) => selectedGenero === opt || (opt === 'Outro' && selectedGenero.startsWith('Outro'));
+  const isActive = (opt: string) => selectedGenero === opt;
 
   return (
     <>
@@ -66,95 +102,139 @@ const StepPatientGender = ({ onNext, onBack, stepNumber, totalSteps }: Props) =>
           <Heart size={22} className="md:hidden" />
           <Heart size={26} className="hidden md:block" />
         </div>
-        <h2>Como você se identifica?</h2>
-        <p>Informação importante para seu atendimento</p>
+        <h2>{patientData.primeiroNome}, você se considera...</h2>
+        <p>Informações sobre como se referir a você</p>
         {stepNumber && totalSteps && (
-          <div className="step-badge">Etapa {stepNumber} de {totalSteps}</div>
+          <div className="step-badge">
+            Etapa {stepNumber} de {totalSteps}
+          </div>
         )}
       </div>
 
       <div className="step-divider" />
 
       <div className="space-y-4 md:space-y-5">
+        {/* Opções de gênero */}
         <div>
-          <div className="grid grid-cols-2 gap-2.5 md:gap-3">
-            {genderOptions.map((opt) => (
+          <div className="flex flex-col gap-2.5 md:gap-3">
+            {opcoesGenero.map((opt, i) => (
               <button
-                key={opt.label}
+                key={i}
                 type="button"
-                onClick={() => handleSelectGenero(opt.label)}
-                className={`selection-card ${isActive(opt.label) ? 'selection-card-active' : ''}`}
+                onClick={() => handleSelectGenero(opt)}
+                className={`selection-card ${isActive(opt) ? "selection-card-active" : ""}`}
               >
-                {isActive(opt.label) && (
+                {isActive(opt) && (
                   <div className="absolute top-2 right-2 md:top-2.5 md:right-2.5 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
                     <Check size={12} className="text-primary-foreground" />
                   </div>
                 )}
-                <span className="mr-1.5 text-base md:text-lg">{opt.icon}</span> {opt.label}
+                <span className="mr-1.5 text-base md:text-lg"></span> {opt}
               </button>
             ))}
           </div>
-
-          <div className="flex items-center gap-3 my-4 md:my-5">
-            <div className="flex-1 h-px bg-border/60" />
-            <span className="text-[11px] md:text-xs text-muted-foreground/50 font-body">ou</span>
-            <div className="flex-1 h-px bg-border/60" />
-          </div>
-
-          <div className="grid grid-cols-2 gap-2.5 md:gap-3">
-            {genderSecondary.map((opt) => (
-              <button
-                key={opt.label}
-                type="button"
-                onClick={() => handleSelectGenero(opt.label)}
-                className={`selection-card text-[12px] md:text-[13px] ${isActive(opt.label) ? 'selection-card-active' : ''}`}
-              >
-                {isActive(opt.label) && (
-                  <div className="absolute top-2 right-2 md:top-2.5 md:right-2.5 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
-                    <Check size={12} className="text-primary-foreground" />
-                  </div>
-                )}
-                <span className="mr-1 opacity-60">{opt.icon}</span> {opt.label}
-              </button>
-            ))}
-          </div>
-          {error && <p className="error-text mt-3">{error}</p>}
+          {errors.genero && <p className="error-text mt-3">{errors.genero}</p>}
         </div>
 
+        {/* Outras opções de gênero */}
         {showGenderInput && (
           <div className="animate-in fade-in slide-in-from-top-2 duration-300">
-            <label className="label-cadus">Como você se identifica?</label>
-            <input className="input-cadus" value={generoOutro} onChange={(e) => setGeneroOutro(e.target.value)} placeholder="Digite aqui..." />
+            <label className="label-cadus">Como você se considera? *</label>
+            <div className="flex flex-col gap-2.5 md:gap-3 my-2">
+              {outrasOpcoesGenero.map((opt, i) => (
+                <label className="label-cadus flex items-center gap-3 mx-4">
+                  <input
+                    key={i}
+                    type="radio"
+                    name="outroGeneroBtn"
+                    onChange={() => {
+                      if (opt === "Prefiro me autodescrever") {
+                        setAutodescGenero(true);
+                        setOutroGenero("");
+                      } else {
+                        setAutodescGenero(false);
+                        setOutroGenero(opt);
+                      }
+                    }}
+                    className="w-5 h-5 rounded-md border-2 border-border accent-primary"
+                  />
+                  <span>{opt}</span>
+                </label>
+              ))}
+              {autodescGenero && (
+                <input
+                  className="input-cadus"
+                  value={outroGenero}
+                  onChange={(e) => setOutroGenero(e.target.value)}
+                  placeholder="Digite aqui..."
+                />
+              )}
+            </div>
+            {errors.outroGenero && (
+              <p className="error-text">{errors.outroGenero}</p>
+            )}
           </div>
         )}
 
-        {showExtras && (
-          <div className="animate-in fade-in slide-in-from-top-2 duration-300 space-y-4 md:space-y-5">
-            <div>
-              <label className="label-cadus">Qual pronome você prefere? (opcional)</label>
-              <div className="grid grid-cols-2 gap-2 md:gap-2.5">
-                {pronomeOptions.map((opt) => (
-                  <button key={opt} type="button" onClick={() => updatePatientData({ pronome: opt })}
-                    className={`selection-card text-[13px] md:text-sm !py-2.5 md:!py-3 ${patientData.pronome === opt ? 'selection-card-active' : ''}`}>
-                    {opt}
-                  </button>
-                ))}
-              </div>
-              {patientData.pronome === 'Outro' && (
-                <input className="input-cadus mt-2.5" value={pronomeOutro} onChange={(e) => setPronomeOutro(e.target.value)} placeholder="Qual pronome?" />
+        {/* Opções de pronomes */}
+        {showPronounsInput && (
+          <div className="animate-in fade-in slide-in-from-top-2 duration-300">
+            <label className="label-cadus">
+              Qual/Quais pronome(s) você prefere? *
+            </label>
+            <div className="flex flex-col gap-2.5 md:gap-3 my-2">
+              {opcoesPronome.map((opt, i) => (
+                <label className="label-cadus flex items-center gap-3 mx-4">
+                  <input
+                    key={i}
+                    type="checkbox"
+                    checked={
+                      i === opcoesPronome.length - 1
+                        ? autodescPronome
+                        : listaPronomes.includes(opt)
+                    }
+                    onChange={() => {
+                      if (i === opcoesPronome.length - 1) {
+                        setAutodescPronome(!autodescPronome)
+                      } else {
+                        if (!listaPronomes.includes(opt))
+                          setListaPronomes([...listaPronomes, opt]);
+                        else
+                          setListaPronomes(
+                            listaPronomes.filter(
+                              (filterOpt) => filterOpt !== opt,
+                            ),
+                          );
+                      }
+                    }}
+                    className="w-5 h-5 rounded-md border-2 border-border accent-primary"
+                  />
+                  <span>{opt}</span>
+                </label>
+              ))}
+              {autodescPronome && (
+                <input
+                  className="input-cadus"
+                  value={outroPronome}
+                  onChange={(e) => setOutroPronome(e.target.value)}
+                  placeholder="Digite aqui..."
+                />
               )}
             </div>
-            <div>
-              <label className="label-cadus">Nome social (opcional)</label>
-              <input className="input-cadus" value={patientData.nomeSocial || ''} onChange={(e) => updatePatientData({ nomeSocial: e.target.value })} placeholder="Como prefere ser chamado?" />
-              <p className="text-[11px] md:text-xs text-muted-foreground/60 mt-1.5">Se preferir ser chamado de outro nome, informe aqui.</p>
-            </div>
+            {errors.pronomes && <p className="error-text">{errors.pronomes}</p>}
           </div>
         )}
       </div>
 
-      <button onClick={handleNext} className="btn-primary w-full mt-4 md:mt-8 group">
-        Continuar <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+      <button
+        onClick={handleSubmit}
+        className="btn-primary w-full mt-4 md:mt-8 group"
+      >
+        Continuar{" "}
+        <ArrowRight
+          size={18}
+          className="transition-transform group-hover:translate-x-1"
+        />
       </button>
 
       <button onClick={onBack} className="btn-back">
