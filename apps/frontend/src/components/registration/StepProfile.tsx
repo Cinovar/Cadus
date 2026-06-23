@@ -1,12 +1,13 @@
 import { Heart, Stethoscope, Check } from 'lucide-react';
 import { useRegistrationStore } from '@/store/registrationStore';
+import { toast } from '@/hooks/use-toast';
 
 const StepProfile = () => {
-  const { role, setRole, setFirstStep, setPatientStep, setProfessionalStep } = useRegistrationStore();
+  const { setRole, setRoleStep } = useRegistrationStore();
 
   const handleSelect = (selected: 'paciente' | 'profissional') => {
     setRole(selected);
-    setFirstStep(false);
+    setRoleStep(false);
   };
 
   return (
@@ -22,17 +23,8 @@ const StepProfile = () => {
         {/* Paciente */}
         <button
           onClick={() => handleSelect('paciente')}
-          className={`group relative flex flex-col items-center text-center rounded-2xl border-2 p-5 pb-6 md:p-6 md:pb-7 transition-all duration-300 focus:outline-none cursor-pointer ${
-            role === 'paciente'
-              ? 'border-primary bg-primary/[0.06] shadow-lg shadow-primary/10'
-              : 'border-primary/15 bg-gradient-to-b from-primary/[0.03] to-transparent hover:border-primary/40 hover:shadow-lg hover:shadow-primary/8 hover:scale-[1.02]'
-          }`}
+          className='group relative flex flex-col items-center text-center rounded-2xl border-2 p-5 pb-6 md:p-6 md:pb-7 transition-all duration-300 focus:outline-none cursor-pointer border-primary/15 bg-gradient-to-b from-primary/[0.03] to-transparent hover:border-primary/40 hover:shadow-lg hover:shadow-primary/8 hover:scale-[1.02]'
         >
-          {role === 'paciente' && (
-            <div className="absolute top-3 right-3 w-7 h-7 rounded-full bg-primary flex items-center justify-center animate-check-bounce">
-              <Check size={14} className="text-primary-foreground" />
-            </div>
-          )}
 
           <div
             className="w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center mb-3 md:mb-4 transition-transform duration-300 group-hover:scale-110"
@@ -48,26 +40,21 @@ const StepProfile = () => {
           <h3 className="font-display font-700 text-foreground text-base md:text-lg">
             Sou Paciente
           </h3>
-          <p className="text-[13px] md:text-sm text-muted-foreground mt-1 leading-relaxed max-w-[260px]">
+          <p className="text-[14px] md:text-sm text-muted-foreground mt-1 leading-relaxed max-w-[260px]">
             Quero fazer meu cadastro para ser atendido.
           </p>
         </button>
 
         {/* Profissional */}
         <button
-          onClick={() => handleSelect('profissional')}
-          className={`group relative flex flex-col items-center text-center rounded-2xl border-2 p-5 pb-6 md:p-6 md:pb-7 transition-all duration-300 focus:outline-none cursor-pointer ${
-            role === 'profissional'
-              ? 'border-secondary bg-secondary/[0.06] shadow-lg shadow-secondary/10'
-              : 'border-secondary/15 bg-gradient-to-b from-secondary/[0.03] to-transparent hover:border-secondary/40 hover:shadow-lg hover:shadow-secondary/8 hover:scale-[1.02]'
-          }`}
+          onClick={() =>
+            toast({
+              title: "Em breve!",
+              description: "Cadastro de profissional em breve."
+            })
+          }
+          className='group relative flex flex-col items-center text-center rounded-2xl border-2 p-5 pb-6 md:p-6 md:pb-7 transition-all duration-300 focus:outline-none cursor-pointer border-secondary/15 bg-gradient-to-b from-secondary/[0.03] to-transparent hover:border-secondary/40 hover:shadow-lg hover:shadow-secondary/8 hover:scale-[1.02]'
         >
-          {role === 'profissional' && (
-            <div className="absolute top-3 right-3 w-7 h-7 rounded-full bg-secondary flex items-center justify-center animate-check-bounce">
-              <Check size={14} className="text-secondary-foreground" />
-            </div>
-          )}
-
           <div
             className="w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center mb-3 md:mb-4 transition-transform duration-300 group-hover:scale-110"
             style={{
@@ -82,8 +69,8 @@ const StepProfile = () => {
           <h3 className="font-display font-700 text-foreground text-base md:text-lg">
             Sou Profissional
           </h3>
-          <p className="text-[13px] md:text-sm text-muted-foreground mt-1 leading-relaxed max-w-[260px]">
-            Profissional de saúde, gestor ou aluno.
+          <p className="text-[14px] md:text-sm text-muted-foreground mt-1 leading-relaxed max-w-[260px]">
+            Profissional de saúde, docente ou discente.
           </p>
         </button>
       </div>
