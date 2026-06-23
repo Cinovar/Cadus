@@ -5,6 +5,8 @@ export type UserRole = 'paciente' | 'profissional' | null;
 
 interface UserData {
   nome: string;
+  nomeSocial: string;
+  primeiroNome: string;
   cpf: string;
   email: string;
   senha: string;
@@ -14,8 +16,8 @@ interface UserData {
 export interface PatientData extends UserData {
   dataNascimento: string;
   genero: string;
-  pronome: string;
-  nomeSocial: string;
+  sexo: string;
+  pronomes: string[];
   cep: string;
   rua: string;
   numero: string;
