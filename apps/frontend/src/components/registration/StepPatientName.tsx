@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useRegistrationStore } from "@/store/registrationStore";
-import { formatName, sanitizeName, getFirstName } from "@/lib/masks";
+import { getFirstName } from "@/lib/masks";
 import { UserRound, ArrowRight, ArrowLeft } from "lucide-react";
 import NameInput from "../NameInput";
 
@@ -74,26 +74,18 @@ const StepPatientName = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
         {temNomeSocial && (
           <NameInput
             error={errors.nomeSocial}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              updatePatientData({
-                nomeSocial: formatName(sanitizeName(e.target.value)),
-              })
-            }
             placeholder="Nome social completo..."
             value={patientData.nomeSocial}
+            attribute="nomeSocial"
           />
         )}
 
         <div>
           <NameInput
             error={errors.nome}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              updatePatientData({
-                nome: formatName(sanitizeName(e.target.value)),
-              })
-            }
             placeholder="Nome civil completo..."
             value={patientData.nome}
+            attribute="nome"
           />
         </div>
       </div>

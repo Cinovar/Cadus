@@ -1,13 +1,16 @@
+import { useRegistrationStore } from "@/store/registrationStore";
+import { formatName, sanitizeName } from "@/lib/masks";
 import { UserRound } from "lucide-react";
 
 interface Props {
   error: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
   value: string;
+  attribute: string
 }
 
-const NameInput = ({ error, onChange, placeholder, value }: Props) => {
+const NameInput = ({ error, placeholder, value, attribute }: Props) => {
+  const { updatePatientData } = useRegistrationStore();
   return (
     <div>
       <div className="relative">
@@ -18,7 +21,11 @@ const NameInput = ({ error, onChange, placeholder, value }: Props) => {
         <input
           className="input-cadus pl-12 text-base md:text-lg"
           value={value || ""}
-          onChange={onChange}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            updatePatientData({
+              [attribute]: formatName(sanitizeName(e.target.value)),
+            })
+          }
           placeholder={placeholder}
           autoFocus
         />

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useRegistrationStore } from "@/store/registrationStore";
-import { formatName, sanitizeName } from "@/lib/masks";
 import { Cross, ArrowRight, ArrowLeft, Check, CreditCard } from "lucide-react";
 import { validateText } from "@/lib/validation";
 import NameInput from "../NameInput";
@@ -166,13 +165,9 @@ const StepPatientClinic = ({
             <label className="label-cadus">Nome do responsável *</label>
             <NameInput
               error={errors.nomeResponsavel}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                updatePatientData({
-                  nomeResponsavel: formatName(sanitizeName(e.target.value)),
-                })
-              }
               placeholder="Nome completo..."
               value={patientData.nomeResponsavel}
+              attribute="nomeResponsavel"
             />
 
             {/* <label className="label-cadus mt-3">Nome do responsável *</label>
