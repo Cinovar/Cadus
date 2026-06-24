@@ -40,7 +40,7 @@ const StepPatientGender = ({
   const [outroGenero, setOutroGenero] = useState("");
   const [autodescGenero, setAutodescGenero] = useState(false);
 
-  const [listaPronomes, setListaPronomes] = useState([]);
+  const [listaPronomes, setListaPronomes] = useState(patientData.pronomes || []);
   const [autodescPronome, setAutodescPronome] = useState(false);
   const [outroPronome, setOutroPronome] = useState("");
 

@@ -63,7 +63,7 @@ const StepPatientName = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
         <label className="label-cadus flex items-center gap-3 mx-4">
           <input
             type="checkbox"
-            checked={temNomeSocial || false}
+            checked={temNomeSocial}
             onChange={() => setTemNomeSocial(!temNomeSocial)}
             className="w-5 h-5 rounded-md border-2 border-border accent-primary"
           />

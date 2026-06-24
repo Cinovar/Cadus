@@ -2,16 +2,15 @@ import { useState } from "react";
 import { validateLogin } from "@/lib/validation";
 
 export const useLoginForm = () => {
-  const [login, setLogin] = useState("");
-  const [typeLogin, setTypeLogin] = useState<"email" | "cpf">("email");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState<{ login?: string; password?: string }>({});
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    const validation = validateLogin(login, typeLogin, password);
+    const validation = validateLogin(email, password);
     
     if (!validation.isValid) {
       setErrors(validation.errors);
@@ -24,14 +23,12 @@ export const useLoginForm = () => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     
     setIsLoading(false);
-    console.log("Enviando informações de login ao backend:", { login, password });
+    console.log("Enviando informações de login ao backend:", { email, password });
   };
 
   return {
-    login,
-    setLogin,
-    typeLogin,
-    setTypeLogin,
+    email,
+    setEmail,
     password,
     setPassword,
     errors,

@@ -1,21 +1,20 @@
 import { useState, useCallback } from 'react';
 import { useRegistrationStore } from '@/store/registrationStore';
-import { formatCEP, fetchAddress, getFirstName } from '@/lib/masks';
-import { MapPin, ArrowRight, ArrowLeft, Loader2 } from 'lucide-react';
+import { formatCEP, fetchAddress } from '@/lib/masks';
+import { MapPin, Loader2 } from 'lucide-react';
 
-interface Props { onNext: () => void; onBack: () => void; stepNumber?: number; totalSteps?: number; }
+interface Props { errors: Record<string, string>; }
 
-const StepPatientAddress = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
+const StepPatientAddress = ({ errors }: Props) => {
   const { patientData, updatePatientData } = useRegistrationStore();
-  const [errors, setErrors] = useState<Record<string, string>>({});
   const [loadingCep, setLoadingCep] = useState(false);
-  const firstName = getFirstName(patientData.nome || '');
 
   const cepFilled = !!(patientData.rua && patientData.cidade);
 
   const handleCep = useCallback(async (value: string) => {
     const formatted = formatCEP(value);
     updatePatientData({ cep: formatted });
+
     const digits = formatted.replace(/\D/g, '');
     if (digits.length === 8) {
       setLoadingCep(true);
@@ -23,32 +22,11 @@ const StepPatientAddress = ({ onNext, onBack, stepNumber, totalSteps }: Props) =
       if (addr) updatePatientData(addr);
       setLoadingCep(false);
     }
-  }, [updatePatientData]);
 
-  const validate = () => {
-    const e: Record<string, string> = {};
-    if (!patientData.cep || patientData.cep.replace(/\D/g, '').length < 8) e.cep = 'Por favor, informe um CEP válido.';
-    if (!patientData.numero?.trim()) e.numero = 'Por favor, informe o número.';
-    setErrors(e);
-    return Object.keys(e).length === 0;
-  };
+  }, [updatePatientData]);
 
   return (
     <>
-      <div className="step-header">
-        <div className="icon-hero">
-          <MapPin size={22} className="md:hidden" />
-          <MapPin size={26} className="hidden md:block" />
-        </div>
-        <h2>{firstName ? `${firstName}, onde você mora?` : 'Onde você mora?'}</h2>
-        <p>O CEP preenche automaticamente rua e bairro</p>
-        {stepNumber && totalSteps && (
-          <div className="step-badge">Etapa {stepNumber} de {totalSteps}</div>
-        )}
-      </div>
-
-      <div className="step-divider" />
-
       <div className="space-y-3 md:space-y-4">
         <div>
           <label className="label-cadus">CEP *</label>
@@ -64,6 +42,7 @@ const StepPatientAddress = ({ onNext, onBack, stepNumber, totalSteps }: Props) =
             />
             {loadingCep && <Loader2 size={18} className="absolute right-4 top-1/2 -translate-y-1/2 animate-spin text-primary" />}
           </div>
+          <p className='text-[12px] md:text-xs text-muted-foreground/70'>Endereço preenchido automaticamente a partir do CEP</p>
           {errors.cep && <p className="error-text">{errors.cep}</p>}
         </div>
 
@@ -81,21 +60,13 @@ const StepPatientAddress = ({ onNext, onBack, stepNumber, totalSteps }: Props) =
                 {errors.numero && <p className="error-text">{errors.numero}</p>}
               </div>
               <div>
-                <label className="label-cadus">Complemento</label>
+                <label className="label-cadus">Complemento (opcional)</label>
                 <input className="input-cadus" value={patientData.complemento || ''} onChange={(e) => updatePatientData({ complemento: e.target.value })} placeholder="Apto, bloco..." />
               </div>
             </div>
           </div>
         )}
       </div>
-
-      <button onClick={() => { if (validate()) onNext(); }} className="btn-primary w-full mt-4 md:mt-8 group">
-        Continuar <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
-      </button>
-
-      <button onClick={onBack} className="btn-back">
-        <ArrowLeft size={16} /> Voltar
-      </button>
     </>
   );
 };

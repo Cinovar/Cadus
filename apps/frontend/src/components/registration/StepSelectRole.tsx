@@ -2,7 +2,7 @@ import { Heart, Stethoscope, Check } from 'lucide-react';
 import { useRegistrationStore } from '@/store/registrationStore';
 import { toast } from '@/hooks/use-toast';
 
-const StepProfile = () => {
+const StepSelectRole = () => {
   const { setRole, setRoleStep } = useRegistrationStore();
 
   const handleSelect = (selected: 'paciente' | 'profissional') => {
@@ -78,4 +78,4 @@ const StepProfile = () => {
   );
 };
 
-export default StepProfile;
+export default StepSelectRole;

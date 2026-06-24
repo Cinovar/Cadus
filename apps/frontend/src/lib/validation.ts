@@ -33,22 +33,25 @@ export const validateDate = (dateStr: string): boolean => {
   return validLeapYear && (date <= new Date());
 }
 
-export const validateLogin = (login: string, typeLogin: string, password: string) => {
-  const errors: { login?: string; password?: string } = {};
+export const validateText = (texto: string): string => {
+  const lettersRegex = /[A-Za-záàâãéêíóôõúüçÁÀÂÃÉÊÍÓÔÕÚÜÇ]/;
+  const repeatedCharaRegex = /(.)\1{9,}/;
+  
+  if (!texto?.trim() || texto.length < 10) return 'Por favor, descreva um pouco mais.';
+  else if (repeatedCharaRegex.test(texto)) return 'Por favor, diminua a repetição excessiva de caracteres.'
+  else if (!lettersRegex.test(texto)) return 'Por favor, evite escrever apenas números ou símbolos.';
+  else return '';
+}
 
-  if (!login.trim()) {
-    errors.login = "E-mail ou CPF é obrigatório";
-  } else {
-    if (typeLogin === "cpf" && !validateCPF(login)) errors.login = "CPF inválido";
-    if (typeLogin === "email" && !validateEmail(login)) {
-      const possibleCpfRegex = /^[0-9]+(?:\.[0-9]+)?(?:-[0-9]+)?$/;
-      // Checa se o usuário colocou só dígitos contendo ou não . ou -
-      // Para dar uma mensagem mais esclarecedora ao usuário
-      errors.login = `E-mail ${possibleCpfRegex.test(login) ? "ou CPF " : ""}inválido`;
-    }
-  }
+export const validateLogin = (email: string, password: string) => {
+  const errors: { email?: string; password?: string } = {};
 
-  if (!password.trim()) errors.password = "Senha é obrigatória";
+  if (!email.trim())
+    errors.email = "O e-mail é obrigatório.";
+  else if (!validateEmail(email))
+    errors.email = `E-mail inválido`;
+
+  if (!password.trim()) errors.password = "A senha é obrigatória";
 
   return {
     isValid: Object.keys(errors).length === 0,
