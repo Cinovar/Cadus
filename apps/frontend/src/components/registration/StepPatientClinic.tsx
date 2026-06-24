@@ -3,6 +3,7 @@ import { useRegistrationStore } from "@/store/registrationStore";
 import { formatName, sanitizeName } from "@/lib/masks";
 import { Cross, ArrowRight, ArrowLeft, Check, CreditCard } from "lucide-react";
 import { validateText } from "@/lib/validation";
+import NameInput from "../NameInput";
 
 interface Props {
   onNext: () => void;
@@ -47,8 +48,12 @@ const StepPatientClinic = ({
       }
     }
 
-    if (patientData.temResponsavel && !patientData.nomeResponsavel.trim())
-      e.nomeResponsavel = "Por favor, insira o nome do responsável.";
+    if (
+      patientData.temResponsavel &&
+      (!patientData.nomeResponsavel.trim() ||
+        patientData.nomeResponsavel.split(" ").length < 2)
+    )
+      e.nomeResponsavel = "Por favor, insira o nome completo do responsável.";
 
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -159,22 +164,17 @@ const StepPatientClinic = ({
         {patientData.temResponsavel && (
           <div className="animate-in fade-in duration-200">
             <label className="label-cadus">Nome do responsável *</label>
-            <div>
-              <input
-                className="input-cadus"
-                placeholder="Nome completo"
-                value={patientData.nomeResponsavel || ""}
-                onChange={(e) =>
-                  updatePatientData({
-                    nomeResponsavel: formatName(sanitizeName(e.target.value)),
-                  })
-                }
-              />
-            </div>
-            {errors.nomeResponsavel && (
-              <p className="error-text">{errors.nomeResponsavel}</p>
-            )}
-            
+            <NameInput
+              error={errors.nomeResponsavel}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                updatePatientData({
+                  nomeResponsavel: formatName(sanitizeName(e.target.value)),
+                })
+              }
+              placeholder="Nome completo..."
+              value={patientData.nomeResponsavel}
+            />
+
             {/* <label className="label-cadus mt-3">Nome do responsável *</label>
             <div>
               <input
