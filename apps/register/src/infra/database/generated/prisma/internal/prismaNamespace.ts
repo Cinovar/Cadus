@@ -605,7 +605,9 @@ export const IdentidadeScalarFieldEnum = {
   email: 'email',
   senha: 'senha',
   enderecoId: 'enderecoId',
-  criadoEm: 'criadoEm'
+  criadoEm: 'criadoEm',
+  atualizadoEm: 'atualizadoEm',
+  deletadoEm: 'deletadoEm'
 } as const
 
 export type IdentidadeScalarFieldEnum = (typeof IdentidadeScalarFieldEnum)[keyof typeof IdentidadeScalarFieldEnum]
@@ -616,7 +618,10 @@ export const EnderecoScalarFieldEnum = {
   cep: 'cep',
   logradouro: 'logradouro',
   numero: 'numero',
-  complemento: 'complemento'
+  complemento: 'complemento',
+  criadoEm: 'criadoEm',
+  atualizadoEm: 'atualizadoEm',
+  deletadoEm: 'deletadoEm'
 } as const
 
 export type EnderecoScalarFieldEnum = (typeof EnderecoScalarFieldEnum)[keyof typeof EnderecoScalarFieldEnum]
@@ -719,6 +724,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**

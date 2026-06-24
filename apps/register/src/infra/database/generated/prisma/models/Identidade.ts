@@ -38,6 +38,8 @@ export type IdentidadeMinAggregateOutputType = {
   senha: string | null
   enderecoId: string | null
   criadoEm: Date | null
+  atualizadoEm: Date | null
+  deletadoEm: Date | null
 }
 
 export type IdentidadeMaxAggregateOutputType = {
@@ -54,6 +56,8 @@ export type IdentidadeMaxAggregateOutputType = {
   senha: string | null
   enderecoId: string | null
   criadoEm: Date | null
+  atualizadoEm: Date | null
+  deletadoEm: Date | null
 }
 
 export type IdentidadeCountAggregateOutputType = {
@@ -70,6 +74,8 @@ export type IdentidadeCountAggregateOutputType = {
   senha: number
   enderecoId: number
   criadoEm: number
+  atualizadoEm: number
+  deletadoEm: number
   _all: number
 }
 
@@ -88,6 +94,8 @@ export type IdentidadeMinAggregateInputType = {
   senha?: true
   enderecoId?: true
   criadoEm?: true
+  atualizadoEm?: true
+  deletadoEm?: true
 }
 
 export type IdentidadeMaxAggregateInputType = {
@@ -104,6 +112,8 @@ export type IdentidadeMaxAggregateInputType = {
   senha?: true
   enderecoId?: true
   criadoEm?: true
+  atualizadoEm?: true
+  deletadoEm?: true
 }
 
 export type IdentidadeCountAggregateInputType = {
@@ -120,6 +130,8 @@ export type IdentidadeCountAggregateInputType = {
   senha?: true
   enderecoId?: true
   criadoEm?: true
+  atualizadoEm?: true
+  deletadoEm?: true
   _all?: true
 }
 
@@ -205,10 +217,12 @@ export type IdentidadeGroupByOutputType = {
   pronome: $Enums.Pronome | null
   pronomeCustom: string | null
   telefone: string
-  email: string | null
+  email: string
   senha: string
   enderecoId: string
   criadoEm: Date
+  atualizadoEm: Date
+  deletadoEm: Date | null
   _count: IdentidadeCountAggregateOutputType | null
   _min: IdentidadeMinAggregateOutputType | null
   _max: IdentidadeMaxAggregateOutputType | null
@@ -242,10 +256,12 @@ export type IdentidadeWhereInput = {
   pronome?: Prisma.EnumPronomeNullableFilter<"Identidade"> | $Enums.Pronome | null
   pronomeCustom?: Prisma.StringNullableFilter<"Identidade"> | string | null
   telefone?: Prisma.StringFilter<"Identidade"> | string
-  email?: Prisma.StringNullableFilter<"Identidade"> | string | null
+  email?: Prisma.StringFilter<"Identidade"> | string
   senha?: Prisma.StringFilter<"Identidade"> | string
   enderecoId?: Prisma.StringFilter<"Identidade"> | string
   criadoEm?: Prisma.DateTimeFilter<"Identidade"> | Date | string
+  atualizadoEm?: Prisma.DateTimeFilter<"Identidade"> | Date | string
+  deletadoEm?: Prisma.DateTimeNullableFilter<"Identidade"> | Date | string | null
   endereco?: Prisma.XOR<Prisma.EnderecoScalarRelationFilter, Prisma.EnderecoWhereInput>
 }
 
@@ -259,16 +275,19 @@ export type IdentidadeOrderByWithRelationInput = {
   pronome?: Prisma.SortOrderInput | Prisma.SortOrder
   pronomeCustom?: Prisma.SortOrderInput | Prisma.SortOrder
   telefone?: Prisma.SortOrder
-  email?: Prisma.SortOrderInput | Prisma.SortOrder
+  email?: Prisma.SortOrder
   senha?: Prisma.SortOrder
   enderecoId?: Prisma.SortOrder
   criadoEm?: Prisma.SortOrder
+  atualizadoEm?: Prisma.SortOrder
+  deletadoEm?: Prisma.SortOrderInput | Prisma.SortOrder
   endereco?: Prisma.EnderecoOrderByWithRelationInput
 }
 
 export type IdentidadeWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   cpf?: string
+  email?: string
   AND?: Prisma.IdentidadeWhereInput | Prisma.IdentidadeWhereInput[]
   OR?: Prisma.IdentidadeWhereInput[]
   NOT?: Prisma.IdentidadeWhereInput | Prisma.IdentidadeWhereInput[]
@@ -279,12 +298,13 @@ export type IdentidadeWhereUniqueInput = Prisma.AtLeast<{
   pronome?: Prisma.EnumPronomeNullableFilter<"Identidade"> | $Enums.Pronome | null
   pronomeCustom?: Prisma.StringNullableFilter<"Identidade"> | string | null
   telefone?: Prisma.StringFilter<"Identidade"> | string
-  email?: Prisma.StringNullableFilter<"Identidade"> | string | null
   senha?: Prisma.StringFilter<"Identidade"> | string
   enderecoId?: Prisma.StringFilter<"Identidade"> | string
   criadoEm?: Prisma.DateTimeFilter<"Identidade"> | Date | string
+  atualizadoEm?: Prisma.DateTimeFilter<"Identidade"> | Date | string
+  deletadoEm?: Prisma.DateTimeNullableFilter<"Identidade"> | Date | string | null
   endereco?: Prisma.XOR<Prisma.EnderecoScalarRelationFilter, Prisma.EnderecoWhereInput>
-}, "id" | "cpf">
+}, "id" | "cpf" | "email">
 
 export type IdentidadeOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -296,10 +316,12 @@ export type IdentidadeOrderByWithAggregationInput = {
   pronome?: Prisma.SortOrderInput | Prisma.SortOrder
   pronomeCustom?: Prisma.SortOrderInput | Prisma.SortOrder
   telefone?: Prisma.SortOrder
-  email?: Prisma.SortOrderInput | Prisma.SortOrder
+  email?: Prisma.SortOrder
   senha?: Prisma.SortOrder
   enderecoId?: Prisma.SortOrder
   criadoEm?: Prisma.SortOrder
+  atualizadoEm?: Prisma.SortOrder
+  deletadoEm?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.IdentidadeCountOrderByAggregateInput
   _max?: Prisma.IdentidadeMaxOrderByAggregateInput
   _min?: Prisma.IdentidadeMinOrderByAggregateInput
@@ -318,10 +340,12 @@ export type IdentidadeScalarWhereWithAggregatesInput = {
   pronome?: Prisma.EnumPronomeNullableWithAggregatesFilter<"Identidade"> | $Enums.Pronome | null
   pronomeCustom?: Prisma.StringNullableWithAggregatesFilter<"Identidade"> | string | null
   telefone?: Prisma.StringWithAggregatesFilter<"Identidade"> | string
-  email?: Prisma.StringNullableWithAggregatesFilter<"Identidade"> | string | null
+  email?: Prisma.StringWithAggregatesFilter<"Identidade"> | string
   senha?: Prisma.StringWithAggregatesFilter<"Identidade"> | string
   enderecoId?: Prisma.StringWithAggregatesFilter<"Identidade"> | string
   criadoEm?: Prisma.DateTimeWithAggregatesFilter<"Identidade"> | Date | string
+  atualizadoEm?: Prisma.DateTimeWithAggregatesFilter<"Identidade"> | Date | string
+  deletadoEm?: Prisma.DateTimeNullableWithAggregatesFilter<"Identidade"> | Date | string | null
 }
 
 export type IdentidadeCreateInput = {
@@ -334,9 +358,11 @@ export type IdentidadeCreateInput = {
   pronome?: $Enums.Pronome | null
   pronomeCustom?: string | null
   telefone: string
-  email?: string | null
+  email: string
   senha: string
   criadoEm?: Date | string
+  atualizadoEm?: Date | string
+  deletadoEm?: Date | string | null
   endereco: Prisma.EnderecoCreateNestedOneWithoutMoradoresInput
 }
 
@@ -350,10 +376,12 @@ export type IdentidadeUncheckedCreateInput = {
   pronome?: $Enums.Pronome | null
   pronomeCustom?: string | null
   telefone: string
-  email?: string | null
+  email: string
   senha: string
   enderecoId: string
   criadoEm?: Date | string
+  atualizadoEm?: Date | string
+  deletadoEm?: Date | string | null
 }
 
 export type IdentidadeUpdateInput = {
@@ -366,9 +394,11 @@ export type IdentidadeUpdateInput = {
   pronome?: Prisma.NullableEnumPronomeFieldUpdateOperationsInput | $Enums.Pronome | null
   pronomeCustom?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   telefone?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  atualizadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletadoEm?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endereco?: Prisma.EnderecoUpdateOneRequiredWithoutMoradoresNestedInput
 }
 
@@ -382,10 +412,12 @@ export type IdentidadeUncheckedUpdateInput = {
   pronome?: Prisma.NullableEnumPronomeFieldUpdateOperationsInput | $Enums.Pronome | null
   pronomeCustom?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   telefone?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   enderecoId?: Prisma.StringFieldUpdateOperationsInput | string
   criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  atualizadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletadoEm?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type IdentidadeCreateManyInput = {
@@ -398,10 +430,12 @@ export type IdentidadeCreateManyInput = {
   pronome?: $Enums.Pronome | null
   pronomeCustom?: string | null
   telefone: string
-  email?: string | null
+  email: string
   senha: string
   enderecoId: string
   criadoEm?: Date | string
+  atualizadoEm?: Date | string
+  deletadoEm?: Date | string | null
 }
 
 export type IdentidadeUpdateManyMutationInput = {
@@ -414,9 +448,11 @@ export type IdentidadeUpdateManyMutationInput = {
   pronome?: Prisma.NullableEnumPronomeFieldUpdateOperationsInput | $Enums.Pronome | null
   pronomeCustom?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   telefone?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  atualizadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletadoEm?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type IdentidadeUncheckedUpdateManyInput = {
@@ -429,10 +465,12 @@ export type IdentidadeUncheckedUpdateManyInput = {
   pronome?: Prisma.NullableEnumPronomeFieldUpdateOperationsInput | $Enums.Pronome | null
   pronomeCustom?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   telefone?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   enderecoId?: Prisma.StringFieldUpdateOperationsInput | string
   criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  atualizadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletadoEm?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type IdentidadeCountOrderByAggregateInput = {
@@ -449,6 +487,8 @@ export type IdentidadeCountOrderByAggregateInput = {
   senha?: Prisma.SortOrder
   enderecoId?: Prisma.SortOrder
   criadoEm?: Prisma.SortOrder
+  atualizadoEm?: Prisma.SortOrder
+  deletadoEm?: Prisma.SortOrder
 }
 
 export type IdentidadeMaxOrderByAggregateInput = {
@@ -465,6 +505,8 @@ export type IdentidadeMaxOrderByAggregateInput = {
   senha?: Prisma.SortOrder
   enderecoId?: Prisma.SortOrder
   criadoEm?: Prisma.SortOrder
+  atualizadoEm?: Prisma.SortOrder
+  deletadoEm?: Prisma.SortOrder
 }
 
 export type IdentidadeMinOrderByAggregateInput = {
@@ -481,6 +523,8 @@ export type IdentidadeMinOrderByAggregateInput = {
   senha?: Prisma.SortOrder
   enderecoId?: Prisma.SortOrder
   criadoEm?: Prisma.SortOrder
+  atualizadoEm?: Prisma.SortOrder
+  deletadoEm?: Prisma.SortOrder
 }
 
 export type IdentidadeListRelationFilter = {
@@ -511,6 +555,10 @@ export type NullableStringFieldUpdateOperationsInput = {
 
 export type NullableEnumPronomeFieldUpdateOperationsInput = {
   set?: $Enums.Pronome | null
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type IdentidadeCreateNestedManyWithoutEnderecoInput = {
@@ -565,9 +613,11 @@ export type IdentidadeCreateWithoutEnderecoInput = {
   pronome?: $Enums.Pronome | null
   pronomeCustom?: string | null
   telefone: string
-  email?: string | null
+  email: string
   senha: string
   criadoEm?: Date | string
+  atualizadoEm?: Date | string
+  deletadoEm?: Date | string | null
 }
 
 export type IdentidadeUncheckedCreateWithoutEnderecoInput = {
@@ -580,9 +630,11 @@ export type IdentidadeUncheckedCreateWithoutEnderecoInput = {
   pronome?: $Enums.Pronome | null
   pronomeCustom?: string | null
   telefone: string
-  email?: string | null
+  email: string
   senha: string
   criadoEm?: Date | string
+  atualizadoEm?: Date | string
+  deletadoEm?: Date | string | null
 }
 
 export type IdentidadeCreateOrConnectWithoutEnderecoInput = {
@@ -624,10 +676,12 @@ export type IdentidadeScalarWhereInput = {
   pronome?: Prisma.EnumPronomeNullableFilter<"Identidade"> | $Enums.Pronome | null
   pronomeCustom?: Prisma.StringNullableFilter<"Identidade"> | string | null
   telefone?: Prisma.StringFilter<"Identidade"> | string
-  email?: Prisma.StringNullableFilter<"Identidade"> | string | null
+  email?: Prisma.StringFilter<"Identidade"> | string
   senha?: Prisma.StringFilter<"Identidade"> | string
   enderecoId?: Prisma.StringFilter<"Identidade"> | string
   criadoEm?: Prisma.DateTimeFilter<"Identidade"> | Date | string
+  atualizadoEm?: Prisma.DateTimeFilter<"Identidade"> | Date | string
+  deletadoEm?: Prisma.DateTimeNullableFilter<"Identidade"> | Date | string | null
 }
 
 export type IdentidadeCreateManyEnderecoInput = {
@@ -640,9 +694,11 @@ export type IdentidadeCreateManyEnderecoInput = {
   pronome?: $Enums.Pronome | null
   pronomeCustom?: string | null
   telefone: string
-  email?: string | null
+  email: string
   senha: string
   criadoEm?: Date | string
+  atualizadoEm?: Date | string
+  deletadoEm?: Date | string | null
 }
 
 export type IdentidadeUpdateWithoutEnderecoInput = {
@@ -655,9 +711,11 @@ export type IdentidadeUpdateWithoutEnderecoInput = {
   pronome?: Prisma.NullableEnumPronomeFieldUpdateOperationsInput | $Enums.Pronome | null
   pronomeCustom?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   telefone?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  atualizadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletadoEm?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type IdentidadeUncheckedUpdateWithoutEnderecoInput = {
@@ -670,9 +728,11 @@ export type IdentidadeUncheckedUpdateWithoutEnderecoInput = {
   pronome?: Prisma.NullableEnumPronomeFieldUpdateOperationsInput | $Enums.Pronome | null
   pronomeCustom?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   telefone?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  atualizadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletadoEm?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type IdentidadeUncheckedUpdateManyWithoutEnderecoInput = {
@@ -685,9 +745,11 @@ export type IdentidadeUncheckedUpdateManyWithoutEnderecoInput = {
   pronome?: Prisma.NullableEnumPronomeFieldUpdateOperationsInput | $Enums.Pronome | null
   pronomeCustom?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   telefone?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  atualizadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletadoEm?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -706,6 +768,8 @@ export type IdentidadeSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   senha?: boolean
   enderecoId?: boolean
   criadoEm?: boolean
+  atualizadoEm?: boolean
+  deletadoEm?: boolean
   endereco?: boolean | Prisma.EnderecoDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["identidade"]>
 
@@ -723,6 +787,8 @@ export type IdentidadeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   senha?: boolean
   enderecoId?: boolean
   criadoEm?: boolean
+  atualizadoEm?: boolean
+  deletadoEm?: boolean
   endereco?: boolean | Prisma.EnderecoDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["identidade"]>
 
@@ -740,6 +806,8 @@ export type IdentidadeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   senha?: boolean
   enderecoId?: boolean
   criadoEm?: boolean
+  atualizadoEm?: boolean
+  deletadoEm?: boolean
   endereco?: boolean | Prisma.EnderecoDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["identidade"]>
 
@@ -757,9 +825,11 @@ export type IdentidadeSelectScalar = {
   senha?: boolean
   enderecoId?: boolean
   criadoEm?: boolean
+  atualizadoEm?: boolean
+  deletadoEm?: boolean
 }
 
-export type IdentidadeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "cpf" | "nome" | "dataNascimento" | "genero" | "generoCustom" | "pronome" | "pronomeCustom" | "telefone" | "email" | "senha" | "enderecoId" | "criadoEm", ExtArgs["result"]["identidade"]>
+export type IdentidadeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "cpf" | "nome" | "dataNascimento" | "genero" | "generoCustom" | "pronome" | "pronomeCustom" | "telefone" | "email" | "senha" | "enderecoId" | "criadoEm" | "atualizadoEm" | "deletadoEm", ExtArgs["result"]["identidade"]>
 export type IdentidadeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   endereco?: boolean | Prisma.EnderecoDefaultArgs<ExtArgs>
 }
@@ -785,10 +855,12 @@ export type $IdentidadePayload<ExtArgs extends runtime.Types.Extensions.Internal
     pronome: $Enums.Pronome | null
     pronomeCustom: string | null
     telefone: string
-    email: string | null
+    email: string
     senha: string
     enderecoId: string
     criadoEm: Date
+    atualizadoEm: Date
+    deletadoEm: Date | null
   }, ExtArgs["result"]["identidade"]>
   composites: {}
 }
@@ -1226,6 +1298,8 @@ export interface IdentidadeFieldRefs {
   readonly senha: Prisma.FieldRef<"Identidade", 'String'>
   readonly enderecoId: Prisma.FieldRef<"Identidade", 'String'>
   readonly criadoEm: Prisma.FieldRef<"Identidade", 'DateTime'>
+  readonly atualizadoEm: Prisma.FieldRef<"Identidade", 'DateTime'>
+  readonly deletadoEm: Prisma.FieldRef<"Identidade", 'DateTime'>
 }
     
 

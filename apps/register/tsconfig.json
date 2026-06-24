@@ -32,7 +32,7 @@
     "noPropertyAccessFromIndexSignature": false
   },
   "include": [
-    "src/**/*",
-    "prisma.config.ts", "src/infra/adapters/db.ts",
+    "src/**/**/*",
+    "prisma.config.ts"
   ],
 }

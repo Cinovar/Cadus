@@ -6,7 +6,6 @@ export class Pronome {
     private readonly _pronome: string;
     constructor (pronome: string) {
         this._pronome = pronome;
-        Object.freeze(this);
     }
 
     public static create (pronome: string): Either<InvalidPronomeError, Pronome> {
@@ -17,7 +16,7 @@ export class Pronome {
     }
 
     public static validation (pronome: string) {
-        if (!(pronome in Pronome)) return false;
+        if (!(pronome in PronomeEnum)) return false;
         return true;
     }
 

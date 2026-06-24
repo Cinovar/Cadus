@@ -20,24 +20,40 @@ export type EnderecoModel = runtime.Types.Result.DefaultSelection<Prisma.$Endere
 
 export type AggregateEndereco = {
   _count: EnderecoCountAggregateOutputType | null
+  _avg: EnderecoAvgAggregateOutputType | null
+  _sum: EnderecoSumAggregateOutputType | null
   _min: EnderecoMinAggregateOutputType | null
   _max: EnderecoMaxAggregateOutputType | null
+}
+
+export type EnderecoAvgAggregateOutputType = {
+  numero: number | null
+}
+
+export type EnderecoSumAggregateOutputType = {
+  numero: number | null
 }
 
 export type EnderecoMinAggregateOutputType = {
   id: string | null
   cep: string | null
   logradouro: string | null
-  numero: string | null
+  numero: number | null
   complemento: string | null
+  criadoEm: Date | null
+  atualizadoEm: Date | null
+  deletadoEm: Date | null
 }
 
 export type EnderecoMaxAggregateOutputType = {
   id: string | null
   cep: string | null
   logradouro: string | null
-  numero: string | null
+  numero: number | null
   complemento: string | null
+  criadoEm: Date | null
+  atualizadoEm: Date | null
+  deletadoEm: Date | null
 }
 
 export type EnderecoCountAggregateOutputType = {
@@ -46,9 +62,20 @@ export type EnderecoCountAggregateOutputType = {
   logradouro: number
   numero: number
   complemento: number
+  criadoEm: number
+  atualizadoEm: number
+  deletadoEm: number
   _all: number
 }
 
+
+export type EnderecoAvgAggregateInputType = {
+  numero?: true
+}
+
+export type EnderecoSumAggregateInputType = {
+  numero?: true
+}
 
 export type EnderecoMinAggregateInputType = {
   id?: true
@@ -56,6 +83,9 @@ export type EnderecoMinAggregateInputType = {
   logradouro?: true
   numero?: true
   complemento?: true
+  criadoEm?: true
+  atualizadoEm?: true
+  deletadoEm?: true
 }
 
 export type EnderecoMaxAggregateInputType = {
@@ -64,6 +94,9 @@ export type EnderecoMaxAggregateInputType = {
   logradouro?: true
   numero?: true
   complemento?: true
+  criadoEm?: true
+  atualizadoEm?: true
+  deletadoEm?: true
 }
 
 export type EnderecoCountAggregateInputType = {
@@ -72,6 +105,9 @@ export type EnderecoCountAggregateInputType = {
   logradouro?: true
   numero?: true
   complemento?: true
+  criadoEm?: true
+  atualizadoEm?: true
+  deletadoEm?: true
   _all?: true
 }
 
@@ -113,6 +149,18 @@ export type EnderecoAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inter
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: EnderecoAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: EnderecoSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: EnderecoMinAggregateInputType
@@ -143,6 +191,8 @@ export type EnderecoGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   _count?: EnderecoCountAggregateInputType | true
+  _avg?: EnderecoAvgAggregateInputType
+  _sum?: EnderecoSumAggregateInputType
   _min?: EnderecoMinAggregateInputType
   _max?: EnderecoMaxAggregateInputType
 }
@@ -151,9 +201,14 @@ export type EnderecoGroupByOutputType = {
   id: string
   cep: string
   logradouro: string | null
-  numero: string
+  numero: number
   complemento: string | null
+  criadoEm: Date
+  atualizadoEm: Date
+  deletadoEm: Date | null
   _count: EnderecoCountAggregateOutputType | null
+  _avg: EnderecoAvgAggregateOutputType | null
+  _sum: EnderecoSumAggregateOutputType | null
   _min: EnderecoMinAggregateOutputType | null
   _max: EnderecoMaxAggregateOutputType | null
 }
@@ -180,8 +235,11 @@ export type EnderecoWhereInput = {
   id?: Prisma.StringFilter<"Endereco"> | string
   cep?: Prisma.StringFilter<"Endereco"> | string
   logradouro?: Prisma.StringNullableFilter<"Endereco"> | string | null
-  numero?: Prisma.StringFilter<"Endereco"> | string
+  numero?: Prisma.IntFilter<"Endereco"> | number
   complemento?: Prisma.StringNullableFilter<"Endereco"> | string | null
+  criadoEm?: Prisma.DateTimeFilter<"Endereco"> | Date | string
+  atualizadoEm?: Prisma.DateTimeFilter<"Endereco"> | Date | string
+  deletadoEm?: Prisma.DateTimeNullableFilter<"Endereco"> | Date | string | null
   moradores?: Prisma.IdentidadeListRelationFilter
 }
 
@@ -191,20 +249,26 @@ export type EnderecoOrderByWithRelationInput = {
   logradouro?: Prisma.SortOrderInput | Prisma.SortOrder
   numero?: Prisma.SortOrder
   complemento?: Prisma.SortOrderInput | Prisma.SortOrder
+  criadoEm?: Prisma.SortOrder
+  atualizadoEm?: Prisma.SortOrder
+  deletadoEm?: Prisma.SortOrderInput | Prisma.SortOrder
   moradores?: Prisma.IdentidadeOrderByRelationAggregateInput
 }
 
 export type EnderecoWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  cep?: string
   AND?: Prisma.EnderecoWhereInput | Prisma.EnderecoWhereInput[]
   OR?: Prisma.EnderecoWhereInput[]
   NOT?: Prisma.EnderecoWhereInput | Prisma.EnderecoWhereInput[]
-  cep?: Prisma.StringFilter<"Endereco"> | string
   logradouro?: Prisma.StringNullableFilter<"Endereco"> | string | null
-  numero?: Prisma.StringFilter<"Endereco"> | string
+  numero?: Prisma.IntFilter<"Endereco"> | number
   complemento?: Prisma.StringNullableFilter<"Endereco"> | string | null
+  criadoEm?: Prisma.DateTimeFilter<"Endereco"> | Date | string
+  atualizadoEm?: Prisma.DateTimeFilter<"Endereco"> | Date | string
+  deletadoEm?: Prisma.DateTimeNullableFilter<"Endereco"> | Date | string | null
   moradores?: Prisma.IdentidadeListRelationFilter
-}, "id">
+}, "id" | "cep">
 
 export type EnderecoOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -212,9 +276,14 @@ export type EnderecoOrderByWithAggregationInput = {
   logradouro?: Prisma.SortOrderInput | Prisma.SortOrder
   numero?: Prisma.SortOrder
   complemento?: Prisma.SortOrderInput | Prisma.SortOrder
+  criadoEm?: Prisma.SortOrder
+  atualizadoEm?: Prisma.SortOrder
+  deletadoEm?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.EnderecoCountOrderByAggregateInput
+  _avg?: Prisma.EnderecoAvgOrderByAggregateInput
   _max?: Prisma.EnderecoMaxOrderByAggregateInput
   _min?: Prisma.EnderecoMinOrderByAggregateInput
+  _sum?: Prisma.EnderecoSumOrderByAggregateInput
 }
 
 export type EnderecoScalarWhereWithAggregatesInput = {
@@ -224,16 +293,22 @@ export type EnderecoScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Endereco"> | string
   cep?: Prisma.StringWithAggregatesFilter<"Endereco"> | string
   logradouro?: Prisma.StringNullableWithAggregatesFilter<"Endereco"> | string | null
-  numero?: Prisma.StringWithAggregatesFilter<"Endereco"> | string
+  numero?: Prisma.IntWithAggregatesFilter<"Endereco"> | number
   complemento?: Prisma.StringNullableWithAggregatesFilter<"Endereco"> | string | null
+  criadoEm?: Prisma.DateTimeWithAggregatesFilter<"Endereco"> | Date | string
+  atualizadoEm?: Prisma.DateTimeWithAggregatesFilter<"Endereco"> | Date | string
+  deletadoEm?: Prisma.DateTimeNullableWithAggregatesFilter<"Endereco"> | Date | string | null
 }
 
 export type EnderecoCreateInput = {
   id?: string
   cep: string
   logradouro?: string | null
-  numero: string
+  numero: number
   complemento?: string | null
+  criadoEm?: Date | string
+  atualizadoEm?: Date | string
+  deletadoEm?: Date | string | null
   moradores?: Prisma.IdentidadeCreateNestedManyWithoutEnderecoInput
 }
 
@@ -241,8 +316,11 @@ export type EnderecoUncheckedCreateInput = {
   id?: string
   cep: string
   logradouro?: string | null
-  numero: string
+  numero: number
   complemento?: string | null
+  criadoEm?: Date | string
+  atualizadoEm?: Date | string
+  deletadoEm?: Date | string | null
   moradores?: Prisma.IdentidadeUncheckedCreateNestedManyWithoutEnderecoInput
 }
 
@@ -250,8 +328,11 @@ export type EnderecoUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   cep?: Prisma.StringFieldUpdateOperationsInput | string
   logradouro?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  numero?: Prisma.StringFieldUpdateOperationsInput | string
+  numero?: Prisma.IntFieldUpdateOperationsInput | number
   complemento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  atualizadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletadoEm?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   moradores?: Prisma.IdentidadeUpdateManyWithoutEnderecoNestedInput
 }
 
@@ -259,8 +340,11 @@ export type EnderecoUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   cep?: Prisma.StringFieldUpdateOperationsInput | string
   logradouro?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  numero?: Prisma.StringFieldUpdateOperationsInput | string
+  numero?: Prisma.IntFieldUpdateOperationsInput | number
   complemento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  atualizadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletadoEm?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   moradores?: Prisma.IdentidadeUncheckedUpdateManyWithoutEnderecoNestedInput
 }
 
@@ -268,24 +352,33 @@ export type EnderecoCreateManyInput = {
   id?: string
   cep: string
   logradouro?: string | null
-  numero: string
+  numero: number
   complemento?: string | null
+  criadoEm?: Date | string
+  atualizadoEm?: Date | string
+  deletadoEm?: Date | string | null
 }
 
 export type EnderecoUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   cep?: Prisma.StringFieldUpdateOperationsInput | string
   logradouro?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  numero?: Prisma.StringFieldUpdateOperationsInput | string
+  numero?: Prisma.IntFieldUpdateOperationsInput | number
   complemento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  atualizadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletadoEm?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type EnderecoUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   cep?: Prisma.StringFieldUpdateOperationsInput | string
   logradouro?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  numero?: Prisma.StringFieldUpdateOperationsInput | string
+  numero?: Prisma.IntFieldUpdateOperationsInput | number
   complemento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  atualizadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletadoEm?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type EnderecoScalarRelationFilter = {
@@ -299,6 +392,13 @@ export type EnderecoCountOrderByAggregateInput = {
   logradouro?: Prisma.SortOrder
   numero?: Prisma.SortOrder
   complemento?: Prisma.SortOrder
+  criadoEm?: Prisma.SortOrder
+  atualizadoEm?: Prisma.SortOrder
+  deletadoEm?: Prisma.SortOrder
+}
+
+export type EnderecoAvgOrderByAggregateInput = {
+  numero?: Prisma.SortOrder
 }
 
 export type EnderecoMaxOrderByAggregateInput = {
@@ -307,6 +407,9 @@ export type EnderecoMaxOrderByAggregateInput = {
   logradouro?: Prisma.SortOrder
   numero?: Prisma.SortOrder
   complemento?: Prisma.SortOrder
+  criadoEm?: Prisma.SortOrder
+  atualizadoEm?: Prisma.SortOrder
+  deletadoEm?: Prisma.SortOrder
 }
 
 export type EnderecoMinOrderByAggregateInput = {
@@ -315,6 +418,13 @@ export type EnderecoMinOrderByAggregateInput = {
   logradouro?: Prisma.SortOrder
   numero?: Prisma.SortOrder
   complemento?: Prisma.SortOrder
+  criadoEm?: Prisma.SortOrder
+  atualizadoEm?: Prisma.SortOrder
+  deletadoEm?: Prisma.SortOrder
+}
+
+export type EnderecoSumOrderByAggregateInput = {
+  numero?: Prisma.SortOrder
 }
 
 export type EnderecoCreateNestedOneWithoutMoradoresInput = {
@@ -331,20 +441,34 @@ export type EnderecoUpdateOneRequiredWithoutMoradoresNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.EnderecoUpdateToOneWithWhereWithoutMoradoresInput, Prisma.EnderecoUpdateWithoutMoradoresInput>, Prisma.EnderecoUncheckedUpdateWithoutMoradoresInput>
 }
 
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type EnderecoCreateWithoutMoradoresInput = {
   id?: string
   cep: string
   logradouro?: string | null
-  numero: string
+  numero: number
   complemento?: string | null
+  criadoEm?: Date | string
+  atualizadoEm?: Date | string
+  deletadoEm?: Date | string | null
 }
 
 export type EnderecoUncheckedCreateWithoutMoradoresInput = {
   id?: string
   cep: string
   logradouro?: string | null
-  numero: string
+  numero: number
   complemento?: string | null
+  criadoEm?: Date | string
+  atualizadoEm?: Date | string
+  deletadoEm?: Date | string | null
 }
 
 export type EnderecoCreateOrConnectWithoutMoradoresInput = {
@@ -367,16 +491,22 @@ export type EnderecoUpdateWithoutMoradoresInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   cep?: Prisma.StringFieldUpdateOperationsInput | string
   logradouro?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  numero?: Prisma.StringFieldUpdateOperationsInput | string
+  numero?: Prisma.IntFieldUpdateOperationsInput | number
   complemento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  atualizadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletadoEm?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type EnderecoUncheckedUpdateWithoutMoradoresInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   cep?: Prisma.StringFieldUpdateOperationsInput | string
   logradouro?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  numero?: Prisma.StringFieldUpdateOperationsInput | string
+  numero?: Prisma.IntFieldUpdateOperationsInput | number
   complemento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  atualizadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletadoEm?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -416,6 +546,9 @@ export type EnderecoSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   logradouro?: boolean
   numero?: boolean
   complemento?: boolean
+  criadoEm?: boolean
+  atualizadoEm?: boolean
+  deletadoEm?: boolean
   moradores?: boolean | Prisma.Endereco$moradoresArgs<ExtArgs>
   _count?: boolean | Prisma.EnderecoCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["endereco"]>
@@ -426,6 +559,9 @@ export type EnderecoSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   logradouro?: boolean
   numero?: boolean
   complemento?: boolean
+  criadoEm?: boolean
+  atualizadoEm?: boolean
+  deletadoEm?: boolean
 }, ExtArgs["result"]["endereco"]>
 
 export type EnderecoSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -434,6 +570,9 @@ export type EnderecoSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   logradouro?: boolean
   numero?: boolean
   complemento?: boolean
+  criadoEm?: boolean
+  atualizadoEm?: boolean
+  deletadoEm?: boolean
 }, ExtArgs["result"]["endereco"]>
 
 export type EnderecoSelectScalar = {
@@ -442,9 +581,12 @@ export type EnderecoSelectScalar = {
   logradouro?: boolean
   numero?: boolean
   complemento?: boolean
+  criadoEm?: boolean
+  atualizadoEm?: boolean
+  deletadoEm?: boolean
 }
 
-export type EnderecoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "cep" | "logradouro" | "numero" | "complemento", ExtArgs["result"]["endereco"]>
+export type EnderecoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "cep" | "logradouro" | "numero" | "complemento" | "criadoEm" | "atualizadoEm" | "deletadoEm", ExtArgs["result"]["endereco"]>
 export type EnderecoInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   moradores?: boolean | Prisma.Endereco$moradoresArgs<ExtArgs>
   _count?: boolean | Prisma.EnderecoCountOutputTypeDefaultArgs<ExtArgs>
@@ -461,8 +603,11 @@ export type $EnderecoPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     id: string
     cep: string
     logradouro: string | null
-    numero: string
+    numero: number
     complemento: string | null
+    criadoEm: Date
+    atualizadoEm: Date
+    deletadoEm: Date | null
   }, ExtArgs["result"]["endereco"]>
   composites: {}
 }
@@ -890,8 +1035,11 @@ export interface EnderecoFieldRefs {
   readonly id: Prisma.FieldRef<"Endereco", 'String'>
   readonly cep: Prisma.FieldRef<"Endereco", 'String'>
   readonly logradouro: Prisma.FieldRef<"Endereco", 'String'>
-  readonly numero: Prisma.FieldRef<"Endereco", 'String'>
+  readonly numero: Prisma.FieldRef<"Endereco", 'Int'>
   readonly complemento: Prisma.FieldRef<"Endereco", 'String'>
+  readonly criadoEm: Prisma.FieldRef<"Endereco", 'DateTime'>
+  readonly atualizadoEm: Prisma.FieldRef<"Endereco", 'DateTime'>
+  readonly deletadoEm: Prisma.FieldRef<"Endereco", 'DateTime'>
 }
     
 
