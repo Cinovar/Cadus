@@ -1,6 +1,5 @@
-// src/infra/repositories/PrismaIdentidadeRepository.ts
+// Interfaces e tipos — só importados como tipo, não executam nada no runtime
 import type { IIdentidadeRepository } from "../../../application/ports/respositories/IIdentidadeRepository.ts";
-import type { IdentidadeProps } from "../../../domain/entities/identidade/IdentidadeProps.ts";
 import type { Cpf } from "../../../domain/entities/identidade/Cpf.ts";
 import type { Email } from "../../../domain/entities/identidade/Email.ts";
 import type {
@@ -9,8 +8,9 @@ import type {
     Pronome as PrismaPronome,
 } from "../generated/prisma/client.ts";
 import type { Either } from "../../../shared/Either.ts";
-import type { DomainError } from "../../../domain/errors/DomainError.ts"; 
-import { prisma } from "../../adapters/Db.ts";
+import type { DomainError } from "../../../domain/errors/DomainError.ts";
+
+// Value Objects do domínio — não dependem de banco, podem ser importados normalmente
 import { IdentidadeId } from "../../../domain/entities/identidade/IdentidadeId.ts";
 import { EnderecoId } from "../../../domain/entities/endereco/EnderecoId.ts";
 import { Nome } from "../../../domain/entities/identidade/Nome.ts";
@@ -23,6 +23,7 @@ import { Senha } from "../../../domain/entities/identidade/Senha.ts";
 import { Telefone } from "../../../domain/entities/identidade/Telefone.ts";
 import { Identidade } from "../../../domain/entities/identidade/Identidade.ts";
 
+// Erro específico para dados corrompidos no banco (não é erro de validação do usuário)
 export class PrismaIdentidadeRepositoryDataCorruptionError extends Error {
     constructor(campo: string, motivo: string) {
         super(`Dado corrompido no banco ao reconstituir Identidade (${campo}): ${motivo}`);
@@ -31,14 +32,17 @@ export class PrismaIdentidadeRepositoryDataCorruptionError extends Error {
 }
 
 export class PrismaIdentidadeRepository implements IIdentidadeRepository {
+
     async add(identidade: Identidade): Promise<void> {
-        await prisma.identidade.create({    
+        // Import lazy — o Db.ts só é carregado quando esse método é chamado,
+        // nunca no momento em que o módulo é importado
+        const { prisma } = await import("../../adapters/Db.ts");
+        await prisma.identidade.create({
             data: {
                 id: identidade.IdentidadeId.value,
                 nome: identidade.nome.value,
                 cpf: identidade.cpf.value,
                 dataNascimento: identidade.dataNascimento.value,
-
                 genero: this.toPrismaGenero(identidade.genero.value),
                 pronome: identidade.pronome
                     ? this.toPrismaPronome(identidade.pronome.value)
@@ -52,43 +56,39 @@ export class PrismaIdentidadeRepository implements IIdentidadeRepository {
     }
 
     async exists(cpf: Cpf): Promise<boolean> {
+        const { prisma } = await import("../../adapters/Db.ts");
         const count = await prisma.identidade.count({
             where: { cpf: cpf.value },
         });
-
         return count > 0;
     }
 
     async findIdentidadeByCpf(cpf: Cpf): Promise<Identidade | null> {
+        const { prisma } = await import("../../adapters/Db.ts");
         const row = await prisma.identidade.findUnique({
             where: { cpf: cpf.value },
         });
-
         if (!row) return null;
-
         return this.toDomainEntity(row);
     }
 
     async findIdentidadeByEmail(email: Email): Promise<Identidade | null> {
+        const { prisma } = await import("../../adapters/Db.ts");
         const row = await prisma.identidade.findUnique({
             where: { email: email.value },
         });
-
         if (!row) return null;
-
         return this.toDomainEntity(row);
     }
 
     async findAllIdentidades(): Promise<Identidade[] | null> {
+        const { prisma } = await import("../../adapters/Db.ts");
         const rows = await prisma.identidade.findMany();
-
         if (rows.length === 0) return null;
-
         return rows.map((row) => this.toDomainEntity(row));
     }
 
-    // --- Conversões privadas ---
-
+    // Converte o valor do domínio para o enum do Prisma
     private toPrismaGenero(value: string): PrismaGenero {
         return value.toUpperCase() as PrismaGenero;
     }
@@ -97,6 +97,7 @@ export class PrismaIdentidadeRepository implements IIdentidadeRepository {
         return value.toUpperCase() as PrismaPronome;
     }
 
+    // Reconstitui a entidade de domínio a partir de uma linha do banco
     private toDomainEntity(row: PrismaIdentidadeRow): Identidade {
         const id = this.unwrap(IdentidadeId.create(row.id), "id");
         const nome = this.unwrap(Nome.create(row.nome), "nome");
@@ -125,17 +126,9 @@ export class PrismaIdentidadeRepository implements IIdentidadeRepository {
         );
     }
 
-    /**
-     * Extrai o valor de um Either de sucesso vindo de dados já persistidos.
-     * Se falhar aqui, é corrupção de dado no banco (não erro de validação
-     * de entrada do usuário) — lançamos para ser tratado como erro de
-     * infraestrutura (500), não como erro de validação (400).
-     */
+    // Se o dado veio do banco e não reconstitui, é corrupção — lança erro de infra (500)
     private unwrap<R>(result: Either<DomainError, R>, campo: string): R {
-        if (result.isSuccess()) {
-            return result.value;
-        }
-
+        if (result.isSuccess()) return result.value;
         throw new PrismaIdentidadeRepositoryDataCorruptionError(campo, result.value.message);
     }
 }
