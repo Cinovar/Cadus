@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useRegistrationStore } from "@/store/registrationStore";
-import { formatName, sanitizeName, getFirstName } from "@/lib/masks";
+import { getFirstName } from "@/lib/masks";
 import { UserRound, ArrowRight, ArrowLeft } from "lucide-react";
+import NameInput from "../NameInput";
 
 interface Props {
   onNext: () => void;
@@ -71,56 +72,28 @@ const StepPatientName = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
         </label>
 
         {temNomeSocial && (
-          <>
-            <div>
-              <div className="relative">
-                <UserRound
-                  size={18}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/40"
-                />
-                <input
-                  className="input-cadus pl-12 text-base md:text-lg"
-                  value={patientData.nomeSocial || ""}
-                  onChange={(e) =>
-                    updatePatientData({
-                      nomeSocial: formatName(sanitizeName(e.target.value)),
-                    })
-                  }
-                  placeholder="Nome social completo..."
-                  autoFocus
-                />
-              </div>
-              {errors.nomeSocial && (
-                <p className="error-text mt-2 ml-2">{errors.nomeSocial}</p>
-              )}
-            </div>
-          </>
+          <NameInput
+            error={errors.nomeSocial}
+            placeholder="Nome social completo..."
+            value={patientData.nomeSocial}
+            attribute="nomeSocial"
+          />
         )}
 
         <div>
-          <div className="relative">
-            <UserRound
-              size={18}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/40"
-            />
-            <input
-              className="input-cadus pl-12 text-base md:text-lg"
-              value={patientData.nome || ""}
-              onChange={(e) =>
-                updatePatientData({
-                  nome: formatName(sanitizeName(e.target.value)),
-                })
-              }
-              placeholder="Nome civil completo..."
-              autoFocus
-            />
-          </div>
-          {errors.nome && <p className="error-text mt-2 ml-2">{errors.nome}</p>}
+          <NameInput
+            error={errors.nome}
+            placeholder="Nome civil completo..."
+            value={patientData.nome}
+            attribute="nome"
+          />
         </div>
       </div>
 
       <button
-        onClick={() => { handleSubmit(); }}
+        onClick={() => {
+          handleSubmit();
+        }}
         className="btn-primary w-full mt-4 md:mt-8 group"
       >
         Continuar{" "}
