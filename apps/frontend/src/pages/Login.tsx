@@ -4,10 +4,9 @@ import { motion } from 'framer-motion';
 import { Lock, Eye, EyeOff, ShieldCheck, Heart, FileText, Sparkles, User } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { useLoginForm } from '@/hooks/useLoginForm';
-import { formatCPF } from '@/lib/masks';
 
 const Login = () => {
-  const { login, setLogin, typeLogin, setTypeLogin, password, setPassword, errors, handleSubmit, isLoading } = useLoginForm();
+  const { email, setEmail, password, setPassword, errors, handleSubmit, isLoading } = useLoginForm();
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
@@ -28,23 +27,6 @@ const Login = () => {
       description: 'Cartão SUS digital, receitas e documentos sempre à mão.',
     },
   ];
-
-  const verifyType = (value: string) => {
-    // Checa se o usuário está digitando um CPF
-    const cpfRegex = /^[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}-?[0-9]{2}$/;
-
-    if (cpfRegex.test(value)) {
-      setLogin(formatCPF(value));
-      setTypeLogin("cpf");
-    } else { // Se não era CPF, tirar a máscara e considerar um email
-      if (typeLogin === "cpf") {
-        setLogin(value.replace(/[\.\-]+/g, ""));
-        setTypeLogin("email");
-      } else {
-        setLogin(value);
-      }
-    }
-  }
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -137,13 +119,13 @@ const Login = () => {
                   <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <input
                     type="text"
-                    value={login}
-                    onChange={(e) => verifyType(e.target.value)}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="seu@email.com ou 000.000.000-00"
                     className="w-full h-11 pl-10 pr-4 rounded-xl border border-input bg-background text-foreground text-[16px] md:text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
                   />
                 </div>
-                {errors.login && <p className="error-text">{errors.login}</p>}
+                {errors.email && <p className="error-text">{errors.email}</p>}
               </div>
 
               {/* Senha */}

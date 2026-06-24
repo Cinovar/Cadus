@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useRegistrationStore } from "@/store/registrationStore";
-import { Lock, ArrowLeft, Check, Eye, EyeOff, Phone, Mail } from "lucide-react";
-import { formatCPF, formatPhone } from "@/lib/masks";
-import { validateCPF } from "@/lib/validation";
+import { Lock, ArrowLeft, Check, Eye, EyeOff, Mail } from "lucide-react";
+import { validateEmail } from "@/lib/validation";
+import RegisterButton from "../RegisterButton";
 
 interface Props {
   onNext: () => void;
@@ -12,7 +12,7 @@ interface Props {
 }
 
 const StepUserAccess = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
-  const { userData, updateUserData, updatePatientData, role } =
+  const { userData, updateUserData } =
     useRegistrationStore();
   const [confirmSenha, setConfirmSenha] = useState("");
   const [showPass, setShowPass] = useState(false);
@@ -27,32 +27,21 @@ const StepUserAccess = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
 
   const strength = [hasMin8, hasUpper, hasNumber].filter(Boolean).length;
   const strengthLabel =
-    strength === 0
-      ? ""
-      : strength === 1
-        ? "Fraca"
-        : strength === 2
-          ? "Média"
+    strength === 0 ? ""
+      : strength === 1 ? "Fraca"
+        : strength === 2 ? "Média"
           : "Forte";
   const strengthColor =
-    strength === 1
-      ? "text-destructive"
-      : strength === 2
-        ? "text-amber-500"
-        : strength === 3
-          ? "text-emerald-600"
+    strength === 1 ? "text-destructive"
+      : strength === 2 ? "text-amber-500"
+        : strength === 3 ? "text-emerald-600"
           : "";
 
   const validate = () => {
     const e: Record<string, string> = {};
 
-    const digits = (userData.telefone || "").replace(/\D/g, "");
-    if (digits.length < 11 && !userData.email) {
-      e.phone =
-        "Por favor, informe um telefone válido ou outra forma de contato (e-mail)";
-    }
-    if (!userData.cpf || !validateCPF(userData.cpf))
-      e.cpf = "Por favor, informe um CPF válido";
+    if (!userData.email || !validateEmail(userData.email))
+      e.email = "Por favor, informe um e-mail válido.";
     if (!hasMin8 || !hasUpper || !hasNumber)
       e.senha = "A senha não atende aos requisitos.";
     if (!passMatch) e.confirm = "As senhas não coincidem.";
@@ -62,18 +51,6 @@ const StepUserAccess = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
     return Object.keys(e).length === 0;
   };
 
-  const handleSubmit = () => {
-    if (!validate()) return;
-    if (role === "paciente")
-      updatePatientData({
-        cpf: userData.cpf,
-        email: userData.email,
-        senha: userData.senha,
-        telefone: userData.telefone,
-      });
-    onNext();
-  };
-
   return (
     <>
       <div className="step-header">
@@ -81,8 +58,8 @@ const StepUserAccess = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
           <Lock size={22} className="md:hidden" />
           <Lock size={26} className="hidden md:block" />
         </div>
-        <h2>Informações iniciais</h2>
-        <p>Para criar a sua conta e manter-se conectado conosco</p>
+        <h2>Por fim, as informações da sua conta</h2>
+        <p>Para que você consiga acessá-la novamente depois</p>
         {stepNumber && totalSteps && (
           <div className="step-badge">
             Etapa {stepNumber} de {totalSteps}
@@ -94,20 +71,7 @@ const StepUserAccess = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
 
       <div className="space-y-4 md:space-y-5">
         <div>
-          <label className="label-cadus">CPF *</label>
-          <input
-            className="input-cadus"
-            value={userData.cpf || ""}
-            onChange={(e) => updateUserData({ cpf: formatCPF(e.target.value) })}
-            placeholder="000.000.000-00"
-            inputMode="numeric"
-          />
-        </div>
-        {errors.cpf && <p className="error-text">{errors.cpf}</p>}
-
-        <div>
-          {/* Não sei se o e-mail continua opcional pros 2 tipos de usuário */}
-          <label className="label-cadus">E-mail (opcional)</label>
+          <label className="label-cadus">E-mail *</label>
           <div className="relative">
             <Mail
               size={18}
@@ -121,9 +85,7 @@ const StepUserAccess = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
               placeholder="seu@email.com"
             />
           </div>
-          <p className="text-[11px] md:text-xs text-muted-foreground/50 mt-1.5">
-            Sem e-mail? Sem problema — use o CPF para entrar na sua conta.
-          </p>
+          {errors.email && <p className="error-text">{errors.email}</p>}
         </div>
 
         <div>
@@ -218,29 +180,6 @@ const StepUserAccess = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
           {errors.confirm && <p className="error-text">{errors.confirm}</p>}
         </div>
 
-        <div>
-          {/* Não sei se o telefone continua opcional pros 2 tipos de usuário */}
-          <label className="label-cadus">
-            Telefone / WhatsApp (opcional, caso tenha informado seu e-mail)
-          </label>
-          <div className="relative">
-            <Phone
-              size={18}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/40"
-            />
-            <input
-              className="input-cadus pl-12"
-              value={userData.telefone || ""}
-              onChange={(e) =>
-                updateUserData({ telefone: formatPhone(e.target.value) })
-              }
-              placeholder="(00) 00000-0000"
-              inputMode="tel"
-            />
-          </div>
-        </div>
-        {errors.phone && <p className="error-text">{errors.phone}</p>}
-
         <button
           type="button"
           onClick={() => setAcceptedTerms(!acceptedTerms)}
@@ -285,12 +224,12 @@ const StepUserAccess = ({ onNext, onBack, stepNumber, totalSteps }: Props) => {
         </span>
       </div>
 
-      <button
-        onClick={handleSubmit}
-        className="btn-primary w-full mt-4 md:mt-8 group"
-      >
-        Continuar
-      </button>
+      <RegisterButton
+      onValidate={validate}
+      onNext={onNext}
+      emailProp={userData.email}
+      senhaProp={userData.senha}
+      />
 
       <button onClick={onBack} className="btn-back">
         <ArrowLeft size={16} /> Voltar

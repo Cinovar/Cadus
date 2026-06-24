@@ -2,14 +2,25 @@ import { useRegistrationStore } from "@/store/registrationStore";
 import { Loader2, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 
-interface Props { onValidate: () => boolean; onNext: () => void; }
+interface Props {
+  onValidate: () => boolean;
+  onNext: () => void;
+  emailProp: string;
+  senhaProp: string;
+}
 
-const RegisterButton = ({ onValidate, onNext }: Props) => {
-  const { completeRegistration } = useRegistrationStore();
+const RegisterButton = ({ onValidate, onNext, emailProp, senhaProp }: Props) => {
+  const { role, updatePatientData, completeRegistration } = useRegistrationStore();
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
     if (!onValidate()) return;
+    if (role === "paciente")
+      updatePatientData({
+        email: emailProp,
+        senha: senhaProp,
+      });
+
     setLoading(true);
     await new Promise((r) => setTimeout(r, 1500));
     completeRegistration();
