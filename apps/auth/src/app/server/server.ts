@@ -4,7 +4,9 @@ import { logoutController } from "../controllers/LogoutController";
 import { authMiddleware } from "../middlewares/authMiddleware";
 
 const app = express();
-const port = 3001;
+
+// Porta lida da env — padrão 3001 para não conflitar com register (3000) e historico (3002)
+const port = parseInt(process.env.PORT ?? "3001", 10);
 
 app.use(express.json());
 
