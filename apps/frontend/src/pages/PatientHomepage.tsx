@@ -1,9 +1,9 @@
 import { useRegistrationStore } from '@/store/registrationStore';
 import { useNavigate } from 'react-router-dom';
-import { User, FileText, Phone, CalendarDays, LogOut, MessageSquare, MapPin, CreditCard } from 'lucide-react';
+import { User, FileText, CalendarDays, LogOut, MessageSquare } from 'lucide-react';
 import Footer from '@/components/Footer';
 
-const PatientDashboard = () => {
+const PatientHomepage = () => {
   const navigate = useNavigate();
   const { patientData, reset } = useRegistrationStore();
 
@@ -103,4 +103,4 @@ const DataRow = ({ label, value }: { label: string; value?: string }) => (
   </div>
 );
 
-export default PatientDashboard;
+export default PatientHomepage;
