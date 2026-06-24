@@ -1,17 +1,16 @@
-import { useState, useEffect } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
-import { useRegistrationStore } from "@/store/registrationStore";
-import StepProfile from "@/components/registration/StepProfile";
-import StepUserAccess from "@/components/registration/StepUserAccess";
-import StepPatientName from "@/components/registration/StepPatientName";
-import StepPatientBirthdate from "@/components/registration/StepPatientBirthdate";
-import StepPatientGender from "@/components/registration/StepPatientGender";
-import StepPatientAddress from "@/components/registration/StepPatientAddress";
-import StepPatientSus from "@/components/registration/StepPatientSus";
-import StepPatientComplaint from "@/components/registration/StepPatientComplaint";
-import SuccessScreen from "@/components/registration/SuccessScreen";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useRegistrationStore } from '@/store/registrationStore';
+import StepSelectRole from '@/components/registration/StepSelectRole';
+import StepUserAccess from '@/components/registration/StepUserAccess';
+import StepUserPersonal from '@/components/registration/StepUserPersonal';
+import StepPatientName from '@/components/registration/StepPatientName';
+import StepPatientGender from '@/components/registration/StepPatientGender';
+import StepPatientClinic from '@/components/registration/StepPatientClinic';
+import StepPatientComplaint from '@/components/registration/StepPatientComplaint';
+import SuccessScreen from '@/components/registration/SuccessScreen';
+import { Link } from 'react-router-dom';
 
 const Registration = () => {
   const [searchParams] = useSearchParams();
@@ -36,7 +35,7 @@ const Registration = () => {
     }
   }, []);
 
-  const totalSteps = 8;
+  const totalSteps = role === "paciente" ? 7 : 4;
   const stepNumber = patientStep;
 
   const goNext = () => {
@@ -64,19 +63,18 @@ const Registration = () => {
   if (showSuccess || isRegistered) return <SuccessScreen />;
 
   const renderStep = () => {
-    if (roleStep) return <StepProfile />;
+    if (roleStep) return <StepSelectRole />;
 
     const sp = { stepNumber, totalSteps };
     if (!roleStep && stepNumber === 2) return <StepPatientName onNext={goNext} onBack={goBack} {...sp}/>
 
     if (role === "paciente" && stepNumber > 2 && !roleStep) {
       switch (patientStep) {
-        case 3: return <StepUserAccess onNext={goNext} onBack={goBack} {...sp} />;
-        case 4: return <StepPatientGender onNext={goNext} onBack={goBack} {...sp} />;
-        case 5: return <StepPatientBirthdate onNext={goNext} onBack={goBack} {...sp} />;
-        case 6: return <StepPatientAddress onNext={goNext} onBack={goBack} {...sp} />;
-        case 7: return <StepPatientSus onNext={goNext} onBack={goBack} {...sp} />;
-        case 8: return <StepPatientComplaint onNext={goNext} onBack={goBack} {...sp} />;
+        case 3: return <StepPatientGender onNext={goNext} onBack={goBack} {...sp} />;
+        case 4: return <StepUserPersonal onNext={goNext} onBack={goBack} {...sp} />;
+        case 5: return <StepPatientClinic onNext={goNext} onBack={goBack} {...sp} />;
+        case 6: return <StepPatientComplaint onNext={goNext} onBack={goBack} {...sp} />;
+        case 7: return <StepUserAccess onNext={goNext} onBack={goBack} {...sp} />;
       }
     }
     return null;
