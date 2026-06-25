@@ -2,14 +2,16 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 
-// https://vitejs.dev/config/
 export default defineConfig({
+  // App vive sob /fonoaudiologia/ no domínio do CIn.
+  // Sem isso, os assets (JS/CSS) seriam pedidos na raiz e dariam 404.
+  base: "/fonoaudiologia/",
+  appType: "spa",
   server: {
-    host: "::",
+    host: "0.0.0.0",          // aceita conexões de fora do container
     port: 8080,
-    hmr: {
-      overlay: false,
-    },
+    allowedHosts: ["frontend"], // nome do serviço no compose
+    hmr: { overlay: false },
   },
   plugins: [react()],
   resolve: {

@@ -1,17 +1,20 @@
 /**
- * Clientes HTTP para cada microsserviço do Cadus.
+ * Clientes HTTP dos microsserviços.
  *
- * Uso:
- *   import { registerApi } from '@/lib/api'
- *   const data = await registerApi.get('/identidades/12345678900')
+ * Em produção (atrás do nginx do CIn), o browser só enxerga a porta 80 do
+ * domínio. Então as chamadas vão por path relativo:
+ *   /fonoaudiologia/api/auth/...
+ *   /fonoaudiologia/api/register/...
+ *   /fonoaudiologia/api/historico/...
+ * e o nginx faz o proxy_pass pro container certo.
+ *
+ * As VITE_* permitem sobrescrever isso em dev local se você quiser apontar
+ * direto pras portas; o fallback é o path de produção.
  */
+const AUTH_URL      = import.meta.env.VITE_AUTH_URL      ?? "/fonoaudiologia/api/auth";
+const REGISTER_URL  = import.meta.env.VITE_REGISTER_URL  ?? "/fonoaudiologia/api/register";
+const HISTORICO_URL = import.meta.env.VITE_HISTORICO_URL ?? "/fonoaudiologia/api/historico";
 
-const AUTH_URL      = import.meta.env.VITE_AUTH_URL      as string;
-const REGISTER_URL  = import.meta.env.VITE_REGISTER_URL  as string;
-const HISTORICO_URL = import.meta.env.VITE_HISTORICO_URL as string;
-
-// Lê o token do localStorage sem importar o authStore
-// (evita ciclo de dependência: authStore importa api, api não importa authStore)
 function getToken(): string | null {
   try {
     const raw = localStorage.getItem("cadus-auth");
@@ -26,7 +29,6 @@ type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
 
 interface RequestOptions {
   body?: unknown;
-  /** true para rotas públicas (login, cadastro) que não precisam de token */
   public?: boolean;
 }
 
@@ -36,9 +38,7 @@ async function request<T>(
   path: string,
   options: RequestOptions = {}
 ): Promise<T> {
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-  };
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
 
   if (!options.public) {
     const token = getToken();
@@ -48,7 +48,6 @@ async function request<T>(
   const res = await fetch(`${baseUrl}${path}`, {
     method,
     headers,
-    credentials: "include",
     body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
   });
 
@@ -57,26 +56,20 @@ async function request<T>(
     try {
       const json = await res.json();
       message = json.erro ?? json.error ?? json.message ?? message;
-    } catch { /* resposta sem body */ }
+    } catch { /* sem body */ }
     throw new Error(message);
   }
 
-  // 204 No Content não tem body
   if (res.status === 204) return undefined as T;
-
   return res.json() as Promise<T>;
 }
 
 function makeClient(baseUrl: string) {
   return {
-    get:    <T>(path: string, opts?: RequestOptions) =>
-      request<T>(baseUrl, "GET", path, opts),
-    post:   <T>(path: string, body: unknown, opts?: RequestOptions) =>
-      request<T>(baseUrl, "POST", path, { ...opts, body }),
-    patch:  <T>(path: string, body: unknown, opts?: RequestOptions) =>
-      request<T>(baseUrl, "PATCH", path, { ...opts, body }),
-    delete: <T>(path: string, opts?: RequestOptions) =>
-      request<T>(baseUrl, "DELETE", path, opts),
+    get:    <T>(path: string, opts?: RequestOptions) => request<T>(baseUrl, "GET", path, opts),
+    post:   <T>(path: string, body: unknown, opts?: RequestOptions) => request<T>(baseUrl, "POST", path, { ...opts, body }),
+    patch:  <T>(path: string, body: unknown, opts?: RequestOptions) => request<T>(baseUrl, "PATCH", path, { ...opts, body }),
+    delete: <T>(path: string, opts?: RequestOptions) => request<T>(baseUrl, "DELETE", path, opts),
   };
 }
 
