@@ -105,6 +105,7 @@ export class RegisterIdentidadeController implements BaseController {
       email: body.email.trim().toLowerCase(),
       telefone: body.telefone.replace(/\D/g, ""), // Remove caracteres não-numéricos
       senha: body.senha,
+      queixa: body.queixa?.trim(), // Opcional
       endereco: body.endereco,
     };
   }

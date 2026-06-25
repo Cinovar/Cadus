@@ -16,7 +16,8 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
+      {/* basename casa com o base do Vite — react-router passa a entender /fonoaudiologia/entrar */}
+      <BrowserRouter basename="/fonoaudiologia">
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/entrar" element={<Login />} />

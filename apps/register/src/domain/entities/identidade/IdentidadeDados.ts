@@ -7,9 +7,13 @@ export interface IdentidadeDados {
 
     genero: string;
     pronome?: string;
-    
+
     email: string;
     telefone: string;
     senha: string;
+
+    // Queixa principal — opcional porque profissionais não têm queixa
+    queixa?: string;
+
     endereco: EnderecoDados;
 }

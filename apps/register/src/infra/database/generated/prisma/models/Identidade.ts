@@ -36,6 +36,8 @@ export type IdentidadeMinAggregateOutputType = {
   telefone: string | null
   email: string | null
   senha: string | null
+  queixa: string | null
+  status: $Enums.StatusPaciente | null
   enderecoId: string | null
   criadoEm: Date | null
   atualizadoEm: Date | null
@@ -54,6 +56,8 @@ export type IdentidadeMaxAggregateOutputType = {
   telefone: string | null
   email: string | null
   senha: string | null
+  queixa: string | null
+  status: $Enums.StatusPaciente | null
   enderecoId: string | null
   criadoEm: Date | null
   atualizadoEm: Date | null
@@ -72,6 +76,8 @@ export type IdentidadeCountAggregateOutputType = {
   telefone: number
   email: number
   senha: number
+  queixa: number
+  status: number
   enderecoId: number
   criadoEm: number
   atualizadoEm: number
@@ -92,6 +98,8 @@ export type IdentidadeMinAggregateInputType = {
   telefone?: true
   email?: true
   senha?: true
+  queixa?: true
+  status?: true
   enderecoId?: true
   criadoEm?: true
   atualizadoEm?: true
@@ -110,6 +118,8 @@ export type IdentidadeMaxAggregateInputType = {
   telefone?: true
   email?: true
   senha?: true
+  queixa?: true
+  status?: true
   enderecoId?: true
   criadoEm?: true
   atualizadoEm?: true
@@ -128,6 +138,8 @@ export type IdentidadeCountAggregateInputType = {
   telefone?: true
   email?: true
   senha?: true
+  queixa?: true
+  status?: true
   enderecoId?: true
   criadoEm?: true
   atualizadoEm?: true
@@ -219,6 +231,8 @@ export type IdentidadeGroupByOutputType = {
   telefone: string
   email: string
   senha: string
+  queixa: string | null
+  status: $Enums.StatusPaciente
   enderecoId: string
   criadoEm: Date
   atualizadoEm: Date
@@ -258,6 +272,8 @@ export type IdentidadeWhereInput = {
   telefone?: Prisma.StringFilter<"Identidade"> | string
   email?: Prisma.StringFilter<"Identidade"> | string
   senha?: Prisma.StringFilter<"Identidade"> | string
+  queixa?: Prisma.StringNullableFilter<"Identidade"> | string | null
+  status?: Prisma.EnumStatusPacienteFilter<"Identidade"> | $Enums.StatusPaciente
   enderecoId?: Prisma.StringFilter<"Identidade"> | string
   criadoEm?: Prisma.DateTimeFilter<"Identidade"> | Date | string
   atualizadoEm?: Prisma.DateTimeFilter<"Identidade"> | Date | string
@@ -277,6 +293,8 @@ export type IdentidadeOrderByWithRelationInput = {
   telefone?: Prisma.SortOrder
   email?: Prisma.SortOrder
   senha?: Prisma.SortOrder
+  queixa?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
   enderecoId?: Prisma.SortOrder
   criadoEm?: Prisma.SortOrder
   atualizadoEm?: Prisma.SortOrder
@@ -299,6 +317,8 @@ export type IdentidadeWhereUniqueInput = Prisma.AtLeast<{
   pronomeCustom?: Prisma.StringNullableFilter<"Identidade"> | string | null
   telefone?: Prisma.StringFilter<"Identidade"> | string
   senha?: Prisma.StringFilter<"Identidade"> | string
+  queixa?: Prisma.StringNullableFilter<"Identidade"> | string | null
+  status?: Prisma.EnumStatusPacienteFilter<"Identidade"> | $Enums.StatusPaciente
   enderecoId?: Prisma.StringFilter<"Identidade"> | string
   criadoEm?: Prisma.DateTimeFilter<"Identidade"> | Date | string
   atualizadoEm?: Prisma.DateTimeFilter<"Identidade"> | Date | string
@@ -318,6 +338,8 @@ export type IdentidadeOrderByWithAggregationInput = {
   telefone?: Prisma.SortOrder
   email?: Prisma.SortOrder
   senha?: Prisma.SortOrder
+  queixa?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
   enderecoId?: Prisma.SortOrder
   criadoEm?: Prisma.SortOrder
   atualizadoEm?: Prisma.SortOrder
@@ -342,6 +364,8 @@ export type IdentidadeScalarWhereWithAggregatesInput = {
   telefone?: Prisma.StringWithAggregatesFilter<"Identidade"> | string
   email?: Prisma.StringWithAggregatesFilter<"Identidade"> | string
   senha?: Prisma.StringWithAggregatesFilter<"Identidade"> | string
+  queixa?: Prisma.StringNullableWithAggregatesFilter<"Identidade"> | string | null
+  status?: Prisma.EnumStatusPacienteWithAggregatesFilter<"Identidade"> | $Enums.StatusPaciente
   enderecoId?: Prisma.StringWithAggregatesFilter<"Identidade"> | string
   criadoEm?: Prisma.DateTimeWithAggregatesFilter<"Identidade"> | Date | string
   atualizadoEm?: Prisma.DateTimeWithAggregatesFilter<"Identidade"> | Date | string
@@ -360,6 +384,8 @@ export type IdentidadeCreateInput = {
   telefone: string
   email: string
   senha: string
+  queixa?: string | null
+  status?: $Enums.StatusPaciente
   criadoEm?: Date | string
   atualizadoEm?: Date | string
   deletadoEm?: Date | string | null
@@ -378,6 +404,8 @@ export type IdentidadeUncheckedCreateInput = {
   telefone: string
   email: string
   senha: string
+  queixa?: string | null
+  status?: $Enums.StatusPaciente
   enderecoId: string
   criadoEm?: Date | string
   atualizadoEm?: Date | string
@@ -396,6 +424,8 @@ export type IdentidadeUpdateInput = {
   telefone?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   senha?: Prisma.StringFieldUpdateOperationsInput | string
+  queixa?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumStatusPacienteFieldUpdateOperationsInput | $Enums.StatusPaciente
   criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   atualizadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletadoEm?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -414,6 +444,8 @@ export type IdentidadeUncheckedUpdateInput = {
   telefone?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   senha?: Prisma.StringFieldUpdateOperationsInput | string
+  queixa?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumStatusPacienteFieldUpdateOperationsInput | $Enums.StatusPaciente
   enderecoId?: Prisma.StringFieldUpdateOperationsInput | string
   criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   atualizadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -432,6 +464,8 @@ export type IdentidadeCreateManyInput = {
   telefone: string
   email: string
   senha: string
+  queixa?: string | null
+  status?: $Enums.StatusPaciente
   enderecoId: string
   criadoEm?: Date | string
   atualizadoEm?: Date | string
@@ -450,6 +484,8 @@ export type IdentidadeUpdateManyMutationInput = {
   telefone?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   senha?: Prisma.StringFieldUpdateOperationsInput | string
+  queixa?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumStatusPacienteFieldUpdateOperationsInput | $Enums.StatusPaciente
   criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   atualizadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletadoEm?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -467,6 +503,8 @@ export type IdentidadeUncheckedUpdateManyInput = {
   telefone?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   senha?: Prisma.StringFieldUpdateOperationsInput | string
+  queixa?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumStatusPacienteFieldUpdateOperationsInput | $Enums.StatusPaciente
   enderecoId?: Prisma.StringFieldUpdateOperationsInput | string
   criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   atualizadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -485,6 +523,8 @@ export type IdentidadeCountOrderByAggregateInput = {
   telefone?: Prisma.SortOrder
   email?: Prisma.SortOrder
   senha?: Prisma.SortOrder
+  queixa?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   enderecoId?: Prisma.SortOrder
   criadoEm?: Prisma.SortOrder
   atualizadoEm?: Prisma.SortOrder
@@ -503,6 +543,8 @@ export type IdentidadeMaxOrderByAggregateInput = {
   telefone?: Prisma.SortOrder
   email?: Prisma.SortOrder
   senha?: Prisma.SortOrder
+  queixa?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   enderecoId?: Prisma.SortOrder
   criadoEm?: Prisma.SortOrder
   atualizadoEm?: Prisma.SortOrder
@@ -521,6 +563,8 @@ export type IdentidadeMinOrderByAggregateInput = {
   telefone?: Prisma.SortOrder
   email?: Prisma.SortOrder
   senha?: Prisma.SortOrder
+  queixa?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   enderecoId?: Prisma.SortOrder
   criadoEm?: Prisma.SortOrder
   atualizadoEm?: Prisma.SortOrder
@@ -555,6 +599,10 @@ export type NullableStringFieldUpdateOperationsInput = {
 
 export type NullableEnumPronomeFieldUpdateOperationsInput = {
   set?: $Enums.Pronome | null
+}
+
+export type EnumStatusPacienteFieldUpdateOperationsInput = {
+  set?: $Enums.StatusPaciente
 }
 
 export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -615,6 +663,8 @@ export type IdentidadeCreateWithoutEnderecoInput = {
   telefone: string
   email: string
   senha: string
+  queixa?: string | null
+  status?: $Enums.StatusPaciente
   criadoEm?: Date | string
   atualizadoEm?: Date | string
   deletadoEm?: Date | string | null
@@ -632,6 +682,8 @@ export type IdentidadeUncheckedCreateWithoutEnderecoInput = {
   telefone: string
   email: string
   senha: string
+  queixa?: string | null
+  status?: $Enums.StatusPaciente
   criadoEm?: Date | string
   atualizadoEm?: Date | string
   deletadoEm?: Date | string | null
@@ -678,6 +730,8 @@ export type IdentidadeScalarWhereInput = {
   telefone?: Prisma.StringFilter<"Identidade"> | string
   email?: Prisma.StringFilter<"Identidade"> | string
   senha?: Prisma.StringFilter<"Identidade"> | string
+  queixa?: Prisma.StringNullableFilter<"Identidade"> | string | null
+  status?: Prisma.EnumStatusPacienteFilter<"Identidade"> | $Enums.StatusPaciente
   enderecoId?: Prisma.StringFilter<"Identidade"> | string
   criadoEm?: Prisma.DateTimeFilter<"Identidade"> | Date | string
   atualizadoEm?: Prisma.DateTimeFilter<"Identidade"> | Date | string
@@ -696,6 +750,8 @@ export type IdentidadeCreateManyEnderecoInput = {
   telefone: string
   email: string
   senha: string
+  queixa?: string | null
+  status?: $Enums.StatusPaciente
   criadoEm?: Date | string
   atualizadoEm?: Date | string
   deletadoEm?: Date | string | null
@@ -713,6 +769,8 @@ export type IdentidadeUpdateWithoutEnderecoInput = {
   telefone?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   senha?: Prisma.StringFieldUpdateOperationsInput | string
+  queixa?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumStatusPacienteFieldUpdateOperationsInput | $Enums.StatusPaciente
   criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   atualizadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletadoEm?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -730,6 +788,8 @@ export type IdentidadeUncheckedUpdateWithoutEnderecoInput = {
   telefone?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   senha?: Prisma.StringFieldUpdateOperationsInput | string
+  queixa?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumStatusPacienteFieldUpdateOperationsInput | $Enums.StatusPaciente
   criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   atualizadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletadoEm?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -747,6 +807,8 @@ export type IdentidadeUncheckedUpdateManyWithoutEnderecoInput = {
   telefone?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   senha?: Prisma.StringFieldUpdateOperationsInput | string
+  queixa?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumStatusPacienteFieldUpdateOperationsInput | $Enums.StatusPaciente
   criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   atualizadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletadoEm?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -766,6 +828,8 @@ export type IdentidadeSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   telefone?: boolean
   email?: boolean
   senha?: boolean
+  queixa?: boolean
+  status?: boolean
   enderecoId?: boolean
   criadoEm?: boolean
   atualizadoEm?: boolean
@@ -785,6 +849,8 @@ export type IdentidadeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   telefone?: boolean
   email?: boolean
   senha?: boolean
+  queixa?: boolean
+  status?: boolean
   enderecoId?: boolean
   criadoEm?: boolean
   atualizadoEm?: boolean
@@ -804,6 +870,8 @@ export type IdentidadeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   telefone?: boolean
   email?: boolean
   senha?: boolean
+  queixa?: boolean
+  status?: boolean
   enderecoId?: boolean
   criadoEm?: boolean
   atualizadoEm?: boolean
@@ -823,13 +891,15 @@ export type IdentidadeSelectScalar = {
   telefone?: boolean
   email?: boolean
   senha?: boolean
+  queixa?: boolean
+  status?: boolean
   enderecoId?: boolean
   criadoEm?: boolean
   atualizadoEm?: boolean
   deletadoEm?: boolean
 }
 
-export type IdentidadeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "cpf" | "nome" | "dataNascimento" | "genero" | "generoCustom" | "pronome" | "pronomeCustom" | "telefone" | "email" | "senha" | "enderecoId" | "criadoEm" | "atualizadoEm" | "deletadoEm", ExtArgs["result"]["identidade"]>
+export type IdentidadeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "cpf" | "nome" | "dataNascimento" | "genero" | "generoCustom" | "pronome" | "pronomeCustom" | "telefone" | "email" | "senha" | "queixa" | "status" | "enderecoId" | "criadoEm" | "atualizadoEm" | "deletadoEm", ExtArgs["result"]["identidade"]>
 export type IdentidadeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   endereco?: boolean | Prisma.EnderecoDefaultArgs<ExtArgs>
 }
@@ -857,6 +927,8 @@ export type $IdentidadePayload<ExtArgs extends runtime.Types.Extensions.Internal
     telefone: string
     email: string
     senha: string
+    queixa: string | null
+    status: $Enums.StatusPaciente
     enderecoId: string
     criadoEm: Date
     atualizadoEm: Date
@@ -1296,6 +1368,8 @@ export interface IdentidadeFieldRefs {
   readonly telefone: Prisma.FieldRef<"Identidade", 'String'>
   readonly email: Prisma.FieldRef<"Identidade", 'String'>
   readonly senha: Prisma.FieldRef<"Identidade", 'String'>
+  readonly queixa: Prisma.FieldRef<"Identidade", 'String'>
+  readonly status: Prisma.FieldRef<"Identidade", 'StatusPaciente'>
   readonly enderecoId: Prisma.FieldRef<"Identidade", 'String'>
   readonly criadoEm: Prisma.FieldRef<"Identidade", 'DateTime'>
   readonly atualizadoEm: Prisma.FieldRef<"Identidade", 'DateTime'>

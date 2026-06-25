@@ -69,6 +69,13 @@ export type EnumPronomeNullableFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumPronomeNullableFilter<$PrismaModel> | $Enums.Pronome | null
 }
 
+export type EnumStatusPacienteFilter<$PrismaModel = never> = {
+  equals?: $Enums.StatusPaciente | Prisma.EnumStatusPacienteFieldRefInput<$PrismaModel>
+  in?: $Enums.StatusPaciente[] | Prisma.ListEnumStatusPacienteFieldRefInput<$PrismaModel>
+  notIn?: $Enums.StatusPaciente[] | Prisma.ListEnumStatusPacienteFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumStatusPacienteFilter<$PrismaModel> | $Enums.StatusPaciente
+}
+
 export type DateTimeNullableFilter<$PrismaModel = never> = {
   equals?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | null
   in?: Date[] | string[] | Prisma.ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -153,6 +160,16 @@ export type EnumPronomeNullableWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _min?: Prisma.NestedEnumPronomeNullableFilter<$PrismaModel>
   _max?: Prisma.NestedEnumPronomeNullableFilter<$PrismaModel>
+}
+
+export type EnumStatusPacienteWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.StatusPaciente | Prisma.EnumStatusPacienteFieldRefInput<$PrismaModel>
+  in?: $Enums.StatusPaciente[] | Prisma.ListEnumStatusPacienteFieldRefInput<$PrismaModel>
+  notIn?: $Enums.StatusPaciente[] | Prisma.ListEnumStatusPacienteFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumStatusPacienteWithAggregatesFilter<$PrismaModel> | $Enums.StatusPaciente
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumStatusPacienteFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumStatusPacienteFilter<$PrismaModel>
 }
 
 export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -247,6 +264,13 @@ export type NestedEnumPronomeNullableFilter<$PrismaModel = never> = {
   in?: $Enums.Pronome[] | Prisma.ListEnumPronomeFieldRefInput<$PrismaModel> | null
   notIn?: $Enums.Pronome[] | Prisma.ListEnumPronomeFieldRefInput<$PrismaModel> | null
   not?: Prisma.NestedEnumPronomeNullableFilter<$PrismaModel> | $Enums.Pronome | null
+}
+
+export type NestedEnumStatusPacienteFilter<$PrismaModel = never> = {
+  equals?: $Enums.StatusPaciente | Prisma.EnumStatusPacienteFieldRefInput<$PrismaModel>
+  in?: $Enums.StatusPaciente[] | Prisma.ListEnumStatusPacienteFieldRefInput<$PrismaModel>
+  notIn?: $Enums.StatusPaciente[] | Prisma.ListEnumStatusPacienteFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumStatusPacienteFilter<$PrismaModel> | $Enums.StatusPaciente
 }
 
 export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
@@ -348,6 +372,16 @@ export type NestedEnumPronomeNullableWithAggregatesFilter<$PrismaModel = never> 
   _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _min?: Prisma.NestedEnumPronomeNullableFilter<$PrismaModel>
   _max?: Prisma.NestedEnumPronomeNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumStatusPacienteWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.StatusPaciente | Prisma.EnumStatusPacienteFieldRefInput<$PrismaModel>
+  in?: $Enums.StatusPaciente[] | Prisma.ListEnumStatusPacienteFieldRefInput<$PrismaModel>
+  notIn?: $Enums.StatusPaciente[] | Prisma.ListEnumStatusPacienteFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumStatusPacienteWithAggregatesFilter<$PrismaModel> | $Enums.StatusPaciente
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumStatusPacienteFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumStatusPacienteFilter<$PrismaModel>
 }
 
 export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {

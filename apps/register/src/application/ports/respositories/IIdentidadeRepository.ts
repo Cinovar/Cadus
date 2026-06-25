@@ -8,4 +8,10 @@ export interface IIdentidadeRepository {
     findIdentidadeByCpf (cpf: Cpf): Promise<Identidade | null>;
     findIdentidadeByEmail (email: Email): Promise<Identidade | null>
     findAllIdentidades (): Promise<Identidade[] | null>
+
+    // Lista por status — usado pela fila de moderação
+    findByStatus (status: string): Promise<Identidade[]>
+
+    // Atualiza só o status de um paciente (por CPF)
+    updateStatus (cpf: Cpf, novoStatus: string): Promise<void>
 }

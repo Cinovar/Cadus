@@ -9,21 +9,14 @@ import { Pronome } from "./Pronome";
 import { Telefone } from "./Telefone";
 import { Senha } from "./Senha";
 
-// Types of Identidade attributes
 import type { IdentidadeProps } from "./IdentidadeProps";
-// Types of user data
 import type { IdentidadeDados } from "./IdentidadeDados";
 import type { IdentidadeCreateInput } from "./IdentidadeCreateInput";
 
-import {type Either, failure, success } from "../../../shared/Either";
-
-// Validation
+import { type Either, failure, success } from "../../../shared/Either";
 import { Validation } from "../../../shared/Validation";
-
-// Errors
 import { InvalidPronomeError } from "../../errors/InvalidPronome";
 
-// Modelo de Identidade
 export class Identidade {
     private _id: IdentidadeId;
     private _props: IdentidadeProps;
@@ -32,8 +25,8 @@ export class Identidade {
     private _deletadoEm: Data | undefined;
 
     constructor(
-        props: IdentidadeProps, 
-        IdentidadeId: IdentidadeId, 
+        props: IdentidadeProps,
+        IdentidadeId: IdentidadeId,
         criadoEm: Data,
         atualizadoEm: Data,
         deletadoEm?: Data
@@ -45,14 +38,11 @@ export class Identidade {
         this._deletadoEm = deletadoEm;
     }
 
-    
-    // Método de fábrica para criar uma nova instância de IdentidadeEntity
-    public static create (
-        {nome, cpf, dataNascimento, genero, pronome, email, telefone, enderecoId, senha}: IdentidadeCreateInput,
-         IdentidadeId: IdentidadeId
-        ): Either<Error[], Identidade> {
-        
-        // Validação por fp-ts
+    public static create(
+        { nome, cpf, dataNascimento, genero, pronome, email, telefone, enderecoId, senha, queixa }: IdentidadeCreateInput,
+        IdentidadeId: IdentidadeId
+    ): Either<Error[], Identidade> {
+
         const identidadeProps: Record<string, Either<Error, any>> = {
             nome: Nome.create(nome),
             cpf: Cpf.create(cpf),
@@ -61,26 +51,24 @@ export class Identidade {
             pronome: pronome ? Pronome.create(pronome) : success<InvalidPronomeError, undefined>(undefined),
             email: Email.create(email),
             telefone: Telefone.create(telefone),
-            enderecoId: EnderecoId.reconstitute(enderecoId), // IdentidadeId de uma entidade de Endereço atribuída a Identidade/User
+            enderecoId: EnderecoId.reconstitute(enderecoId),
             senha: Senha.create(senha),
             criadoEm: Data.create(new Date()),
-            atualizadoEm: Data.create(new Date())
-        }
+            atualizadoEm: Data.create(new Date()),
+        };
 
-        const resultProps: Either<Error[], any> =  Validation.combine(identidadeProps);
-        
+        const resultProps: Either<Error[], any> = Validation.combine(identidadeProps);
 
-        // Retorno de erros
-        if (resultProps.isError()){
+        if (resultProps.isError()) {
             return failure(resultProps.value);
         }
-        
-        const { criadoEm, atualizadoEm, ...props } = resultProps.value;
-        
-        return success(new Identidade(props, IdentidadeId, criadoEm, atualizadoEm));
-    }   
 
-    public static reconstitute (
+        const { criadoEm, atualizadoEm, ...props } = resultProps.value;
+
+        return success(new Identidade({ ...props, queixa }, IdentidadeId, criadoEm, atualizadoEm));
+    }
+
+    public static reconstitute(
         props: IdentidadeProps,
         IdentidadeId: IdentidadeId,
         criadoEm: Data,
@@ -90,56 +78,19 @@ export class Identidade {
         return new Identidade(props, IdentidadeId, criadoEm, atualizadoEm, deletadoEm);
     }
 
-    // Getters for the class members
-    public get value() : IdentidadeProps {
-        return this._props;
-    }
-
-    public get IdentidadeId() : IdentidadeId {
-        return this._id;
-    }
-
-    public get nome() : Nome {
-        return this._props.nome;
-    }
-
-    public get cpf() : Cpf {
-        return this._props.cpf;
-    }
-
-    public get dataNascimento() : Data {
-        return this._props.dataNascimento;
-    }
-
-    public get genero() : Genero {
-        return this._props.genero;
-    }
-
-    public get pronome() : Pronome | undefined{
-        return this._props.pronome;
-    }
-
-    public get email() : Email  {
-        return this._props.email;
-    }
-
-    public get telefone() : Telefone {
-        return this._props.telefone;
-    }
-
-    public get senha() : Senha {
-        return this._props.senha;
-    }
-
-    public get endereco() : EnderecoId {
-        return this._props.enderecoId;
-    }
-
-    public get criadoEm(): Data {
-        return this._criadoEm;
-    }
-
-    public get atualizadoEm(): Data {
-        return this._atualizadoEm;
-    }
+    public get value(): IdentidadeProps { return this._props; }
+    public get IdentidadeId(): IdentidadeId { return this._id; }
+    public get nome(): Nome { return this._props.nome; }
+    public get cpf(): Cpf { return this._props.cpf; }
+    public get dataNascimento(): Data { return this._props.dataNascimento; }
+    public get genero(): Genero { return this._props.genero; }
+    public get pronome(): Pronome | undefined { return this._props.pronome; }
+    public get email(): Email { return this._props.email; }
+    public get telefone(): Telefone { return this._props.telefone; }
+    public get senha(): Senha { return this._props.senha; }
+    public get endereco(): EnderecoId { return this._props.enderecoId; }
+    public get queixa(): string | undefined { return this._props.queixa; }
+    public get status(): string | undefined { return this._props.status; }
+    public get criadoEm(): Data { return this._criadoEm; }
+    public get atualizadoEm(): Data { return this._atualizadoEm; }
 }
