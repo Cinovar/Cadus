@@ -111,17 +111,34 @@ bun install
 ```
 ## Variáveis de Ambiente
 
-Cada serviço pode exigir variáveis de ambiente específicas. Crie um arquivo `.env` na raiz do serviço baseando-se no `.env.example` correspondente.
+Cada serviço pode exigir variáveis de ambiente específicas. Crie um arquivo chamado `.env` na raiz do serviço baseando-se no `.env.example` correspondente.
 
 | Variável | Descrição | Exemplo |
 |----------|-----------|---------|
 | `PORT` | Porta do serviço | `3000` |
 | `NODE_ENV` | Ambiente de execução | `development` |
 
-## 🚀 Executando o Projeto
-O Bun Workspaces permite orquestrar comandos centralizados a partir da raiz usando filtros. 
-### Desenvolver todos os serviços simultaneamente
-```Bash
+
+---
+
+## Executando o Projeto
+
+### Frontend
+
+```bash
+# Modo desenvolvimento com HMR
+bun --filter @cadus/frontend dev
+
+# Build de produção
+bun --filter @cadus/frontend build
+
+# Preview do build de produção
+bun --filter @cadus/frontend preview
+```
+
+### Todos os serviços em paralelo
+
+```bash
 bun dev:all
 ```
 ### Executar um aplicativo ou serviço específico
