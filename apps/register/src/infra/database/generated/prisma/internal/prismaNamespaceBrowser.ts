@@ -83,6 +83,8 @@ export const IdentidadeScalarFieldEnum = {
   telefone: 'telefone',
   email: 'email',
   senha: 'senha',
+  queixa: 'queixa',
+  status: 'status',
   enderecoId: 'enderecoId',
   criadoEm: 'criadoEm',
   atualizadoEm: 'atualizadoEm',

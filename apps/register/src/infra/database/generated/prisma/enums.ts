@@ -27,3 +27,13 @@ export const Pronome = {
 } as const
 
 export type Pronome = (typeof Pronome)[keyof typeof Pronome]
+
+
+export const StatusPaciente = {
+  AGUARDANDO_MODERACAO: 'AGUARDANDO_MODERACAO',
+  ENCAMINHADO: 'ENCAMINHADO',
+  EM_ATENDIMENTO: 'EM_ATENDIMENTO',
+  CONCLUIDO: 'CONCLUIDO'
+} as const
+
+export type StatusPaciente = (typeof StatusPaciente)[keyof typeof StatusPaciente]

@@ -7,12 +7,8 @@ import type { Genero } from "./Genero";
 import type { Pronome } from "./Pronome";
 import type { Senha } from "./Senha";
 import type { Telefone } from "./Telefone";
-
 import type { EnderecoId } from "../endereco/EnderecoId";
 
-/**
- *  Interface que descreve as propriedades da entidade Identidade.
- */
 export interface IdentidadeProps {
     nome: Nome;
     cpf: Cpf;
@@ -20,9 +16,13 @@ export interface IdentidadeProps {
 
     genero: Genero;
     pronome?: Pronome;
-    
+
     email: Email;
     telefone: Telefone;
     senha: Senha;
     enderecoId: EnderecoId;
+
+    // String puro — queixa não tem regras de domínio além do maxLength
+    // que já é garantido pelo campo no banco (VarChar 2000)
+    queixa?: string;
 }

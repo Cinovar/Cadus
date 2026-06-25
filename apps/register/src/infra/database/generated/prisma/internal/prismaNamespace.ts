@@ -604,6 +604,8 @@ export const IdentidadeScalarFieldEnum = {
   telefone: 'telefone',
   email: 'email',
   senha: 'senha',
+  queixa: 'queixa',
+  status: 'status',
   enderecoId: 'enderecoId',
   criadoEm: 'criadoEm',
   atualizadoEm: 'atualizadoEm',
@@ -710,6 +712,20 @@ export type EnumPronomeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMo
  * Reference to a field of type 'Pronome[]'
  */
 export type ListEnumPronomeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Pronome[]'>
+    
+
+
+/**
+ * Reference to a field of type 'StatusPaciente'
+ */
+export type EnumStatusPacienteFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StatusPaciente'>
+    
+
+
+/**
+ * Reference to a field of type 'StatusPaciente[]'
+ */
+export type ListEnumStatusPacienteFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StatusPaciente[]'>
     
 
 
