@@ -22,7 +22,8 @@ export interface IdentidadeProps {
     senha: Senha;
     enderecoId: EnderecoId;
 
-    // String puro — queixa não tem regras de domínio além do maxLength
-    // que já é garantido pelo campo no banco (VarChar 2000)
     queixa?: string;
+
+    // Status na fila de moderação — string puro, validado no use case
+    status?: string;
 }

@@ -79,6 +79,23 @@ export class PrismaIdentidadeRepository implements IIdentidadeRepository {
         return rows.map((row) => this.toDomainEntity(row));
     }
 
+    async findByStatus(status: string): Promise<Identidade[]> {
+        const { prisma } = await import("../../adapters/Db.ts");
+        const rows = await prisma.identidade.findMany({
+            where: { status: status as any, deletadoEm: null },
+            orderBy: { criadoEm: "asc" },
+        });
+        return rows.map((row) => this.toDomainEntity(row));
+    }
+
+    async updateStatus(cpf: Cpf, novoStatus: string): Promise<void> {
+        const { prisma } = await import("../../adapters/Db.ts");
+        await prisma.identidade.update({
+            where: { cpf: cpf.value },
+            data: { status: novoStatus as any },
+        });
+    }
+
     private toPrismaGenero(value: string): PrismaGenero {
         return value.toUpperCase() as PrismaGenero;
     }
@@ -107,7 +124,7 @@ export class PrismaIdentidadeRepository implements IIdentidadeRepository {
             : undefined;
 
         return Identidade.reconstitute(
-            { nome, cpf, dataNascimento, genero, pronome, email, telefone, senha, enderecoId, queixa: row.queixa ?? undefined },
+            { nome, cpf, dataNascimento, genero, pronome, email, telefone, senha, enderecoId, queixa: row.queixa ?? undefined, status: row.status ?? undefined },
             id,
             criadoEm,
             atualizadoEm,

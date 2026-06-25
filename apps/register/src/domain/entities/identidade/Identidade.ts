@@ -65,7 +65,6 @@ export class Identidade {
 
         const { criadoEm, atualizadoEm, ...props } = resultProps.value;
 
-        // queixa passa direto — não precisa de VO
         return success(new Identidade({ ...props, queixa }, IdentidadeId, criadoEm, atualizadoEm));
     }
 
@@ -91,6 +90,7 @@ export class Identidade {
     public get senha(): Senha { return this._props.senha; }
     public get endereco(): EnderecoId { return this._props.enderecoId; }
     public get queixa(): string | undefined { return this._props.queixa; }
+    public get status(): string | undefined { return this._props.status; }
     public get criadoEm(): Data { return this._criadoEm; }
     public get atualizadoEm(): Data { return this._atualizadoEm; }
 }
