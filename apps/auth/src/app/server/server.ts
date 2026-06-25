@@ -1,16 +1,25 @@
 import express from "express";
+import cors from "cors";
 import { loginController } from "../controllers/LoginController";
 import { logoutController } from "../controllers/LogoutController";
 import { authMiddleware } from "../middlewares/authMiddleware";
 
 const app = express();
 
-// Porta lida da env — padrão 3001 para não conflitar com register (3000) e historico (3002)
 const port = parseInt(process.env.PORT ?? "3001", 10);
+
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN ?? "http://localhost:8080",
+    methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 
-app.get("/health", (req, res) => {
+app.get("/health", (_req, res) => {
   res.json({ status: "ok", service: "auth" });
 });
 
@@ -18,5 +27,5 @@ app.post("/auth/login", loginController);
 app.post("/auth/logout", authMiddleware, logoutController);
 
 app.listen(port, () => {
-  console.log(`Auth service rodando na porta ${port}`);
+  console.log(`[auth] rodando na porta ${port}`);
 });
