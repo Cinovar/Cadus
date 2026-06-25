@@ -34,10 +34,14 @@ export class Cpf {
         return success(new Cpf(cpfNormalizado));
     }
 
-    public static isFormatCpfError (cpf: string): boolean{
-        const regExp = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
-        return regExp.test(cpf);
-    }
+    public static isFormatCpfError (cpf: string): boolean {
+    // Aceita com máscara (108.580.204-32) OU 11 dígitos puros (10858020432).
+    // O VO não deve depender da formatação de entrada — a validação real
+    // dos dígitos verificadores acontece em existsCpfValitaion.
+    const comMascara = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
+    const semMascara = /^\d{11}$/;
+    return comMascara.test(cpf) || semMascara.test(cpf);
+}
 
     public static noFieldExistsValidation (cpf: string): boolean{
         if (cpf.length === 0) return true;

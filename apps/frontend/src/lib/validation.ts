@@ -28,30 +28,35 @@ export const validateDate = (dateStr: string): boolean => {
 
   const [day, month, year] = dateStr.split('/').map(Number);
   const date = new Date(year, month - 1, day);
-  const validLeapYear = date.getFullYear() === year && date.getMonth() + 1 === month && date.getDate() === day;
+  const validLeapYear =
+    date.getFullYear() === year &&
+    date.getMonth() + 1 === month &&
+    date.getDate() === day;
 
-  return validLeapYear && (date <= new Date());
-}
+  return validLeapYear && date <= new Date();
+};
 
 export const validateText = (texto: string): string => {
   const lettersRegex = /[A-Za-záàâãéêíóôõúüçÁÀÂÃÉÊÍÓÔÕÚÜÇ]/;
   const repeatedCharaRegex = /(.)\1{9,}/;
-  
+
   if (!texto?.trim() || texto.length < 10) return 'Por favor, descreva um pouco mais.';
-  else if (repeatedCharaRegex.test(texto)) return 'Por favor, diminua a repetição excessiva de caracteres.'
+  else if (repeatedCharaRegex.test(texto)) return 'Por favor, diminua a repetição excessiva de caracteres.';
   else if (!lettersRegex.test(texto)) return 'Por favor, evite escrever apenas números ou símbolos.';
   else return '';
-}
+};
 
-export const validateLogin = (email: string, password: string) => {
-  const errors: { email?: string; password?: string } = {};
+// Login agora valida CPF em vez de email
+export const validateLogin = (cpf: string, password: string) => {
+  const errors: { cpf?: string; password?: string } = {};
 
-  if (!email.trim())
-    errors.email = "O e-mail é obrigatório.";
-  else if (!validateEmail(email))
-    errors.email = `E-mail inválido`;
+  if (!cpf.trim())
+    errors.cpf = "O CPF é obrigatório.";
+  else if (!validateCPF(cpf))
+    errors.cpf = "CPF inválido.";
 
-  if (!password.trim()) errors.password = "A senha é obrigatória";
+  if (!password.trim())
+    errors.password = "A senha é obrigatória.";
 
   return {
     isValid: Object.keys(errors).length === 0,
