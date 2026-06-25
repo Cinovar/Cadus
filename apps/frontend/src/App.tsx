@@ -6,8 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import Registration from "./pages/Registration.tsx";
-import PatientDashboard from "./pages/PatientDashboard.tsx";
-import ProfessionalDashboard from "./pages/ProfessionalDashboard.tsx";
+import PatientHomepage from "./pages/PatientHomepage.tsx";
 import Login from "./pages/Login.tsx";
 
 const queryClient = new QueryClient();
@@ -17,14 +16,13 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
+      {/* basename casa com o base do Vite — react-router passa a entender /fonoaudiologia/entrar */}
+      <BrowserRouter basename="/fonoaudiologia">
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/entrar" element={<Login />} />
           <Route path="/cadastro" element={<Registration />} />
-          <Route path="/paciente/inicio" element={<PatientDashboard />} />
-          <Route path="/profissional/painel" element={<ProfessionalDashboard />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/paciente/inicio" element={<PatientHomepage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

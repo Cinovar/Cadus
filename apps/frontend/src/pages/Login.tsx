@@ -7,7 +7,7 @@ import { useLoginForm } from '@/hooks/useLoginForm';
 import { formatCPF } from '@/lib/masks';
 
 const Login = () => {
-  const { login, setLogin, typeLogin, setTypeLogin, password, setPassword, errors, handleSubmit, isLoading } = useLoginForm();
+  const { cpf, setCpf, password, setPassword, errors, handleSubmit, isLoading } = useLoginForm();
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
@@ -29,31 +29,12 @@ const Login = () => {
     },
   ];
 
-  const verifyType = (value: string) => {
-    // Checa se o usuário está digitando um CPF
-    const cpfRegex = /^[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}-?[0-9]{2}$/;
-
-    if (cpfRegex.test(value)) {
-      setLogin(formatCPF(value));
-      setTypeLogin("cpf");
-    } else { // Se não era CPF, tirar a máscara e considerar um email
-      if (typeLogin === "cpf") {
-        setLogin(value.replace(/[\.\-]+/g, ""));
-        setTypeLogin("email");
-      } else {
-        setLogin(value);
-      }
-    }
-  }
-
   return (
     <div className="min-h-screen bg-background flex">
       {/* Left side - Branding (desktop only) */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden flex-col justify-center px-16 xl:px-20">
-        {/* Background gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent to-primary/10" />
-        
-        {/* Decorative blobs */}
+
         <svg className="absolute -top-20 -left-20 w-80 h-80 opacity-20" viewBox="0 0 200 200">
           <path fill="hsl(var(--primary))" d="M44.7,-76.4C58.8,-69.2,71.8,-59.1,79.6,-45.8C87.4,-32.5,90,-16.3,88.2,-1.1C86.3,14.1,80,28.2,71.4,40.3C62.8,52.4,51.8,62.5,39,69.9C26.2,77.3,11.6,82,-2.4,85.8C-16.4,89.6,-33.8,92.5,-47.2,86.2C-60.6,79.9,-70,64.4,-76.8,48.4C-83.6,32.4,-87.8,16.2,-86.5,0.7C-85.3,-14.7,-78.6,-29.4,-69.8,-42.1C-61,-54.8,-50.1,-65.5,-37.3,-73.5C-24.5,-81.5,-9.8,-86.8,3.1,-91.9C16,-97,30.6,-83.6,44.7,-76.4Z" transform="translate(100 100)" />
         </svg>
@@ -111,7 +92,6 @@ const Login = () => {
             </Link>
           </div>
 
-          {/* Card */}
           <div className="card-cadus">
             {/* Toggle Entrar / Criar conta */}
             <div className="flex bg-muted rounded-xl p-1 mb-5 md:mb-6">
@@ -130,20 +110,22 @@ const Login = () => {
             <p className="text-muted-foreground text-sm mb-4 md:mb-6">Bem-vindo de volta! Insira seus dados.</p>
 
             <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
-              {/* Email */}
+              {/* CPF */}
               <div>
-                <label className="text-sm font-medium text-foreground mb-1 block">Login (e-mail ou CPF)</label>
+                <label className="text-sm font-medium text-foreground mb-1 block">CPF</label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <input
                     type="text"
-                    value={login}
-                    onChange={(e) => verifyType(e.target.value)}
-                    placeholder="seu@email.com ou 000.000.000-00"
+                    value={cpf}
+                    onChange={(e) => setCpf(formatCPF(e.target.value))}
+                    placeholder="000.000.000-00"
+                    inputMode="numeric"
+                    maxLength={14}
                     className="w-full h-11 pl-10 pr-4 rounded-xl border border-input bg-background text-foreground text-[16px] md:text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
                   />
                 </div>
-                {errors.login && <p className="error-text">{errors.login}</p>}
+                {errors.cpf && <p className="error-text">{errors.cpf}</p>}
               </div>
 
               {/* Senha */}
@@ -169,23 +151,26 @@ const Login = () => {
                 {errors.password && <p className="error-text">{errors.password}</p>}
               </div>
 
-              {/* Botão Entrar */}
+              {/* Erro geral (CPF não encontrado, senha errada, etc) */}
+              {errors.submit && (
+                <p className="text-sm text-destructive text-center">{errors.submit}</p>
+              )}
+
               <button
                 type="submit"
+                disabled={isLoading}
                 className="btn-primary w-full mt-1"
               >
-                {!isLoading ? "Entrar" : "Entrando..."}
+                {isLoading ? "Entrando..." : "Entrar"}
               </button>
             </form>
 
-            {/* Divisor */}
             <div className="flex items-center gap-3 my-4 md:my-6">
               <div className="flex-1 h-px bg-border" />
               <span className="text-muted-foreground text-xs">ou continue com</span>
               <div className="flex-1 h-px bg-border" />
             </div>
 
-            {/* Magic link */}
             <button
               onClick={() =>
                 toast({
@@ -199,7 +184,6 @@ const Login = () => {
               Entrar sem senha
             </button>
 
-            {/* Legal */}
             <p className="text-center text-muted-foreground text-xs mt-4 md:mt-6 leading-relaxed">
               Ao continuar, você concorda com os{' '}
               <span className="text-primary font-medium cursor-pointer hover:underline">Termos de Uso</span> e{' '}

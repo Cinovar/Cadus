@@ -21,22 +21,42 @@ export const validateCPF = (cpf: string): boolean => {
   return rest === parseInt(digits[10]);
 };
 
-export const validateLogin = (login: string, typeLogin: string, password: string) => {
-  const errors: { login?: string; password?: string } = {};
+export const validateDate = (dateStr: string): boolean => {
+  const dateRegex = /(?:((?:0[1-9]|1[0-9]|2[0-9])\/(?:0[1-9]|1[0-2])|(?:30)\/(?!02)(?:0[1-9]|1[0-2])|31\/(?:0[13578]|1[02]))\/(?:19|20)[0-9]{2})/;
 
-  if (!login.trim()) {
-    errors.login = "E-mail ou CPF é obrigatório";
-  } else {
-    if (typeLogin === "cpf" && !validateCPF(login)) errors.login = "CPF inválido";
-    if (typeLogin === "email" && !validateEmail(login)) {
-      const possibleCpfRegex = /^[0-9]+(?:\.[0-9]+)?(?:-[0-9]+)?$/;
-      // Checa se o usuário colocou só dígitos contendo ou não . ou -
-      // Para dar uma mensagem mais esclarecedora ao usuário
-      errors.login = `E-mail ${possibleCpfRegex.test(login) ? "ou CPF " : ""}inválido`;
-    }
-  }
+  if (!dateRegex.test(dateStr)) return false;
 
-  if (!password.trim()) errors.password = "Senha é obrigatória";
+  const [day, month, year] = dateStr.split('/').map(Number);
+  const date = new Date(year, month - 1, day);
+  const validLeapYear =
+    date.getFullYear() === year &&
+    date.getMonth() + 1 === month &&
+    date.getDate() === day;
+
+  return validLeapYear && date <= new Date();
+};
+
+export const validateText = (texto: string): string => {
+  const lettersRegex = /[A-Za-záàâãéêíóôõúüçÁÀÂÃÉÊÍÓÔÕÚÜÇ]/;
+  const repeatedCharaRegex = /(.)\1{9,}/;
+
+  if (!texto?.trim() || texto.length < 10) return 'Por favor, descreva um pouco mais.';
+  else if (repeatedCharaRegex.test(texto)) return 'Por favor, diminua a repetição excessiva de caracteres.';
+  else if (!lettersRegex.test(texto)) return 'Por favor, evite escrever apenas números ou símbolos.';
+  else return '';
+};
+
+// Login agora valida CPF em vez de email
+export const validateLogin = (cpf: string, password: string) => {
+  const errors: { cpf?: string; password?: string } = {};
+
+  if (!cpf.trim())
+    errors.cpf = "O CPF é obrigatório.";
+  else if (!validateCPF(cpf))
+    errors.cpf = "CPF inválido.";
+
+  if (!password.trim())
+    errors.password = "A senha é obrigatória.";
 
   return {
     isValid: Object.keys(errors).length === 0,

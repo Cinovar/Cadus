@@ -1,7 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
   validateEmail,
-  validatePassword,
   validateLogin,
   validatePatientRegistration,
 } from "@/lib/validation";
@@ -26,51 +25,35 @@ describe("validateEmail", () => {
   });
 });
 
-// ─── validatePassword ─────────────────────────────────────────────────────────
-
-describe("validatePassword", () => {
-  it("valida senha com 6+ caracteres", () => {
-    expect(validatePassword("senha123")).toBe(true);
-  });
-
-  it("rejeita senha com menos de 6 caracteres", () => {
-    expect(validatePassword("abc")).toBe(false);
-  });
-
-  it("rejeita senha vazia", () => {
-    expect(validatePassword("")).toBe(false);
-  });
-});
-
 // ─── validateLogin ───────────────────────────────────────────────────────────
 
 describe("validateLogin", () => {
   it("valida login com email e senha corretos", () => {
-    const result = validateLogin("usuario@example.com", "senha123");
+    const result = validateLogin("usuario@example.com", "email", "senha123");
     expect(result.isValid).toBe(true);
     expect(result.errors).toEqual({});
   });
 
   it("rejeita login sem email", () => {
-    const result = validateLogin("", "senha123");
+    const result = validateLogin("", "email", "senha123");
     expect(result.isValid).toBe(false);
-    expect(result.errors.email).toBe("Email é obrigatório");
+    expect(result.errors.login).toBe("Email é obrigatório");
   });
 
   it("rejeita login com email inválido", () => {
-    const result = validateLogin("emailinvalido", "senha123");
+    const result = validateLogin("emailinvalido", "email", "senha123");
     expect(result.isValid).toBe(false);
-    expect(result.errors.email).toBe("Email inválido");
+    expect(result.errors.login).toBe("Email inválido");
   });
 
   it("rejeita login sem senha", () => {
-    const result = validateLogin("usuario@example.com", "");
+    const result = validateLogin("usuario@example.com", "email", "");
     expect(result.isValid).toBe(false);
     expect(result.errors.password).toBe("Senha é obrigatória");
   });
 
   it("rejeita login com senha muito curta", () => {
-    const result = validateLogin("usuario@example.com", "abc");
+    const result = validateLogin("usuario@example.com", "email", "abc");
     expect(result.isValid).toBe(false);
     expect(result.errors.password).toBe("Senha deve ter no mínimo 6 caracteres");
   });
