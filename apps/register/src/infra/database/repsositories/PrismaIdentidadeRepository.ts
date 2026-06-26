@@ -31,7 +31,7 @@ export class PrismaIdentidadeRepositoryDataCorruptionError extends Error {
 export class PrismaIdentidadeRepository implements IIdentidadeRepository {
 
     async add(identidade: Identidade): Promise<void> {
-        const { prisma } = await import("../../adapters/Db.ts");
+        const { prisma } = await import("../../adapters/db.ts");
         await prisma.identidade.create({
             data: {
                 id: identidade.IdentidadeId.value,
@@ -53,34 +53,34 @@ export class PrismaIdentidadeRepository implements IIdentidadeRepository {
     }
 
     async exists(cpf: Cpf): Promise<boolean> {
-        const { prisma } = await import("../../adapters/Db.ts");
+        const { prisma } = await import("../../adapters/db.ts");
         const count = await prisma.identidade.count({ where: { cpf: cpf.value } });
         return count > 0;
     }
 
     async findIdentidadeByCpf(cpf: Cpf): Promise<Identidade | null> {
-        const { prisma } = await import("../../adapters/Db.ts");
+        const { prisma } = await import("../../adapters/db.ts");
         const row = await prisma.identidade.findUnique({ where: { cpf: cpf.value } });
         if (!row) return null;
         return this.toDomainEntity(row);
     }
 
     async findIdentidadeByEmail(email: Email): Promise<Identidade | null> {
-        const { prisma } = await import("../../adapters/Db.ts");
+        const { prisma } = await import("../../adapters/db.ts");
         const row = await prisma.identidade.findUnique({ where: { email: email.value } });
         if (!row) return null;
         return this.toDomainEntity(row);
     }
 
     async findAllIdentidades(): Promise<Identidade[] | null> {
-        const { prisma } = await import("../../adapters/Db.ts");
+        const { prisma } = await import("../../adapters/db.ts");
         const rows = await prisma.identidade.findMany();
         if (rows.length === 0) return null;
         return rows.map((row) => this.toDomainEntity(row));
     }
 
     async findByStatus(status: string): Promise<Identidade[]> {
-        const { prisma } = await import("../../adapters/Db.ts");
+        const { prisma } = await import("../../adapters/db.ts");
         const rows = await prisma.identidade.findMany({
             where: { status: status as any, deletadoEm: null },
             orderBy: { criadoEm: "asc" },
@@ -89,7 +89,7 @@ export class PrismaIdentidadeRepository implements IIdentidadeRepository {
     }
 
     async updateStatus(cpf: Cpf, novoStatus: string): Promise<void> {
-        const { prisma } = await import("../../adapters/Db.ts");
+        const { prisma } = await import("../../adapters/db.ts");
         await prisma.identidade.update({
             where: { cpf: cpf.value },
             data: { status: novoStatus as any },

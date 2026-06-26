@@ -5,11 +5,19 @@ import { Lock, Eye, EyeOff, ShieldCheck, Heart, FileText, Sparkles, User } from 
 import { toast } from '@/hooks/use-toast';
 import { useLoginForm } from '@/hooks/useLoginForm';
 import { formatCPF } from '@/lib/masks';
+import { useRegistrationStore } from '@/store/registrationStore';
 
 const Login = () => {
   const { cpf, setCpf, password, setPassword, errors, handleSubmit, isLoading } = useLoginForm();
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
+  const resetRegistration = useRegistrationStore((state) => state.reset);
+
+  const handleCriarConta = () => {
+    resetRegistration();      // zera isRegistered/patientData de um cadastro anterior
+    navigate('/cadastro');
+};
 
   const benefits = [
     {
@@ -99,7 +107,7 @@ const Login = () => {
                 Entrar
               </button>
               <button
-                onClick={() => navigate('/cadastro')}
+                onClick={handleCriarConta}
                 className="flex-1 py-2 text-sm font-semibold rounded-lg text-muted-foreground hover:text-foreground transition-all min-h-[40px]"
               >
                 Criar conta
