@@ -1,15 +1,18 @@
 # Cadus — Documentação do Projeto
 
+Plataforma de **autocadastro e triagem de pacientes** para uma clínica-escola de Fonoaudiologia da UFPE. O sistema é um **monorepo de microsserviços** em TypeScript, executado sobre o runtime **Bun**, orquestrado via **Docker Compose** e servido atrás de um **reverse proxy nginx** sob o path `/fonoaudiologia/`.
 
 ## 📌 Índice
 
-- [📌 Índice](#-índice)
-- [✨ Features & Capacidades](#features--capacidades)
+- [✨ Features & Capacidades](#-features--capacidades)
 - [🛠️ Stack Tecnológica](#️-stack-tecnológica)
 - [🏗️ Estrutura do Monorepo](#️-estrutura-do-monorepo)
+- [🧭 Serviços & Portas](#-serviços--portas)
 - [🎯 Princípios de Arquitetura](#-princípios-de-arquitetura)
 - [⚙️ Pré-requisitos & Instalação](#️-pré-requisitos--instalação)
+- [🔐 Variáveis de Ambiente](#-variáveis-de-ambiente)
 - [🚀 Executando o Projeto](#-executando-o-projeto)
+- [🗄️ Banco de Dados & Migrations](#️-banco-de-dados--migrations)
 - [🧪 Suíte de Testes](#-suíte-de-testes)
 - [➕ Criando um Novo Serviço](#-criando-um-novo-serviço)
 - [🧰 Ferramentas de Apoio](#-ferramentas-de-apoio)
@@ -18,267 +21,320 @@
 
 ## ✨ Features & Capacidades
 
-O Cadus é uma plataforma distribuída projetada para alta performance e isolamento de contextos.
+O Cadus é uma plataforma distribuída projetada para isolamento de contextos e separação clara de responsabilidades.
 
-- 🔍 Gestão de Identidade: Módulo isolado para gerenciamento, autenticação e ciclo de vida de pacientes.
-- ⚡ Runtime Ultra-rápido: Execução nativa sobre Bun, eliminando gargalos de inicialização e gerenciamento de pacotes.
-- 🛡️ Clean Architecture Strict: Camada de domínio 100% agnóstica a frameworks, garantindo testabilidade e proteção contra acoplamento técnico.
-- 🔄 Monorepo Inteligente: Workspaces gerenciados de forma centralizada com compartilhamento eficiente de configurações de tipagem e linters.
-- 🌐 Suíte de Testes Híbrida: Testes unitários isolados por microsserviço combinados com uma esteira end-to-end automatizada.
+- 🧾 **Autocadastro de pacientes:** fluxo guiado de cadastro (`register`) com validação de CPF, CEP, e-mail e telefone.
+- 🔐 **Autenticação JWT:** login por CPF + senha, sessões e bloqueio por tentativas (`auth`), com hashes de senha via bcrypt.
+- 🗂️ **Histórico clínico:** serviço dedicado (`historico`) para o acompanhamento de pacientes.
+- 🛡️ **Clean Architecture:** camada de domínio agnóstica a frameworks, com regra de dependência apontando sempre para dentro.
+- 🔄 **Monorepo com Bun Workspaces:** dependências e configs (TypeScript, ESLint, Prettier) gerenciadas de forma centralizada.
+- 🌐 **Reverse proxy nginx:** um único ponto de entrada (porta 80) roteando frontend e APIs sob `/fonoaudiologia/`.
+- 🐳 **Ambiente containerizado:** todo o stack sobe com um único `docker compose up`.
 
 ## 🛠️ Stack Tecnológica
-| Camada | Tecnologia | Papel no Ecossistema | 
+
+| Camada | Tecnologia | Papel no Ecossistema |
 | ------ | ---------- | -------------------- |
-| Runtime & Package Manager | Bun 1.x | Motor de execução, bundler e gerenciador de workspaces rápido. | 
-| Backend Framework | Express | Roteamento e interface HTTP nos microsserviços (app/). | 
-| Frontend Framework | React + Vite | Interface de usuário SPA de alta performance com HMR. | 
-| Testes Unitários | Vitest | Validação ágil de Use Cases e Entities. | 
-| Testes E2E | Playwright| Validação de fluxos integrados e jornadas de usuário. | 
-| Qualidade de Código | ESLint + Prettier | Padronização estática e formatação automatizada. |
-| Deploy & Infra | Vercel / Render | Hospedagem otimizada para o Frontend e Serviços de borda. |
+| Runtime & Package Manager | **Bun 1.x** | Motor de execução, gerenciador de workspaces e watcher de dev. |
+| Backend Framework | **Express 5** | Roteamento e interface HTTP nos microsserviços. |
+| Frontend | **React 18 + Vite + TypeScript** | SPA de alta performance com HMR, servida sob o base path `/fonoaudiologia/`. |
+| Banco de Dados | **PostgreSQL (Neon, serverless)** | Persistência por serviço, isolada. |
+| ORM / Data Access | **Prisma 7** (`@prisma/adapter-neon` / `adapter-pg`) | Modelagem, migrations e acesso ao banco. |
+| Autenticação | **JWT** (`jsonwebtoken`) + **bcrypt** | Tokens de sessão e hash de senhas. |
+| Validação | **Zod** | Validação de schemas de entrada. |
+| Testes Unitários | **Vitest** | Validação de Use Cases, Entities e adapters. |
+| Testes E2E | **Playwright** | Jornadas de usuário no frontend. |
+| Qualidade de Código | **ESLint + Prettier** | Padronização estática e formatação. |
+| Orquestração & Infra | **Docker Compose + nginx** | Containerização e reverse proxy. |
 
 ## 🏗️ Estrutura do Monorepo
 
-```Plaintext
+```plaintext
 cadus/
 ├── apps/
-│   ├── frontend/           # SPA React + Vite + TypeScript
-│   ├── identity/           # Microsserviço de identidade dos pacientes (Clean Arch)
-│   └── e2e/                # Suíte de testes end-to-end com Playwright
-├── package.json            # Dependências globais, scripts maestros e workspaces
-├── tsconfig.json           # Configuração TypeScript base (estendida pelos apps)
-└── vitest.config.ts        # Configuração raiz e pooling do Vitest
+│   ├── frontend/           # SPA React + Vite + TypeScript (base path /fonoaudiologia/)
+│   ├── register/           # Microsserviço de cadastro/identidade de pacientes (porta 3000)
+│   ├── auth/               # Microsserviço de autenticação JWT e sessões (porta 3001)
+│   ├── historico/          # Microsserviço de histórico do paciente (porta 3002)
+│   └── docs/               # Documentação de arquitetura
+├── nginx/
+│   ├── default.conf        # Regras de proxy (frontend + /api/<serviço>/)
+│   └── Dockerfile
+├── docker-compose.yml      # Orquestração de todos os serviços
+├── package.json            # Workspaces, scripts maestros e dependências globais
+├── tsconfig.json           # Configuração TypeScript base (referencia cada app)
+└── vitest.config.ts        # Configuração raiz do Vitest
 ```
+
+## 🧭 Serviços & Portas
+
+O nginx (porta **80**) é o único ponto de entrada. Ele encaminha o frontend e faz `proxy_pass` das APIs, removendo o prefixo do path:
+
+| Serviço | Porta interna | Rota pública (via nginx) | Responsabilidade |
+| ------- | ------------- | ------------------------ | ---------------- |
+| `frontend` | 8080 | `/fonoaudiologia/` | Interface SPA |
+| `register` | 3000 | `/fonoaudiologia/api/register/` | Cadastro e identidade de pacientes |
+| `auth` | 3001 | `/fonoaudiologia/api/auth/` | Login, JWT e sessões |
+| `historico` | 3002 | `/fonoaudiologia/api/historico/` | Histórico clínico |
+
+> O `auth` consome o `register` internamente (`REGISTER_SERVICE_URL`) para buscar o usuário por CPF no login. Nenhum serviço acessa o banco de outro — a comunicação é sempre via HTTP.
 
 ## 🎯 Princípios de Arquitetura
 
-Cada microsserviço dentro do ecossistema do Cadus deve seguir rigorosamente as regras abaixo para garantir manutenibilidade e isolamento.
-1. Macro-Arquitetura (Microsserviços)
-- **Responsabilidade Única:** Cada serviço resolve um único domínio de negócio. Se um contexto acumula regras não relacionadas, ele deve ser fatiado.
-- **Isolamento de Dados:** Cada serviço é proprietário exclusivo de sua camada de persistência. Acesso direto ao banco de dados alheio é proibido. Comunicações acontecem via API HTTP/gRPC ou Eventos.
-2. Micro-Arquitetura (Estrutura Interna do Serviço)
-- A estrutura interna adota o padrão Clean Architecture, onde o núcleo de negócios (Domínio) dita as regras e os detalhes técnicos (Frameworks, Banco de Dados) adaptam-se a ele.
+Cada microsserviço segue as regras abaixo para garantir manutenibilidade e isolamento.
 
-```Plaintext
+**1. Macro-Arquitetura (Microsserviços)**
+- **Responsabilidade Única:** cada serviço resolve um único domínio de negócio.
+- **Isolamento de Dados:** cada serviço é dono exclusivo da sua persistência. Acesso direto ao banco alheio é proibido; a comunicação acontece via API HTTP.
+
+**2. Micro-Arquitetura (Clean Architecture)**
+
+O núcleo de negócio (Domínio) dita as regras; os detalhes técnicos (Express, Prisma, Neon) adaptam-se a ele. A organização interna varia em maturidade entre os serviços — `register` e `historico` adotam o layout completo, `auth` uma variação mais enxuta:
+
+```plaintext
 src/
-├── index.ts               # Entry point — responsável apenas por inicializar o servidor
-├── app/                   # Interface HTTP (Routes, Controllers, Middlewares Express)
-├── usecases/              # Lógica de aplicação (Orquestradores de fluxo de negócio)
-├── domain/                # Núcleo da aplicação (Independente de tecnologia externa)
-│   ├── entities/          # Regras e validações intrínsecas de negócio
-│   └── repositories/      # Interfaces/Contratos dos repositórios (Ports)
-├── infra/                 # Detalhes técnicos (Implementação de Repositórios, DB, Drivers)
-└── shared/                # Erros customizados, DTOs globais e utilitários
-```
-3. Regra de Dependência & Inversão (DIP)
-As dependências fluem exclusivamente de fora para dentro. O Domínio nunca conhece o Banco de Dados ou o Express.
-
-
-```Plaintext
-app (Express) ──> usecases ──> domain (Entities / Interfaces) <── infra (Implementações/DB)
+├── index.ts               # Entry point — apenas inicializa o servidor
+├── presentation/          # Controllers e adapters HTTP (register, historico)
+│   └── controllers/
+├── application/           # Use cases, ports (interfaces) e DTOs
+│   └── usecases/
+├── domain/                # Entities e value objects (regras de negócio puras)
+│   └── entities/
+├── infra/                 # Implementações: repositórios Prisma, adapters de DB, providers
+│   ├── adapters/          # ex.: db.ts (cliente Prisma + Neon)
+│   └── database/          # schema.prisma, migrations, repositórios
+├── main/                  # Composição: server, rotas e factories (injeção de dependência)
+└── shared/                # Either, erros e utilitários compartilhados
 ```
 
-Onde cada tipo de código deve viver:
+> No `auth`, a camada HTTP fica em `app/`, os use cases em `usecases/` e as entities em `entities/` — mesma filosofia, nomenclatura mais simples.
 
-| Código | Onde colocar | Responsabilidade |
-| ------ | ------------ | ---------------- |
-| Entrada/Saída HTTP | app/ | Receber requisições do Express, delegar para usecases e formatar respostas. | 
-| Lógica de Orquestração |  usecases/ |  Validar fluxos de ações da aplicação (ex: RegisterPatientUseCase). | 
-| Regras de Negócio Puras | domain/entities/ | Modelos ricos com validações que não dependem do contexto de software. | 
-|  Contratos e Portas | domain/repositories/ | Interfaces abstratas que descrevem a comunicação com o exterior. | 
-| Chamadas ao Banco/Drivers | infra/ | Implementação real de queries SQL, ORMs, integrações com APIs terceiras.|
+**3. Regra de Dependência (DIP)**
+
+As dependências fluem de fora para dentro. O Domínio nunca conhece o Express nem o Prisma.
+
+```plaintext
+presentation (Express) ──> application (use cases) ──> domain (entities / ports) <── infra (Prisma / Neon)
+```
 
 ## ⚙️ Pré-requisitos & Instalação
+
 ### Pré-requisitos
-O projeto utiliza o Bun como runtime e gerenciador de pacotes integrado, dispensando a necessidade de uma instalação isolada do Node.js.
 
-```Bash
-# Instalação do Bun Runtime
+- **Bun 1.x** — runtime e gerenciador de pacotes (dispensa Node.js).
+- **Docker** + **Docker Compose** — para subir o stack completo.
+- Uma instância **PostgreSQL** por serviço de dados (recomendado: [Neon](https://neon.tech)).
+
+```bash
+# Instalação do Bun
 curl -fsSL https://bun.sh/install | bash
-
-# Verificação do ambiente
 bun --version
+
+# Docker — verifique se está instalado
+docker --version
 ```
+
 ### Instalação do Monorepo
-```Bash
-# Clonagem do repositório oficial
+
+```bash
 git clone https://github.com/seu-org/cadus.git
 cd cadus
 
-# Instalação otimizada de todas as dependências do workspace
+# Instala todas as dependências dos workspaces de uma vez
 bun install
-
 ```
-## Variáveis de Ambiente
 
-Cada serviço pode exigir variáveis de ambiente específicas. Crie um arquivo chamado `.env` na raiz do serviço baseando-se no `.env.example` correspondente.
+## 🔐 Variáveis de Ambiente
 
-| Variável | Descrição | Exemplo |
-|----------|-----------|---------|
-| `PORT` | Porta do serviço | `3000` |
-| `NODE_ENV` | Ambiente de execução | `development` |
+Cada serviço tem um `.env.example`. Copie-o para `.env` no diretório do serviço e preencha. Ao rodar via Docker Compose, as variáveis abaixo são lidas de um `.env` na **raiz** do projeto.
 
+**Raiz (consumido pelo `docker-compose.yml`):**
 
----
+| Variável | Descrição |
+|----------|-----------|
+| `NEON_DATABASE_URL_REGISTER` | Connection string do banco do `register` |
+| `DATABASE_URL_AUTH` | Connection string do banco do `auth` |
+| `NEON_DATABASE_URL_HISTORICO` | Connection string do banco do `historico` |
+| `JWT_SECRET` | Segredo para assinatura dos tokens JWT |
 
-## Executando o Projeto
+**Por serviço (`.env` local, para rodar fora do Docker):**
 
-### Frontend
+| Serviço | Variáveis |
+|---------|-----------|
+| `register` | `NEON_DATABASE_URL`, `PORT=3000`, `CORS_ORIGIN`, `NODE_ENV` |
+| `auth` | `DATABASE_URL`, `JWT_SECRET`, `REGISTER_SERVICE_URL`, `PORT=3001`, `CORS_ORIGIN`, `NODE_ENV` |
+| `historico` | `NEON_DATABASE_URL_DEV`, `PORT=3002`, `CORS_ORIGIN`, `NODE_ENV` |
+| `frontend` | `VITE_AUTH_URL`, `VITE_REGISTER_URL`, `VITE_HISTORICO_URL` *(opcionais — o fallback são os paths relativos do nginx)* |
+
+> Se `NEON_DATABASE_URL` não estiver definido, o `register` cai num repositório **in-memory** (volátil) — útil para testes rápidos, mas os dados se perdem a cada restart do container.
+
+## 🚀 Executando o Projeto
+
+### Via Docker Compose (recomendado)
+
+Sobe frontend, os três microsserviços e o nginx de uma vez:
 
 ```bash
-# Modo desenvolvimento com HMR
+docker compose up
+
+# Em background
+docker compose up -d
+
+# Derrubar
+docker compose down
+```
+
+Acesse a aplicação em **http://localhost/fonoaudiologia/**.
+
+### Localmente com Bun (sem Docker)
+
+```bash
+# Um serviço específico
 bun --filter @cadus/frontend dev
+bun --filter @cadus/register dev
+bun --filter @cadus/auth dev
+bun --filter @cadus/historico dev
 
-# Build de produção
+# Todos em paralelo
+bun dev:all
+```
+
+### Build de produção do frontend
+
+```bash
 bun --filter @cadus/frontend build
-
-# Preview do build de produção
 bun --filter @cadus/frontend preview
 ```
 
-### Todos os serviços em paralelo
+## 🗄️ Banco de Dados & Migrations
+
+Cada serviço de dados tem seu próprio `schema.prisma` em `src/infra/database/prisma/` e migrations versionadas.
 
 ```bash
-bun dev:all
-```
-### Executar um aplicativo ou serviço específico
-```Bash
-# Executar o Frontend React
-bun --filter @cadus/frontend dev
+# Gerar o Prisma Client (roda automaticamente no boot dos containers)
+bunx prisma generate
 
-# Executar o serviço Identity
-bun --filter @cadus/identity dev
-```
-### Compilar para Produção (Build)
-```Bash
-# Build do Frontend
-bun --filter @cadus/frontend build
+# Aplicar as migrations no banco
+bunx prisma migrate deploy
 
-# Build do Microsserviço (Gera um bundle otimizado para o runtime Bun)
-bun --filter @cadus/identity build
+# Via Docker, no container do serviço:
+docker compose exec register sh -c "cd /app/apps/register && bunx prisma migrate deploy"
 ```
+
+> O Prisma é configurado via `prisma.config.ts` de cada serviço, que aponta o `schema` e a `datasource` para a variável de ambiente correspondente.
+
 ## 🧪 Suíte de Testes
-A arquitetura desacoplada permite uma estratégia de testes altamente eficiente dividida em duas frentes.
 
-| Tipo de Teste | Escopo | Localização | Ferramenta |
-| ------------- | ------ | ----------- | ---------- |
-| Unitário / Integração | Use Cases, Entities e Adapters | apps/<app>/src/**/*.test.ts(x) | Vitest |
-| End-to-End (E2E) | Fluxos interconectados | Frontend ↔ APIapps/e2e/tests/**/*.spec.ts | Playwright | 
+| Tipo | Escopo | Localização | Ferramenta |
+| ---- | ------ | ----------- | ---------- |
+| Unitário / Integração | Use Cases, Entities e adapters | `apps/<app>/src/**/*.test.ts(x)` | Vitest |
+| End-to-End | Jornadas do usuário no frontend | `apps/frontend/**` | Playwright |
 
-### Executando Testes Unitários (Vitest) 
-```Bash
-# Executar toda a suíte unitária do monorepo
+```bash
+# Suíte unitária do monorepo
 bun test
 
-# Executar em modo interativo (Watch Mode)
+# Watch mode
 bun test --watch
 
-# Gerar relatório de cobertura de código (Coverage)
+# Cobertura
 bun test --coverage
 
-# Filtrar testes de um serviço específico
-bun --filter @cadus/seu-servico test
-```
-
-### Executando Testes End-to-End (Playwright)
-```Bash
-# Executar testes E2E em modo headless
-bun --filter @cadus/e2e test
-
-# Abrir a interface visual interativa do Playwright
-bun --filter @cadus/e2e test --ui
+# Apenas um serviço
+bun --filter @cadus/auth test
 ```
 
 ## ➕ Criando um Novo Serviço
-Siga este passo a passo padronizado para expandir o ecossistema mantendo a conformidade com a Clean Architecture.
-1. Inicializar a Infraestrutura de Pastas
-```Bash
-mkdir -p apps/meu-servico/src/{app,usecases,domain/{entities,repositories},infra,shared}
+
+Siga este passo a passo para expandir o ecossistema mantendo a Clean Architecture.
+
+**1. Estrutura de pastas**
+
+```bash
+mkdir -p apps/meu-servico/src/{presentation/controllers,application/usecases,domain/entities,infra/{adapters,database},main,shared}
 cd apps/meu-servico
 ```
-2. Configurar o package.json do Serviço
-Crie o arquivo apps/meu-servico/package.json:
 
-```JSON
+**2. `package.json` do serviço** (`apps/meu-servico/package.json`)
+
+```json
 {
   "name": "@cadus/meu-servico",
-  "version": "1.0.0",
-  "private": true,
   "type": "module",
+  "private": true,
   "scripts": {
-    "dev": "bun --watch src/index.ts",
-    "build": "bun build src/index.ts --outdir dist --target bun",
-    "start": "bun dist/index.js",
-    "test": "vitest",
-    "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "express": "^4.19.0"
+    "dev": "bun run --watch src/index.ts",
+    "test": "bunx vitest"
   },
   "devDependencies": {
-    "@types/express": "^4.17.21",
-    "@types/bun": "latest",
-    "vitest": "^3.2.4",
-    "typescript": "^5.0.0"
+    "@types/bun": "^1.3.14",
+    "@types/express": "^4.17.0",
+    "prisma": "^7.8.0",
+    "typescript": "^6.0.3",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "zod": "^4.4.3"
   }
 }
 ```
 
-3. Configurar o vitest.config.ts Local
+**3. Servidor base** (`src/index.ts`)
 
-```TypeScript
-import { defineConfig } from "vitest/config";
-
-export default defineConfig({
-  test: {
-    environment: "node",
-    include: ["src/**/*.test.ts"],
-  },
-});
-```
-4. Criar o Servidor Base (src/index.ts)
-```TypeScript
+```typescript
 import express from "express";
 
 const app = express();
-const PORT = process.env.PORT ?? 3002;
+const PORT = process.env.PORT ?? 3003;
 
 app.use(express.json());
 
 app.get("/health", (_req, res) => {
-  res.json({ status: "ok", service: "meu-servico", architecture: "clean" });
+  res.json({ status: "ok", service: "meu-servico" });
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 @cadus/meu-servico ativo na porta ${PORT}`);
+  console.log(`[meu-servico] rodando na porta ${PORT}`);
 });
 ```
 
-5. Registrar a referência no tsconfig.json raiz  
-Adicione o caminho do novo serviço na seção references:
-```JSON
+**4. Registrar no `tsconfig.json` raiz**
+
+```json
 {
   "references": [
     { "path": "apps/frontend" },
-    { "path": "apps/identity" },
+    { "path": "apps/register" },
+    { "path": "apps/auth" },
+    { "path": "apps/historico" },
     { "path": "apps/meu-servico" }
   ]
 }
 ```
-Por fim, execute bun install na raiz para sincronizar os workspaces.
+
+**5. Adicionar o serviço ao `docker-compose.yml`** (seguindo o padrão dos demais: `image: oven/bun:1.3`, `command` com `bun install` + `prisma generate` + `dev`, e a rota correspondente no `nginx/default.conf`).
+
+Por fim, rode `bun install` na raiz para sincronizar os workspaces.
 
 ## 🧰 Ferramentas de Apoio
-- Diagramas & Modelagem: Mermaid para diagramas de sequência evolutivos dentro do repositório Markdown e draw.io para plantas arquiteturais.
-- Modelagem de Dados: DrawSQl para estruturar as enitdades do sistema.
-- Design & UI Prototypes: Figma para design system e Lovable para prototipação ágil de componentes de alta fidelidade.
-- Governança & Agilidade: Jira / GitHub Projects para acompanhamento de Sprints e mapeamento de débitos técnicos.
+
+- **Diagramas & Modelagem:** Mermaid para diagramas de sequência no Markdown e draw.io para plantas arquiteturais.
+- **Modelagem de Dados:** DrawSQL para as entidades do sistema.
+- **Design & UI:** Figma para design system e prototipação.
+- **Governança & Agilidade:** Jira / GitHub Projects para Sprints e mapeamento de débitos técnicos.
 
 ## 🤝 Contribuição
-Faça o Fork do repositório.Crie sua branch de feature: `git checkout -b feature/MinhaFeature.`  
-Valide o alinhamento arquitetural antes do commit: `bun test` e `bun lint`.  
-Envie o Pull Request para a branch main.
+
+1. Faça o fork do repositório.
+2. Crie sua branch de feature: `git checkout -b feature/MinhaFeature`.
+3. Valide o alinhamento antes do commit: `bun test` e `bun lint`.
+4. Abra o Pull Request para a branch `main`.
 
 ## 📄 Licença
-Este projeto está sob a licenca Apache 2.0. Veja o arquivo `LICENSE`para mais detalhes.
+
+Este projeto está sob a licença **Apache 2.0**. Veja o arquivo `LICENSE` para mais detalhes.
+
+---
 
 Powered by **Cadus** | Desenvolvido com foco em Engenharia de Software de Impacto
