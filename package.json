@@ -26,4 +26,8 @@
   "dependencies": {
     "cors": "^2.8.6"
   }
+,
+"overrides": {
+  "fast-check": "3.22.0"
+}
 }

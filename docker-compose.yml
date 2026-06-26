@@ -1,11 +1,11 @@
 services:
   register:
-    image: oven/bun:1.3
-    command: sh -c "cd /app && bun install && cd apps/register && bunx prisma generate && bun run dev"
+    image: oven/bun:latest
+    command: sh -c "cd /app && (bun install || true) && cd apps/register && bunx prisma generate && bun run dev"
     working_dir: /app/apps/register
     volumes:
       - .:/app
-      - /app/node_modules
+      - register_modules:/app/node_modules
     environment:
       NEON_DATABASE_URL: ${NEON_DATABASE_URL_REGISTER}
       PORT: 3000
@@ -15,12 +15,12 @@ services:
       - cadus
 
   auth:
-    image: oven/bun:1.3
-    command: sh -c "cd /app && bun install && cd apps/auth && bunx prisma generate && bun run dev"
+    image: oven/bun:latest
+    command: sh -c "cd /app && (bun install || true) && cd apps/auth && bunx prisma generate && bun run dev"
     working_dir: /app/apps/auth
     volumes:
       - .:/app
-      - /app/node_modules
+      - auth_modules:/app/node_modules
     environment:
       DATABASE_URL: ${DATABASE_URL_AUTH}
       DATABASE_URL_POOLED: ${DATABASE_URL_AUTH}
@@ -35,12 +35,12 @@ services:
       - cadus
 
   historico:
-    image: oven/bun:1.3
-    command: sh -c "cd /app && bun install && cd apps/historico && bunx prisma generate && bun run dev"
+    image: oven/bun:latest
+    command: sh -c "cd /app && (bun install || true) && cd apps/historico && bunx prisma generate && bun run dev"
     working_dir: /app/apps/historico
     volumes:
       - .:/app
-      - /app/node_modules
+      - historico_modules:/app/node_modules
     environment:
       NEON_DATABASE_URL_DEV: ${NEON_DATABASE_URL_HISTORICO}
       PORT: 3002
@@ -50,12 +50,12 @@ services:
       - cadus
 
   frontend:
-    image: oven/bun:1.3
-    command: sh -c "cd /app && bun install && cd apps/frontend && bun run dev"
+    image: oven/bun:latest
+    command: sh -c "cd /app && (bun install || true) && cd apps/frontend && bun run dev"
     working_dir: /app/apps/frontend
     volumes:
       - .:/app
-      - /app/node_modules
+      - frontend_modules:/app/node_modules
     environment:
       NODE_ENV: development
     networks:
@@ -74,6 +74,12 @@ services:
     networks:
       - cadus
     restart: always
+
+volumes:
+  register_modules:
+  auth_modules:
+  historico_modules:
+  frontend_modules:
 
 networks:
   cadus:
