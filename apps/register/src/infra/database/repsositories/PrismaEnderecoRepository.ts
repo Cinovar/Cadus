@@ -35,7 +35,7 @@ export class PrismaEnderecoRepository implements IEnderecoRespository {
     async add(endereco: Endereco): Promise<void> {
         // Import lazy — o Db.ts só é carregado quando esse método é chamado,
         // nunca no momento em que o módulo é importado
-        const { prisma } = await import("../../adapters/Db");
+        const { prisma } = await import("../../adapters/db");
         await prisma.endereco.create({
             data: {
                 id: endereco.id.value,
@@ -48,7 +48,7 @@ export class PrismaEnderecoRepository implements IEnderecoRespository {
     }
 
     async exists(cep: Cep): Promise<boolean> {
-        const { prisma } = await import("../../adapters/Db");
+        const { prisma } = await import("../../adapters/db");
         const count = await prisma.endereco.count({
             where: { cep: cep.value },
         });
@@ -56,7 +56,7 @@ export class PrismaEnderecoRepository implements IEnderecoRespository {
     }
 
     async findEnderecoByCep(cep: Cep): Promise<Endereco> {
-        const { prisma } = await import("../../adapters/Db");
+        const { prisma } = await import("../../adapters/db");
         const row = await prisma.endereco.findUnique({
             where: { cep: cep.value },
         });
@@ -67,7 +67,7 @@ export class PrismaEnderecoRepository implements IEnderecoRespository {
     }
 
     async findAllEnderecos(): Promise<Endereco[]> {
-        const { prisma } = await import("../../adapters/Db");
+        const { prisma } = await import("../../adapters/db");
         const rows = await prisma.endereco.findMany();
         return rows.map((row) => this.toDomainEntity(row));
     }

@@ -111,7 +111,10 @@ const SuccessScreen = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
-            onClick={() => navigate('/paciente/inicio')}
+            onClick={() => {
+              reset();
+              navigate('/paciente/inicio');
+}}
             className="btn-primary w-full mt-6 md:mt-8 group"
           >
             Acessar minha área <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
