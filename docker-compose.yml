@@ -1,7 +1,8 @@
 services:
   register:
     image: oven/bun:1.3
-    command: sh -c "cd /app && bun install && cd apps/register && bunx prisma generate && bun run dev"
+    # `bun install || bun install`: tenta de novo se um tarball falhar no download (ex: binário nativo do swc).
+    command: sh -c "cd /app && (bun install || bun install) && cd apps/register && bunx prisma generate && bun run dev"
     working_dir: /app/apps/register
     volumes:
       - .:/app
@@ -11,12 +12,13 @@ services:
       PORT: 3000
       CORS_ORIGIN: http://localhost
       NODE_ENV: development
+    restart: on-failure
     networks:
       - cadus
 
   auth:
     image: oven/bun:1.3
-    command: sh -c "cd /app && bun install && cd apps/auth && bunx prisma generate && bun run dev"
+    command: sh -c "cd /app && (bun install || bun install) && cd apps/auth && bunx prisma generate && bun run dev"
     working_dir: /app/apps/auth
     volumes:
       - .:/app
@@ -31,12 +33,13 @@ services:
       NODE_ENV: development
     depends_on:
       - register
+    restart: on-failure
     networks:
       - cadus
 
   historico:
     image: oven/bun:1.3
-    command: sh -c "cd /app && bun install && cd apps/historico && bunx prisma generate && bun run dev"
+    command: sh -c "cd /app && (bun install || bun install) && cd apps/historico && bunx prisma generate && bun run dev"
     working_dir: /app/apps/historico
     volumes:
       - .:/app
@@ -46,18 +49,20 @@ services:
       PORT: 3002
       CORS_ORIGIN: http://localhost
       NODE_ENV: development
+    restart: on-failure
     networks:
       - cadus
 
   frontend:
     image: oven/bun:1.3
-    command: sh -c "cd /app && bun install && cd apps/frontend && bun run dev"
+    command: sh -c "cd /app && (bun install || bun install) && cd apps/frontend && bun run dev"
     working_dir: /app/apps/frontend
     volumes:
       - .:/app
       - /app/node_modules
     environment:
       NODE_ENV: development
+    restart: on-failure
     networks:
       - cadus
 
