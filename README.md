@@ -31,6 +31,9 @@ O Cadus é uma plataforma distribuída projetada para isolamento de contextos e 
 - 🌐 **Reverse proxy nginx:** um único ponto de entrada (porta 80) roteando frontend e APIs sob `/fonoaudiologia/`.
 - 🐳 **Ambiente containerizado:** todo o stack sobe com um único `docker compose up`.
 
+## Vídeo de Demonstração:
+https://youtu.be/bbaOgqIOLTs
+
 ## 🛠️ Stack Tecnológica
 
 | Camada | Tecnologia | Papel no Ecossistema |
