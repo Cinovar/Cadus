@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider    = "postgresql"
+}
+
+// Enumerações para o atributo de gênero da Entidade Identidade
+
+enum Gender {
+  MASCULINO
+  FEMININO
+  OUTRO
+  NAO_INFORMADO
+}
+
+enum Pronoun {
+  ELE_DELE
+  ELA_DELA
+  ELU_DELU
+  OUTRO
+}
+
+// Entidades do Banco de Dados
+
+model User {
+  id              String @id @default(uuid())
+
+  cpf             String @db.VarChar(11) @unique
+  nome            String @db.VarChar(150)
+  birthDate       DateTime @db.Date
+  gender          Gender
+  customGender    String? @db.VarChar(150)
+  pronoun         Pronoun?
+  customPronoun   String? @db.VarChar(150)
+  telephone       String @db.VarChar(20)
+  email           String @db.VarChar(255) @unique
+  password        String @db.VarChar(255)
+  addressId       String
+  address         Address @relation(fields: [addressId], references: [id])
+
+  createdAt       DateTime @default(now()) @db.Timestamp(6)
+  updatedAt       DateTime @updatedAt @db.Timestamp(6)
+  deletedAt       DateTime?  @db.Timestamp(6)
+}
+
+model Address {
+  id           String @id @default(uuid())
+
+  zipCode      String     @db.VarChar(8)  @unique
+  publicSpace  String?    @db.VarChar(200)
+  number       Int
+  complement   String?    @db.VarChar(100)
+
+  createdAt    DateTime   @default(now()) @db.Timestamp(6)
+  updatedAt    DateTime   @updatedAt @db.Timestamp(6)
+  deletedAt    DateTime?  @db.Timestamp(6)
+
+  residents    User[]
+}

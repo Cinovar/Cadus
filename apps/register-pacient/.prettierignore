@@ -1,0 +1,10 @@
+# Ignore build artifacts:
+build
+coverage
+dist
+# Nodejs 
+node_modules
+.env
+.bun
+*.generated.ts
+#

@@ -1,7 +1,7 @@
 {
   "references": [
     { "path": "apps/frontend" },
-    { "path": "apps/identity" },
+    { "path": "apps/register-pacient" },
   ],
   "files": [],
   "compilerOptions": {
